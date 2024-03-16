@@ -46,13 +46,17 @@ type StoreProductE struct {
 	Checksum        NullString  `json:"checksum,omitempty"`
 	FCreated        NullTime    `json:"fcreated,omitempty"`
 	FUpdated        NullTime    `json:"fupdated,omitempty"`
-	Activo          NullInt64   `json:"activo,omitempty"`
-	Estadoreg       NullInt64   `json:"estadoreg,omitempty"`
+	Activo          int32       `json:"activo,omitempty"`
+	Estadoreg       int32       `json:"estadoreg,omitempty"`
 	TotalRecords    int64       `json:"total_records"`
 }
 
 func (e StoreProductE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
+}
+
+func (e StoreProductE) CreatedFormat() string {
+	return e.FCreated.Time.Format("Jan 2006")
 }
 
 const querySelectStoreProducts = `select * from store_products_list( $1, $2)`

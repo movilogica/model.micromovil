@@ -59,6 +59,10 @@ func (e BizSubscriptionsE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
+func (e BizSubscriptionsE) IssuedText() string {
+	return e.Issued.Time.Format("Dec-2000")
+}
+
 const querySelectBizSubscrip = `select * from biz_subscriptions_list( $1, $2)`
 
 //---------------------------------------------------------------------

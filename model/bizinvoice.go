@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math"
 )
 
 // Customer Medios
@@ -149,6 +150,53 @@ func (e BizInvoiceDetE) MarshalJSON() ([]byte, error) {
 }
 func (e BizInvoiceStatusE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
+}
+
+func (e BizInvoiceE) Pendiente() float64 {
+	return e.TotalFinal.Float64 - e.TotalPago.Float64
+}
+
+func (c BizInvoiceE) NexOrderId() int {
+	max := 1
+	for _, v := range c.Items {
+		if int(v.Secuencial.Int32) >= max {
+			max = int(v.Secuencial.Int32) + 1
+		}
+	}
+	return max
+}
+
+func roundFloat(val float64, precision uint) float64 {
+	ratio := math.Pow(10, float64(precision))
+	return math.Round(val*ratio) / ratio
+}
+
+func (i *BizInvoiceDetE) SubTotal() {
+	fmt.Println("--- Calculando Item ---")
+	i.Total.Float64 = float64(roundFloat(float64(float32(i.Cantidad.Int64)*float32(i.PrecioVenta.Float64)), 2))
+	fmt.Printf("Precio:%f - Qty:%d - SubTotal:%f\n", i.PrecioVenta.Float64, i.Cantidad.Int64, i.Total.Float64)
+}
+
+func (c *BizInvoiceE) Totales() {
+	fmt.Println("--- Calculando Totales ---")
+	tot_items := 0.0
+	tot_qty := 0
+	var tot_sub float64
+	var tot_final float64
+	for _, v := range c.Items {
+		tot_items += 1
+		tot_qty += int(v.Cantidad.Int64)
+		v.SubTotal()
+		tot_sub += v.Total.Float64
+		tot_final += v.Total.Float64
+	}
+	c.TotalItems.Float64 = tot_items
+	///c.TotalQuantity = tot_qty
+	c.TotalImponible.Float64 = tot_sub
+	taxPerc := float64(c.TasaVenta.Float64) / float64(100)
+	c.TotalImpuestos.Float64 = float64(roundFloat(float64(taxPerc*tot_sub), 2))
+	c.TotalFinal.Float64 = float64(roundFloat(float64(c.TotalImponible.Float64+c.TotalImpuestos.Float64), 2))
+	fmt.Printf("Items:%d Total:%d\n", c.TotalItems.Float64, c.TotalFinal.Float64)
 }
 
 const querySelectBizInvoiceCab = `select * from biz_invoice_cab_list( $1, $2)`

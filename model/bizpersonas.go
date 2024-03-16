@@ -72,6 +72,10 @@ func (e BizPersonasE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
+func (e BizPersonasE) Fullname() string {
+	return fmt.Sprintf("%s %s %s", e.Nombres.String, e.Midlename.String, e.Apaterno.String)
+}
+
 type CustomerInfoE struct {
 	Info          *BizPersonasE           `json:"info"`
 	Medios        []*BizPersonasMedioE    `json:"medios"`

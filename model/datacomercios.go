@@ -16,6 +16,7 @@ type DataComercioE struct {
 	Sede            int32       `json:"sede"`
 	Flag1           string      `json:"flag1,omitempty"`
 	Flag2           string      `json:"flag2,omitempty"`
+	ComercioId      NullInt64   `json:"comercioid,omitempty"`
 	PersonaId       NullInt64   `json:"personaid,omitempty"`
 	Secuencial      NullInt32   `json:"secuencial"`
 	Orden           NullInt32   `json:"orden"`
@@ -70,6 +71,7 @@ type DataComercioMinimalE struct {
 	Sede           int32       `json:"sede"`
 	Flag1          string      `json:"flag1,omitempty"`
 	Flag2          string      `json:"flag2,omitempty"`
+	ComercioId     NullInt64   `json:"comercioid,omitempty"`
 	PersonaId      NullInt64   `json:"personaid,omitempty"`
 	TokenDataId    NullString  `json:"tokendataid,omitempty"`
 	Orden          NullInt32   `json:"orden"`

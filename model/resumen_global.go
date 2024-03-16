@@ -3,7 +3,10 @@ package model
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
+	"strconv"
+	"time"
 )
 
 // Resumen
@@ -21,6 +24,19 @@ type ResumenGlobalE struct {
 
 func (e ResumenGlobalE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
+}
+
+func (e ResumenGlobalE) PeriodoText() string {
+	if len(e.Periodo) == 7 {
+		year := e.Periodo[0:4]
+		month, _ := strconv.Atoi(e.Periodo[5:])
+		return fmt.Sprintf("%s-%s", time.Month(month), year)
+	}
+	return e.Periodo
+}
+
+func (e ResumenGlobalE) Incomes() float64 {
+	return e.IncomeSubs.Float64 + e.IncomeServ.Float64
 }
 
 const querySelectResumenGlobal = `select * from resumen_global_list( $1, $2)`
