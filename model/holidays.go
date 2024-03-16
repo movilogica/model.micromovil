@@ -19,8 +19,8 @@ type HolidayE struct {
 	CountryCode   NullString `json:"countrycode,omitempty"`
 	Code          NullString `json:"code,omitempty"`
 	Descrip       NullString `json:"descrip,omitempty"`
-	InicioAt      NullTime   `json:"finicio,omitempty"`
-	TerminoAt     NullTime   `json:"ftermino,omitempty"`
+	FInicio       NullTime   `json:"finicio,omitempty"`
+	FTermino      NullTime   `json:"ftermino,omitempty"`
 	Ruf1          NullString `json:"ruf1,omitempty"`
 	Ruf2          NullString `json:"ruf2,omitempty"`
 	Ruf3          NullString `json:"ruf3,omitempty"`
@@ -94,6 +94,8 @@ func (u *HolidayE) GetAll(token string, filter string) ([]*HolidayE, error) {
 			&rowdata.CountryCode,
 			&rowdata.Code,
 			&rowdata.Descrip,
+			&rowdata.FInicio,
+			&rowdata.FTermino,
 			&rowdata.Ruf1,
 			&rowdata.Ruf2,
 			&rowdata.Ruf3,
@@ -139,6 +141,8 @@ func (u *HolidayE) GetByUniqueid(token string, uniqueid int) (*HolidayE, error) 
 		&rowdata.CountryCode,
 		&rowdata.Code,
 		&rowdata.Descrip,
+		&rowdata.FInicio,
+		&rowdata.FTermino,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
