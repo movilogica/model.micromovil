@@ -16,6 +16,7 @@ type BancosE struct {
 	Sede            int32      `json:"sede"`
 	Flag1           string     `json:"flag1,omitempty"`
 	Flag2           string     `json:"flag2,omitempty"`
+	CountryCode     NullString `json:"countrycode,omitempty"`
 	Code            NullString `json:"code,omitempty"`
 	Descrip         NullString `json:"descrip,omitempty"`
 	NombreCorto     NullString `json:"nombrecorto,omitempty"`
@@ -101,6 +102,7 @@ func (u *BancosE) GetAll(token string, filter string) ([]*BancosE, error) {
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
+			&rowdata.CountryCode,
 			&rowdata.Code,
 			&rowdata.Descrip,
 			&rowdata.NombreCorto,
@@ -158,6 +160,7 @@ func (u *BancosE) GetByUniqueid(token string, uniqueid int) (*BancosE, error) {
 		&rowdata.Sede,
 		&rowdata.Flag1,
 		&rowdata.Flag2,
+		&rowdata.CountryCode,
 		&rowdata.Code,
 		&rowdata.Descrip,
 		&rowdata.NombreCorto,

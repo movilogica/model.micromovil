@@ -16,6 +16,7 @@ type CardBrandE struct {
 	Sede          int32      `json:"sede"`
 	Flag1         string     `json:"flag1,omitempty"`
 	Flag2         string     `json:"flag2,omitempty"`
+	CountryCode   NullString `json:"countrycode,omitempty"`
 	Code          NullString `json:"code,omitempty"`
 	Descrip       NullString `json:"descrip,omitempty"`
 	ImageOn       NullString `json:"imageon,omitempty"`
@@ -90,6 +91,7 @@ func (u *CardBrandE) GetAll(token string, filter string) ([]*CardBrandE, error) 
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
+			&rowdata.CountryCode,
 			&rowdata.Code,
 			&rowdata.Descrip,
 			&rowdata.ImageOn,
@@ -136,6 +138,7 @@ func (u *CardBrandE) GetByUniqueid(token string, uniqueid int) (*CardBrandE, err
 		&rowdata.Sede,
 		&rowdata.Flag1,
 		&rowdata.Flag2,
+		&rowdata.CountryCode,
 		&rowdata.Code,
 		&rowdata.Descrip,
 		&rowdata.ImageOn,

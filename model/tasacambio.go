@@ -16,6 +16,7 @@ type TasaCambioE struct {
 	Sede          int32       `json:"sede"`
 	Flag1         string      `json:"flag1,omitempty"`
 	Flag2         string      `json:"flag2,omitempty"`
+	CountryCode   NullString  `json:"countrycode,omitempty"`
 	Fecha         NullTime    `json:"fecha,omitempty"`
 	DivisaId      NullInt64   `json:"divisaid,omitempty"`
 	ForeignId     NullInt64   `json:"foreignid,omitempty"`
@@ -95,6 +96,7 @@ func (u *TasaCambioE) GetAll(token string, filter string) ([]*TasaCambioE, error
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
+			&rowdata.CountryCode,
 			&rowdata.Fecha,
 			&rowdata.ForeignId,
 			&rowdata.ForeignText,
@@ -145,6 +147,7 @@ func (u *TasaCambioE) GetByUniqueid(token string, uniqueid int) (*TasaCambioE, e
 		&rowdata.Sede,
 		&rowdata.Flag1,
 		&rowdata.Flag2,
+		&rowdata.CountryCode,
 		&rowdata.Fecha,
 		&rowdata.ForeignId,
 		&rowdata.ForeignText,

@@ -70,6 +70,7 @@ func NewDataAccess(dbPool *sql.DB) DataAccess {
 		StoreProduct:            StoreProductE{},
 		StoreParamCategItem:     StoreParamCategItemE{},
 		CustomerInfo:            CustomerInfoE{},
+		TipoProducto:            TipoProductoE{},
 	}
 }
 
@@ -134,4 +135,5 @@ type DataAccess struct {
 	StoreParamCategItem     StoreParamCategItemE
 	CustomerInfo            CustomerInfoE
 	ResumenGlobal           ResumenGlobalE
+	TipoProducto            TipoProductoE
 }

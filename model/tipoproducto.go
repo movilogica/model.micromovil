@@ -7,8 +7,8 @@ import (
 	"log"
 )
 
-// Duties
-type DutieE struct {
+// Tipo Producto
+type TipoProductoE struct {
 	Uniqueid      int64      `json:"uniqueid,omitempty"`
 	Owner         NullInt32  `json:"owner,omitempty"`
 	Dispositivoid int32      `json:"dispositivoid,omitempty"`
@@ -17,13 +17,9 @@ type DutieE struct {
 	Flag1         string     `json:"flag1,omitempty"`
 	Flag2         string     `json:"flag2,omitempty"`
 	CountryCode   NullString `json:"countrycode,omitempty"`
-	Code          NullString `json:"code,omitempty"`
-	Descrip       NullString `json:"descrip,omitempty"`
-	Clasificacion NullInt32  `json:"clasificacion,omitempty"`
-	DivisaId      NullInt64  `json:"divisaid,omitempty"`
-	DivisaText    NullString `json:"divisatext,omitempty"`
-	DivisaSimbolo NullString `json:"divisasimbolo,omitempty"`
-	DivisaDecimal NullInt32  `json:"divisadecimal,omitempty"`
+	Code          string     `json:"code,omitempty"`
+	Descrip       string     `json:"descrip,omitempty"`
+	Tipo          string     `json:"tipo,omitempty"`
 	Ruf1          NullString `json:"ruf1,omitempty"`
 	Ruf2          NullString `json:"ruf2,omitempty"`
 	Ruf3          NullString `json:"ruf3,omitempty"`
@@ -37,11 +33,11 @@ type DutieE struct {
 	TotalRecords  int64      `json:"total_records"`
 }
 
-func (e DutieE) MarshalJSON() ([]byte, error) {
+func (e TipoProductoE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const querySelectDuties = `select * from param_duties_list( $1, $2)`
+const querySelectTipoProd = `select * from param_tipos_productos_list( $1, $2)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -51,11 +47,11 @@ const querySelectDuties = `select * from param_duties_list( $1, $2)`
 //---------------------------------------------------------------------
 
 // GetAll returns a slice of all users, sorted by last name
-func (u *DutieE) GetAll(token string, filter string) ([]*DutieE, error) {
+func (u *TipoProductoE) GetAll(token string, tabla string, filter string) ([]*TipoProductoE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectDuties
+	query := querySelectTipoProd
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -63,8 +59,8 @@ func (u *DutieE) GetAll(token string, filter string) ([]*DutieE, error) {
 	if mapFilter == nil {
 		mapFilter = make(map[string]interface{})
 	}
-	// --- Adicion de filtros
-	// mapFilter["tipo"] = tabla
+	// --- Adicion de filtro de tipos de carros
+	mapFilter["tipo"] = tabla
 	// Se empaqueta el JSON del Filter
 	jsonFilter, err := json.Marshal(mapFilter)
 	if err != nil {
@@ -82,26 +78,19 @@ func (u *DutieE) GetAll(token string, filter string) ([]*DutieE, error) {
 	}
 	defer rows.Close()
 
-	var lista []*DutieE
+	var lista []*TipoProductoE
 
 	for rows.Next() {
-		var rowdata DutieE
+		var rowdata TipoProductoE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
 			&rowdata.CountryCode,
 			&rowdata.Code,
 			&rowdata.Descrip,
-			&rowdata.Clasificacion,
-			&rowdata.DivisaId,
-			&rowdata.DivisaText,
-			&rowdata.DivisaSimbolo,
-			&rowdata.DivisaDecimal,
+			&rowdata.Tipo,
 			&rowdata.Ruf1,
 			&rowdata.Ruf2,
 			&rowdata.Ruf3,
@@ -125,33 +114,75 @@ func (u *DutieE) GetAll(token string, filter string) ([]*DutieE, error) {
 	return lista, nil
 }
 
-// GetOne returns one user by id
-func (u *DutieE) GetByUniqueid(token string, uniqueid int) (*DutieE, error) {
+// GetByField returns one record by filter
+func (u *TipoProductoE) GetByField(token string, fieldname string, value string) (*TipoProductoE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectDuties
+	query := querySelectTipoProd
 
-	var rowdata DutieE
+	rows, err := db.QueryContext(ctx, query, token, fmt.Sprintf(`{"tipo":"%s", "code":"%s"}`, fieldname, value))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var result *TipoProductoE
+
+	if rows.Next() {
+		var rowdata TipoProductoE
+		err := rows.Scan(
+			&rowdata.Uniqueid,
+			&rowdata.Sede,
+			&rowdata.Flag1,
+			&rowdata.Flag2,
+			&rowdata.CountryCode,
+			&rowdata.Code,
+			&rowdata.Descrip,
+			&rowdata.Tipo,
+			&rowdata.Ruf1,
+			&rowdata.Ruf2,
+			&rowdata.Ruf3,
+			&rowdata.Iv,
+			&rowdata.Salt,
+			&rowdata.Checksum,
+			&rowdata.FCreated,
+			&rowdata.FUpdated,
+			&rowdata.Activo,
+			&rowdata.Estadoreg,
+			&rowdata.TotalRecords,
+		)
+		if err != nil {
+			log.Println("Error scanning", err)
+			return nil, err
+		}
+
+		result = &rowdata
+	}
+
+	return result, nil
+}
+
+// GetOne returns one user by id
+func (u *TipoProductoE) GetByUniqueid(token string, uniqueid int) (*TipoProductoE, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := querySelectTipoProd
+
+	var rowdata TipoProductoE
 	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
 		&rowdata.Uniqueid,
-		&rowdata.Owner,
-		&rowdata.Dispositivoid,
-		&rowdata.Id,
 		&rowdata.Sede,
 		&rowdata.Flag1,
 		&rowdata.Flag2,
 		&rowdata.CountryCode,
 		&rowdata.Code,
 		&rowdata.Descrip,
-		&rowdata.Clasificacion,
-		&rowdata.DivisaId,
-		&rowdata.DivisaText,
-		&rowdata.DivisaSimbolo,
-		&rowdata.DivisaDecimal,
+		&rowdata.Tipo,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
@@ -174,7 +205,7 @@ func (u *DutieE) GetByUniqueid(token string, uniqueid int) (*DutieE, error) {
 
 // Update updates one user in the database, using the information
 // stored in the receiver u
-func (u *DutieE) Update(token string, data string, metricas string) (map[string]any, error) {
+func (u *TipoProductoE) Update(token string, tabla string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -185,8 +216,7 @@ func (u *DutieE) Update(token string, data string, metricas string) (map[string]
 		mapData = make(map[string]interface{})
 	}
 	// --- Adicion de filtro de tipos de carros
-	// mapData["tipo"] = tabla
-
+	mapData["tipo"] = tabla
 	// Se empaqueta el JSON del Data
 	jsonData, err := json.Marshal(mapData)
 	if err != nil {
@@ -195,7 +225,7 @@ func (u *DutieE) Update(token string, data string, metricas string) (map[string]
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := `SELECT param_duties_save($1, $2, $3)`
+	query := `SELECT * FROM param_tipos_productos_save($1, $2, $3)`
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -208,9 +238,10 @@ func (u *DutieE) Update(token string, data string, metricas string) (map[string]
 	defer result.Close()
 
 	var uniqueid int64
+	var secuencial int32
 
 	if result.Next() {
-		err := result.Scan(&uniqueid)
+		err := result.Scan(&uniqueid, &secuencial)
 		if err != nil {
 			log.Println("Error scanning", err)
 			return nil, err
@@ -219,12 +250,13 @@ func (u *DutieE) Update(token string, data string, metricas string) (map[string]
 
 	retorno := make(map[string]any)
 	retorno["uniqueid"] = uniqueid
+	retorno["secuencial"] = secuencial
 
 	return retorno, nil
 }
 
 // Delete deletes one user from the database, by User.ID
-func (u *DutieE) Delete(token string, data string, metricas string) (map[string]any, error) {
+func (u *TipoProductoE) Delete(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -245,7 +277,7 @@ func (u *DutieE) Delete(token string, data string, metricas string) (map[string]
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := `SELECT param_duties_save($1, $2, $3)`
+	query := `SELECT * FROM param_tipos_productos_save($1, $2, $3)`
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -258,9 +290,10 @@ func (u *DutieE) Delete(token string, data string, metricas string) (map[string]
 	defer result.Close()
 
 	var uniqueid int64
+	var secuencial int32
 
 	if result.Next() {
-		err := result.Scan(&uniqueid)
+		err := result.Scan(&uniqueid, &secuencial)
 		if err != nil {
 			log.Println("Error scanning", err)
 			return nil, err
@@ -269,12 +302,13 @@ func (u *DutieE) Delete(token string, data string, metricas string) (map[string]
 
 	retorno := make(map[string]any)
 	retorno["uniqueid"] = uniqueid
+	retorno["secuencial"] = secuencial
 
 	return retorno, nil
 }
 
 // DeleteByID deletes one user from the database, by ID
-func (u *DutieE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
+func (u *TipoProductoE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -283,7 +317,7 @@ func (u *DutieE) DeleteByID(token string, id int, metricas string) (map[string]a
 							  }`,
 		id, 300)
 
-	query := `SELECT param_duties_save($1, $2, $3)`
+	query := `SELECT * FROM param_tipos_productos_save($1, $2, $3)`
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -296,9 +330,10 @@ func (u *DutieE) DeleteByID(token string, id int, metricas string) (map[string]a
 	defer result.Close()
 
 	var uniqueid int64
+	var secuencial NullInt32
 
 	if result.Next() {
-		err := result.Scan(&uniqueid)
+		err := result.Scan(&uniqueid, &secuencial)
 		if err != nil {
 			log.Println("Error scanning", err)
 			return nil, err
@@ -307,6 +342,7 @@ func (u *DutieE) DeleteByID(token string, id int, metricas string) (map[string]a
 
 	retorno := make(map[string]any)
 	retorno["uniqueid"] = uniqueid
+	retorno["secuencial"] = secuencial.Int32
 
 	return retorno, nil
 }

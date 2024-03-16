@@ -16,6 +16,7 @@ type GirosE struct {
 	Sede          int32      `json:"sede"`
 	Flag1         string     `json:"flag1,omitempty"`
 	Flag2         string     `json:"flag2,omitempty"`
+	CountryCode   NullString `json:"countrycode,omitempty"`
 	Code          NullString `json:"code,omitempty"`
 	Descrip       NullString `json:"descrip,omitempty"`
 	Tipo          NullString `json:"tipo,omitempty"`
@@ -91,6 +92,7 @@ func (u *GirosE) GetAll(token string, filter string) ([]*GirosE, error) {
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
+			&rowdata.CountryCode,
 			&rowdata.Code,
 			&rowdata.Descrip,
 			&rowdata.Tipo,
@@ -138,6 +140,7 @@ func (u *GirosE) GetByUniqueid(token string, uniqueid int) (*GirosE, error) {
 		&rowdata.Sede,
 		&rowdata.Flag1,
 		&rowdata.Flag2,
+		&rowdata.CountryCode,
 		&rowdata.Code,
 		&rowdata.Descrip,
 		&rowdata.Tipo,
