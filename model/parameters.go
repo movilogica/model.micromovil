@@ -16,11 +16,11 @@ type ParametersE struct {
 	Sede          int32      `json:"sede"`
 	Flag1         string     `json:"flag1,omitempty"`
 	Flag2         string     `json:"flag2,omitempty"`
-	Tipo          NullString `json:"tipo,omitempty"`
+	Tipo          string     `json:"tipo,omitempty"`
 	CountryCode   NullString `json:"countrycode,omitempty"`
 	Secuencial    int32      `json:"secuencial,omitempty"`
-	Code          NullString `json:"code,omitempty"`
-	Descrip       NullString `json:"descrip,omitempty"`
+	Code          string     `json:"code,omitempty"`
+	Descrip       string     `json:"descrip,omitempty"`
 	Ruf1          NullString `json:"ruf1,omitempty"`
 	Ruf2          NullString `json:"ruf2,omitempty"`
 	Ruf3          NullString `json:"ruf3,omitempty"`
