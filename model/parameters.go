@@ -36,7 +36,7 @@ func (e ParametersE) MarshalJSON() ([]byte, error) {
 }
 
 const querySelectParam = `select uniqueid, sede, flag1, flag2, 
-tipo, countrycode, secuencial, code, descrip,
+tipo, countrycode, secuencial, code,descrip,
 fcreated, fupdated, activo, estadoreg, total_records
 from param_variables_list( $1, $2)`
 
