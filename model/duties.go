@@ -16,6 +16,7 @@ type DutieE struct {
 	Sede          int32      `json:"sede"`
 	Flag1         string     `json:"flag1,omitempty"`
 	Flag2         string     `json:"flag2,omitempty"`
+	CountryCode   NullString `json:"countrycode,omitempty"`
 	Code          NullString `json:"code,omitempty"`
 	Descrip       NullString `json:"descrip,omitempty"`
 	Clasificacion NullInt32  `json:"clasificacion,omitempty"`
