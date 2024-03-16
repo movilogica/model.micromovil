@@ -23,8 +23,8 @@ type SedeE struct {
 	Ruf3          NullString `json:"ruf3,omitempty"`
 	FCreated      NullTime   `json:"fcreated,omitempty"`
 	FUpdated      NullTime   `json:"fupdated,omitempty"`
-	Estadoreg     NullInt64  `json:"estadoreg,omitempty"`
-	Activo        NullInt64  `json:"activo,omitempty"`
+	Activo        int32      `json:"activo,omitempty"`
+	Estadoreg     int32      `json:"estadoreg,omitempty"`
 	TotalRecords  int64      `json:"total_records"`
 }
 
@@ -34,7 +34,7 @@ func (e SedeE) MarshalJSON() ([]byte, error) {
 
 const querySelectSede = `select uniqueid, owner, dispositivoid, id, sede, flag1, flag2, 
 code, descrip,
-ruf1, ruf2, ruf3, fcreated, fupdated, estadoreg, activo, total_records
+ruf1, ruf2, ruf3, fcreated, fupdated, activo, estadoreg, total_records
 from sys_sedes_list( $1, $2)`
 
 //---------------------------------------------------------------------
@@ -95,8 +95,8 @@ func (u *SedeE) GetAll(token string, filter string) ([]*SedeE, error) {
 			&rowdata.Ruf3,
 			&rowdata.FCreated,
 			&rowdata.FUpdated,
-			&rowdata.Estadoreg,
 			&rowdata.Activo,
+			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
 		)
 		if err != nil {
@@ -181,8 +181,8 @@ func (u *SedeE) GetByUniqueid(token string, uniqueid int) (*SedeE, error) {
 		&rowdata.Ruf3,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
-		&rowdata.Estadoreg,
 		&rowdata.Activo,
+		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,
 	)
 

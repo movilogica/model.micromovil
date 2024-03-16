@@ -33,8 +33,8 @@ type UsuarioE struct {
 	LastAccessAt     NullTime   `json:"flastaccess,omitempty"`
 	FCreated         NullTime   `json:"fcreated,omitempty"`
 	FUpdated         NullTime   `json:"fupdated,omitempty"`
-	Estadoreg        NullInt64  `json:"estadoreg,omitempty"`
-	Activo           NullInt64  `json:"activo,omitempty"`
+	Activo           int32      `json:"activo,omitempty"`
+	Estadoreg        int32      `json:"estadoreg,omitempty"`
 	TotalRecords     int64      `json:"total_records"`
 }
 
@@ -90,8 +90,8 @@ func (u *UsuarioE) GetUserInfo(token string, uniqueid int) (*UsuarioE, error) {
 		&rowdata.LastAccessAt,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
-		&rowdata.Estadoreg,
 		&rowdata.Activo,
+		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,
 	)
 
@@ -132,8 +132,8 @@ func (u *UsuarioE) GetUserLabel(token string, uniqueid int) (*UsuarioE, error) {
 		&rowdata.LastAccessAt,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
-		&rowdata.Estadoreg,
 		&rowdata.Activo,
+		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,
 	)
 

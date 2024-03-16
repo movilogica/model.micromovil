@@ -37,9 +37,9 @@ type SesionDataE struct {
 	Checksum       NullString `json:"checksum,omitempty"`
 	FCreated       NullTime   `json:"fcreated,omitempty"`
 	FUpdated       NullTime   `json:"fupdated,omitempty"`
-	Estadoreg      NullInt64  `json:"estadoreg,omitempty"`
-	Activo         NullInt64  `json:"activo,omitempty"`
-	TotalRecords   NullInt64  `json:"total_records,omitempty"`
+	Activo         int32      `json:"activo,omitempty"`
+	Estadoreg      int32      `json:"estadoreg,omitempty"`
+	TotalRecords   int64      `json:"total_records"`
 }
 
 const querySelectSesion = `select * from security_sesiondata_list( $1, $2)`
@@ -148,8 +148,8 @@ func (u *SesionDataE) GetSessionByToken(token string, jsonData string) (SesionDa
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
-		&rowdata.Estadoreg,
 		&rowdata.Activo,
+		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,
 	)
 
@@ -207,8 +207,8 @@ func (u *SesionDataE) GetSessionByValue(token string, jsonData string) (SesionDa
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
-		&rowdata.Estadoreg,
 		&rowdata.Activo,
+		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,
 	)
 

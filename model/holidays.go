@@ -29,8 +29,8 @@ type HolidayE struct {
 	Checksum      NullString `json:"checksum,omitempty"`
 	FCreated      NullTime   `json:"fcreated,omitempty"`
 	FUpdated      NullTime   `json:"fupdated,omitempty"`
-	Activo        NullInt64  `json:"activo,omitempty"`
-	Estadoreg     NullInt64  `json:"estadoreg,omitempty"`
+	Activo        int32      `json:"activo,omitempty"`
+	Estadoreg     int32      `json:"estadoreg,omitempty"`
 	TotalRecords  int64      `json:"total_records"`
 }
 
@@ -145,8 +145,8 @@ func (u *HolidayE) GetByUniqueid(token string, uniqueid int) (*HolidayE, error) 
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
-		&rowdata.Estadoreg,
 		&rowdata.Activo,
+		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,
 	)
 

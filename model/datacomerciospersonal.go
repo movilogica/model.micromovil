@@ -21,7 +21,7 @@ type DataComercioPersonalE struct {
 	TokenDataId    NullString  `json:"tokendataid,omitempty"`
 	Secuencial     NullInt32   `json:"secuencial"`
 	Orden          NullInt32   `json:"orden"`
-	Movil          NullString  `json:"movil,omitempty"`
+	ChannelId      NullString  `json:"channel_id,omitempty"`
 	Descrip        NullString  `json:"descrip,omitempty"`
 	PersonalId     NullInt64   `json:"personalid,omitempty"`
 	RoleTypeId     NullString  `json:"role_type_id,omitempty"`
@@ -50,8 +50,8 @@ type DataComercioPersonalE struct {
 	Checksum       NullString  `json:"checksum,omitempty"`
 	FCreated       NullTime    `json:"fcreated,omitempty"`
 	FUpdated       NullTime    `json:"fupdated,omitempty"`
-	Estadoreg      NullInt64   `json:"estadoreg,omitempty"`
-	Activo         NullInt64   `json:"activo,omitempty"`
+	Activo         int32       `json:"activo,omitempty"`
+	Estadoreg      int32       `json:"estadoreg,omitempty"`
 	TotalRecords   int64       `json:"total_records"`
 }
 
@@ -117,7 +117,7 @@ func (u *DataComercioPersonalE) GetAll(token string, filter string) ([]*DataCome
 			&rowdata.TokenDataId,
 			&rowdata.Secuencial,
 			&rowdata.Orden,
-			&rowdata.Movil,
+			&rowdata.ChannelId,
 			&rowdata.Descrip,
 			&rowdata.PersonalId,
 			&rowdata.RoleTypeId,
@@ -185,7 +185,7 @@ func (u *DataComercioPersonalE) GetByUniqueid(token string, uniqueid int) (*Data
 		&rowdata.TokenDataId,
 		&rowdata.Secuencial,
 		&rowdata.Orden,
-		&rowdata.Movil,
+		&rowdata.ChannelId,
 		&rowdata.Descrip,
 		&rowdata.PersonalId,
 		&rowdata.RoleTypeId,

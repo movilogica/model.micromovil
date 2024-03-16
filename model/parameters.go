@@ -26,8 +26,8 @@ type ParametersE struct {
 	Ruf3          NullString `json:"ruf3,omitempty"`
 	FCreated      NullTime   `json:"fcreated,omitempty"`
 	FUpdated      NullTime   `json:"fupdated,omitempty"`
-	Activo        NullInt64  `json:"activo,omitempty"`
-	Estadoreg     NullInt64  `json:"estadoreg,omitempty"`
+	Activo        int32      `json:"activo,omitempty"`
+	Estadoreg     int32      `json:"estadoreg,omitempty"`
 	TotalRecords  int64      `json:"total_records"`
 }
 

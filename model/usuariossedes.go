@@ -28,8 +28,8 @@ type UsuariosSedesE struct {
 	Checksum      NullString `json:"checksum,omitempty"`
 	FCreated      NullTime   `json:"fcreated,omitempty"`
 	FUpdated      NullTime   `json:"fupdated,omitempty"`
-	Estadoreg     NullInt64  `json:"estadoreg,omitempty"`
-	Activo        NullInt64  `json:"activo,omitempty"`
+	Activo        int32      `json:"activo,omitempty"`
+	Estadoreg     int32      `json:"estadoreg,omitempty"`
 	TotalRecords  int64      `json:"total_records"`
 }
 
@@ -102,8 +102,8 @@ func (u *UsuariosSedesE) GetAll(token string, filter string) ([]*UsuariosSedesE,
 			&rowdata.Checksum,
 			&rowdata.FCreated,
 			&rowdata.FUpdated,
-			&rowdata.Estadoreg,
 			&rowdata.Activo,
+			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
 		)
 		if err != nil {
@@ -148,8 +148,8 @@ func (u *UsuariosSedesE) GetByUniqueid(token string, uniqueid int) (*UsuariosSed
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
-		&rowdata.Estadoreg,
 		&rowdata.Activo,
+		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,
 	)
 
