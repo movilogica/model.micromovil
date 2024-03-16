@@ -18,7 +18,7 @@ type ParametersE struct {
 	Flag2         string     `json:"flag2,omitempty"`
 	Tipo          NullString `json:"tipo,omitempty"`
 	CountryCode   NullString `json:"countrycode,omitempty"`
-	Secuencial    NullInt64  `json:"secuencial,omitempty"`
+	Secuencial    int32      `json:"secuencial,omitempty"`
 	Code          NullString `json:"code,omitempty"`
 	Descrip       NullString `json:"descrip,omitempty"`
 	Ruf1          NullString `json:"ruf1,omitempty"`
