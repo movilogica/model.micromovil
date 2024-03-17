@@ -9,35 +9,37 @@ import (
 
 // Tipos de autos
 type RegionE struct {
-	Uniqueid      int64      `json:"uniqueid,omitempty"`
-	Owner         NullInt32  `json:"owner,omitempty"`
-	Dispositivoid int32      `json:"dispositivoid,omitempty"`
-	Id            int32      `json:"id,omitempty"`
-	Sede          int32      `json:"sede"`
-	Flag1         string     `json:"flag1,omitempty"`
-	Flag2         string     `json:"flag2,omitempty"`
-	Code          NullString `json:"code,omitempty"`
-	Descrip       NullString `json:"descrip,omitempty"`
-	Countryid     NullInt64  `json:"countryid,omitempty"`
-	UbgCodReg     NullInt64  `json:"ubgcodreg,omitempty"`
-	UbgCodDep     NullInt64  `json:"ubgcoddep,omitempty"`
-	UbgCodPro     NullInt64  `json:"ubgcodpro,omitempty"`
-	UbgCodDis     NullInt64  `json:"ubgcoddis,omitempty"`
-	UbgCodDepSbs  NullInt64  `json:"ubgcoddep_sbs,omitempty"`
-	UbgCodProSbs  NullInt64  `json:"ubgcodpro_sbs,omitempty"`
-	UbgCodDisSbs  NullInt64  `json:"ubgcoddis_sbs,omitempty"`
-	Poblacion     NullInt32  `json:"poblacion,omitempty"`
-	Ruf1          NullString `json:"ruf1,omitempty"`
-	Ruf2          NullString `json:"ruf2,omitempty"`
-	Ruf3          NullString `json:"ruf3,omitempty"`
-	Iv            NullString `json:"iv,omitempty"`
-	Salt          NullString `json:"salt,omitempty"`
-	Checksum      NullString `json:"checksum,omitempty"`
-	FCreated      NullTime   `json:"fcreated,omitempty"`
-	FUpdated      NullTime   `json:"fupdated,omitempty"`
-	Activo        int32      `json:"activo,omitempty"`
-	Estadoreg     int32      `json:"estadoreg,omitempty"`
-	TotalRecords  int64      `json:"total_records"`
+	Uniqueid      int64       `json:"uniqueid,omitempty"`
+	Owner         NullInt32   `json:"owner,omitempty"`
+	Dispositivoid int32       `json:"dispositivoid,omitempty"`
+	Id            int32       `json:"id,omitempty"`
+	Sede          int32       `json:"sede"`
+	Flag1         string      `json:"flag1,omitempty"`
+	Flag2         string      `json:"flag2,omitempty"`
+	CountryCode   NullString  `json:"countrycode,omitempty"`
+	Code          NullString  `json:"code,omitempty"`
+	Descrip       NullString  `json:"descrip,omitempty"`
+	UbgCodReg     NullInt64   `json:"ubgcodreg,omitempty"`
+	UbgCodDep     NullInt64   `json:"ubgcoddep,omitempty"`
+	UbgCodPro     NullInt64   `json:"ubgcodpro,omitempty"`
+	UbgCodDis     NullInt64   `json:"ubgcoddis,omitempty"`
+	UbgCodDepSbs  NullInt64   `json:"ubgcoddep_sbs,omitempty"`
+	UbgCodProSbs  NullInt64   `json:"ubgcodpro_sbs,omitempty"`
+	UbgCodDisSbs  NullInt64   `json:"ubgcoddis_sbs,omitempty"`
+	Poblacion     NullInt32   `json:"poblacion,omitempty"`
+	Latitud       NullFloat64 `json:"latitud,omitempty"`
+	Longitud      NullFloat64 `json:"longitud,omitempty"`
+	Ruf1          NullString  `json:"ruf1,omitempty"`
+	Ruf2          NullString  `json:"ruf2,omitempty"`
+	Ruf3          NullString  `json:"ruf3,omitempty"`
+	Iv            NullString  `json:"iv,omitempty"`
+	Salt          NullString  `json:"salt,omitempty"`
+	Checksum      NullString  `json:"checksum,omitempty"`
+	FCreated      NullTime    `json:"fcreated,omitempty"`
+	FUpdated      NullTime    `json:"fupdated,omitempty"`
+	Activo        int32       `json:"activo,omitempty"`
+	Estadoreg     int32       `json:"estadoreg,omitempty"`
+	TotalRecords  int64       `json:"total_records"`
 }
 
 func (e RegionE) MarshalJSON() ([]byte, error) {
@@ -98,7 +100,7 @@ func (u *RegionE) GetAll(token string, filter string) ([]*RegionE, error) {
 			&rowdata.Flag1,
 			&rowdata.Flag2,
 			&rowdata.Flag2,
-			&rowdata.Countryid,
+			&rowdata.CountryCode,
 			&rowdata.UbgCodReg,
 			&rowdata.UbgCodDep,
 			&rowdata.UbgCodPro,
@@ -109,6 +111,8 @@ func (u *RegionE) GetAll(token string, filter string) ([]*RegionE, error) {
 			&rowdata.UbgCodProSbs,
 			&rowdata.UbgCodDisSbs,
 			&rowdata.Poblacion,
+			&rowdata.Latitud,
+			&rowdata.Longitud,
 			&rowdata.Ruf1,
 			&rowdata.Ruf2,
 			&rowdata.Ruf3,
@@ -151,7 +155,7 @@ func (u *RegionE) GetByUniqueid(token string, uniqueid int) (*RegionE, error) {
 		&rowdata.Sede,
 		&rowdata.Flag1,
 		&rowdata.Flag2,
-		&rowdata.Countryid,
+		&rowdata.CountryCode,
 		&rowdata.UbgCodReg,
 		&rowdata.UbgCodDep,
 		&rowdata.UbgCodPro,
@@ -162,6 +166,8 @@ func (u *RegionE) GetByUniqueid(token string, uniqueid int) (*RegionE, error) {
 		&rowdata.UbgCodProSbs,
 		&rowdata.UbgCodDisSbs,
 		&rowdata.Poblacion,
+		&rowdata.Latitud,
+		&rowdata.Longitud,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
