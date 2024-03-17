@@ -99,7 +99,6 @@ func (u *RegionE) GetAll(token string, filter string) ([]*RegionE, error) {
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.Flag2,
 			&rowdata.CountryCode,
 			&rowdata.UbgCodReg,
 			&rowdata.UbgCodDep,
