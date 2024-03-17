@@ -95,7 +95,6 @@ func (u *ZipCodeE) GetAll(token string, filter string) ([]*ZipCodeE, error) {
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.Flag2,
 			&rowdata.CountryCode,
 			&rowdata.UbgCodReg,
 			&rowdata.UbgCodDep,
