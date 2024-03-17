@@ -18,7 +18,7 @@ type ZipCodeE struct {
 	Flag2         string     `json:"flag2,omitempty"`
 	Code          NullString `json:"code,omitempty"`
 	Descrip       NullString `json:"descrip,omitempty"`
-	Countryid     NullInt64  `json:"countryid,omitempty"`
+	CountryCode   NullString `json:"countrycode,omitempty"`
 	UbgCodReg     NullInt64  `json:"ubgcodreg,omitempty"`
 	UbgCodDep     NullInt64  `json:"ubgcoddep,omitempty"`
 	UbgCodPro     NullInt64  `json:"ubgcodpro,omitempty"`
@@ -96,7 +96,7 @@ func (u *ZipCodeE) GetAll(token string, filter string) ([]*ZipCodeE, error) {
 			&rowdata.Flag1,
 			&rowdata.Flag2,
 			&rowdata.Flag2,
-			&rowdata.Countryid,
+			&rowdata.CountryCode,
 			&rowdata.UbgCodReg,
 			&rowdata.UbgCodDep,
 			&rowdata.UbgCodPro,
@@ -147,7 +147,7 @@ func (u *ZipCodeE) GetByUniqueid(token string, uniqueid int) (*ZipCodeE, error) 
 		&rowdata.Sede,
 		&rowdata.Flag1,
 		&rowdata.Flag2,
-		&rowdata.Countryid,
+		&rowdata.CountryCode,
 		&rowdata.UbgCodReg,
 		&rowdata.UbgCodDep,
 		&rowdata.UbgCodPro,
