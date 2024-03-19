@@ -53,13 +53,29 @@ type MetricaPayload struct {
 	Query         string  `json:"query,omitempty"`
 }
 
+func (m *MetricaPayload) IsAndroid() bool {
+	return strings.Contains(strings.ToLower(m.Headerdata), "android")
+}
+
+func (m *MetricaPayload) IsIPhone() bool {
+	return strings.Contains(strings.ToLower(m.Headerdata), "ios")
+}
+
+func (m *MetricaPayload) IsMobile() bool {
+	return m.IsAndroid() || m.IsIPhone()
+}
+
 type AuthPayload struct {
-	Token    string `json:"token,omitempty"`
-	Email    string `json:"email,omitempty"`
-	Phone    string `json:"phone,omitempty"`
-	Password string `json:"password,omitempty"`
-	Otp      string `json:"otp,omitempty"`
-	Teclado  string `json:"teclado,omitempty"`
+	Token         string `json:"token,omitempty"`
+	Imei          string `json:"imei,omitempty"`
+	GoogleIdToken string `json:"googleidtoken,omitempty"`
+	Nickname      string `json:"nickname,omitempty"`
+	Username      string `json:"username,omitempty"`
+	Email         string `json:"email,omitempty"`
+	Phone         string `json:"phone,omitempty"`
+	Password      string `json:"password,omitempty"`
+	Otp           string `json:"otp,omitempty"`
+	Teclado       string `json:"teclado,omitempty"`
 }
 
 // ---- SessionData no debe de estar en el lado cliente, siempre debe estar en el Memcache ----
@@ -78,6 +94,10 @@ type SessionData struct {
 	Nroperacion string               `json:"nroperacion,omitempty"`
 	TokendataId string               `json:"tokendataid,omitempty"`
 	Location    DataComercioMinimalE `json:"location,omitempty"`
+}
+
+func (s *SessionData) IsExpired() bool {
+	return s.ExpiryAt.Before(time.Now())
 }
 
 func MarshalJSON_Not_Nulls(e any) ([]byte, error) {
