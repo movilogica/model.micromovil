@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-
-	"github.com/blockloop/scan"
 )
 
 // Duties detalles
@@ -88,9 +86,8 @@ func (u *DutieDetailE) GetAll(token string, filter string) ([]*DutieDetailE, err
 	defer rows.Close()
 
 	var lista []*DutieDetailE
-	scan.Rows(&lista, rows)
 
-	/*for rows.Next() {
+	for rows.Next() {
 		var rowdata DutieDetailE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
@@ -101,14 +98,16 @@ func (u *DutieDetailE) GetAll(token string, filter string) ([]*DutieDetailE, err
 			&rowdata.Flag1,
 			&rowdata.Flag2,
 			&rowdata.DutiesId,
-			&rowdata.RegionId,
-			&rowdata.RegionText,
-			&rowdata.DepartamentoId,
-			&rowdata.DepartamentoText,
-			&rowdata.ProvinciaId,
-			&rowdata.ProvinciaText,
-			&rowdata.DistritoId,
-			&rowdata.DistritoText,
+			&rowdata.Secuencial,
+			&rowdata.Orden,
+			&rowdata.LabelText,
+			&rowdata.Aplicadoa,
+			&rowdata.MontoDesde,
+			&rowdata.MontoHasta,
+			&rowdata.Fixedamount,
+			&rowdata.Percentage,
+			&rowdata.Issued,
+			&rowdata.Expired,
 			&rowdata.Ruf1,
 			&rowdata.Ruf2,
 			&rowdata.Ruf3,
@@ -127,7 +126,7 @@ func (u *DutieDetailE) GetAll(token string, filter string) ([]*DutieDetailE, err
 		}
 
 		lista = append(lista, &rowdata)
-	}*/
+	}
 
 	return lista, nil
 }
@@ -143,9 +142,7 @@ func (u *DutieDetailE) GetByUniqueid(token string, uniqueid int) (*DutieDetailE,
 	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
-	err := scan.Rows(&rowdata, row)
-
-	/*err := row.Scan(
+	err := row.Scan(
 		&rowdata.Uniqueid,
 		&rowdata.Owner,
 		&rowdata.Dispositivoid,
@@ -154,14 +151,16 @@ func (u *DutieDetailE) GetByUniqueid(token string, uniqueid int) (*DutieDetailE,
 		&rowdata.Flag1,
 		&rowdata.Flag2,
 		&rowdata.DutiesId,
-		&rowdata.RegionId,
-		&rowdata.RegionText,
-		&rowdata.DepartamentoId,
-		&rowdata.DepartamentoText,
-		&rowdata.ProvinciaId,
-		&rowdata.ProvinciaText,
-		&rowdata.DistritoId,
-		&rowdata.DistritoText,
+		&rowdata.Secuencial,
+		&rowdata.Orden,
+		&rowdata.LabelText,
+		&rowdata.Aplicadoa,
+		&rowdata.MontoDesde,
+		&rowdata.MontoHasta,
+		&rowdata.Fixedamount,
+		&rowdata.Percentage,
+		&rowdata.Issued,
+		&rowdata.Expired,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
@@ -173,7 +172,7 @@ func (u *DutieDetailE) GetByUniqueid(token string, uniqueid int) (*DutieDetailE,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,
-	)*/
+	)
 
 	if err != nil {
 		return nil, err
