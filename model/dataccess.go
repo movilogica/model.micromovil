@@ -35,6 +35,7 @@ func NewDataAccess(dbPool *sql.DB) DataAccess {
 		Banco:                   BancosE{},
 		CardBrand:               CardBrandE{},
 		Dutie:                   DutieE{},
+		DutieDetail:             DutieDetailE{},
 		DutieScope:              DutieScopeE{},
 		Giros:                   GirosE{},
 		Holiday:                 HolidayE{},
@@ -98,6 +99,7 @@ type DataAccess struct {
 	Banco                   BancosE
 	CardBrand               CardBrandE
 	Dutie                   DutieE
+	DutieDetail             DutieDetailE
 	DutieScope              DutieScopeE
 	Giros                   GirosE
 	Holiday                 HolidayE
