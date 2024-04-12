@@ -20,7 +20,7 @@ type DutieDetailE struct {
 	Secuencial    NullInt32   `json:"secuencial,omitempty"`
 	Orden         NullInt32   `json:"orden,omitempty"`
 	LabelText     NullString  `json:"labeltext,omitempty"`
-	Aplicadoa     NullInt64   `json:"aplicadoa,omitempty"`
+	Aplicadoa     NullString  `json:"aplicadoa,omitempty"`
 	MontoDesde    NullFloat64 `json:"montodesde,omitempty"`
 	MontoHasta    NullFloat64 `json:"montohasta,omitempty"`
 	Fixedamount   NullFloat64 `json:"fixedamount,omitempty"`
