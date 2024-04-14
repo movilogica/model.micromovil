@@ -43,6 +43,7 @@ const TBL_DUTIES = "duties"
 const TBL_DUTIES_DETAIL = "dutiesdetail"
 const TBL_DUTIES_SCOPE = "dutiesscope"
 const TBL_GIROS = "giros"
+const TBL_TIPO_PRODUCTO = "tipoprod"
 const TBL_HOLIDAYS = "holidays"
 const TBL_TASA_CAMBIO = "tasacambio"
 
