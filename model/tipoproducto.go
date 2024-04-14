@@ -47,7 +47,7 @@ const querySelectTipoProd = `select * from param_tipos_productos_list( $1, $2)`
 //---------------------------------------------------------------------
 
 // GetAll returns a slice of all users, sorted by last name
-func (u *TipoProductoE) GetAll(token string, tabla string, filter string) ([]*TipoProductoE, error) {
+func (u *TipoProductoE) GetAll(token string, filter string) ([]*TipoProductoE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -59,8 +59,6 @@ func (u *TipoProductoE) GetAll(token string, tabla string, filter string) ([]*Ti
 	if mapFilter == nil {
 		mapFilter = make(map[string]interface{})
 	}
-	// --- Adicion de filtro de tipos de carros
-	mapFilter["tipo"] = tabla
 	// Se empaqueta el JSON del Filter
 	jsonFilter, err := json.Marshal(mapFilter)
 	if err != nil {
@@ -114,55 +112,6 @@ func (u *TipoProductoE) GetAll(token string, tabla string, filter string) ([]*Ti
 	return lista, nil
 }
 
-// GetByField returns one record by filter
-func (u *TipoProductoE) GetByField(token string, fieldname string, value string) (*TipoProductoE, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
-	defer cancel()
-
-	query := querySelectTipoProd
-
-	rows, err := db.QueryContext(ctx, query, token, fmt.Sprintf(`{"tipo":"%s", "code":"%s"}`, fieldname, value))
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var result *TipoProductoE
-
-	if rows.Next() {
-		var rowdata TipoProductoE
-		err := rows.Scan(
-			&rowdata.Uniqueid,
-			&rowdata.Sede,
-			&rowdata.Flag1,
-			&rowdata.Flag2,
-			&rowdata.CountryCode,
-			&rowdata.Code,
-			&rowdata.Descrip,
-			&rowdata.Tipo,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
-			&rowdata.Activo,
-			&rowdata.Estadoreg,
-			&rowdata.TotalRecords,
-		)
-		if err != nil {
-			log.Println("Error scanning", err)
-			return nil, err
-		}
-
-		result = &rowdata
-	}
-
-	return result, nil
-}
-
 // GetOne returns one user by id
 func (u *TipoProductoE) GetByUniqueid(token string, uniqueid int) (*TipoProductoE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
@@ -205,7 +154,7 @@ func (u *TipoProductoE) GetByUniqueid(token string, uniqueid int) (*TipoProducto
 
 // Update updates one user in the database, using the information
 // stored in the receiver u
-func (u *TipoProductoE) Update(token string, tabla string, data string, metricas string) (map[string]any, error) {
+func (u *TipoProductoE) Update(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -215,8 +164,6 @@ func (u *TipoProductoE) Update(token string, tabla string, data string, metricas
 	if mapData == nil {
 		mapData = make(map[string]interface{})
 	}
-	// --- Adicion de filtro de tipos de carros
-	mapData["tipo"] = tabla
 	// Se empaqueta el JSON del Data
 	jsonData, err := json.Marshal(mapData)
 	if err != nil {
