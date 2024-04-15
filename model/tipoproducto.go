@@ -185,10 +185,9 @@ func (u *TipoProductoE) Update(token string, data string, metricas string) (map[
 	defer result.Close()
 
 	var uniqueid int64
-	var secuencial int32
 
 	if result.Next() {
-		err := result.Scan(&uniqueid, &secuencial)
+		err := result.Scan(&uniqueid)
 		if err != nil {
 			log.Println("Error scanning", err)
 			return nil, err
@@ -197,7 +196,6 @@ func (u *TipoProductoE) Update(token string, data string, metricas string) (map[
 
 	retorno := make(map[string]any)
 	retorno["uniqueid"] = uniqueid
-	retorno["secuencial"] = secuencial
 
 	return retorno, nil
 }
@@ -237,10 +235,9 @@ func (u *TipoProductoE) Delete(token string, data string, metricas string) (map[
 	defer result.Close()
 
 	var uniqueid int64
-	var secuencial int32
 
 	if result.Next() {
-		err := result.Scan(&uniqueid, &secuencial)
+		err := result.Scan(&uniqueid)
 		if err != nil {
 			log.Println("Error scanning", err)
 			return nil, err
@@ -249,7 +246,6 @@ func (u *TipoProductoE) Delete(token string, data string, metricas string) (map[
 
 	retorno := make(map[string]any)
 	retorno["uniqueid"] = uniqueid
-	retorno["secuencial"] = secuencial
 
 	return retorno, nil
 }
@@ -277,10 +273,9 @@ func (u *TipoProductoE) DeleteByID(token string, id int, metricas string) (map[s
 	defer result.Close()
 
 	var uniqueid int64
-	var secuencial NullInt32
 
 	if result.Next() {
-		err := result.Scan(&uniqueid, &secuencial)
+		err := result.Scan(&uniqueid)
 		if err != nil {
 			log.Println("Error scanning", err)
 			return nil, err
@@ -289,7 +284,6 @@ func (u *TipoProductoE) DeleteByID(token string, id int, metricas string) (map[s
 
 	retorno := make(map[string]any)
 	retorno["uniqueid"] = uniqueid
-	retorno["secuencial"] = secuencial.Int32
 
 	return retorno, nil
 }
