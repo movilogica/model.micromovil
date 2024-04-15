@@ -17,9 +17,9 @@ type TipoProductoE struct {
 	Flag1         string     `json:"flag1,omitempty"`
 	Flag2         string     `json:"flag2,omitempty"`
 	CountryCode   NullString `json:"countrycode,omitempty"`
-	Code          string     `json:"code,omitempty"`
-	Descrip       string     `json:"descrip,omitempty"`
-	Tipo          string     `json:"tipo,omitempty"`
+	Code          NullString `json:"code,omitempty"`
+	Descrip       NullString `json:"descrip,omitempty"`
+	Tipo          NullString `json:"tipo,omitempty"`
 	Ruf1          NullString `json:"ruf1,omitempty"`
 	Ruf2          NullString `json:"ruf2,omitempty"`
 	Ruf3          NullString `json:"ruf3,omitempty"`
