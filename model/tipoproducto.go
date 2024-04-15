@@ -82,6 +82,9 @@ func (u *TipoProductoE) GetAll(token string, filter string) ([]*TipoProductoE, e
 		var rowdata TipoProductoE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
+			&rowdata.Owner,
+			&rowdata.Dispositivoid,
+			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
@@ -125,6 +128,9 @@ func (u *TipoProductoE) GetByUniqueid(token string, uniqueid int) (*TipoProducto
 
 	err := row.Scan(
 		&rowdata.Uniqueid,
+		&rowdata.Owner,
+		&rowdata.Dispositivoid,
+		&rowdata.Id,
 		&rowdata.Sede,
 		&rowdata.Flag1,
 		&rowdata.Flag2,
