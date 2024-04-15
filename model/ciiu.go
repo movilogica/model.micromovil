@@ -49,7 +49,7 @@ func (u *CiiuE) GetAll(token string, filter string) ([]*CiiuE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectRoles
+	query := querySelectCiiu
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
