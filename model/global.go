@@ -150,6 +150,11 @@ func MarshalJSON_Not_Nulls(e any) ([]byte, error) {
 // NullInt64 is an alias for sql.NullInt64 data type
 type NullInt32 sql.NullInt32
 
+func (ns *NullInt32) Value(valor int32) {
+	ns.Int32 = valor
+	ns.Valid = true
+}
+
 // Scan implements the Scanner interface for NullInt64
 func (ni *NullInt32) Scan(value interface{}) error {
 	var i sql.NullInt32
@@ -169,6 +174,11 @@ func (ni *NullInt32) Scan(value interface{}) error {
 // NullInt64 is an alias for sql.NullInt64 data type
 type NullInt64 sql.NullInt64
 
+func (ns *NullInt64) Value(valor int64) {
+	ns.Int64 = valor
+	ns.Valid = true
+}
+
 // Scan implements the Scanner interface for NullInt64
 func (ni *NullInt64) Scan(value interface{}) error {
 	var i sql.NullInt64
@@ -187,6 +197,11 @@ func (ni *NullInt64) Scan(value interface{}) error {
 
 // NullBool is an alias for sql.NullBool data type
 type NullBool sql.NullBool
+
+func (ns *NullBool) Value(valor bool) {
+	ns.Bool = valor
+	ns.Valid = true
+}
 
 // Scan implements the Scanner interface for NullBool
 func (nb *NullBool) Scan(value interface{}) error {
@@ -208,6 +223,11 @@ func (nb *NullBool) Scan(value interface{}) error {
 // NullFloat64 is an alias for sql.NullFloat64 data type
 type NullFloat64 sql.NullFloat64
 
+func (ns *NullFloat64) Value(valor float64) {
+	ns.Float64 = valor
+	ns.Valid = true
+}
+
 // Scan implements the Scanner interface for NullFloat64
 func (nf *NullFloat64) Scan(value interface{}) error {
 	var f sql.NullFloat64
@@ -228,6 +248,11 @@ func (nf *NullFloat64) Scan(value interface{}) error {
 // NullString is an alias for sql.NullString data type
 type NullString sql.NullString
 
+func (ns *NullString) Value(valor string) {
+	ns.String = valor
+	ns.Valid = true
+}
+
 // Scan implements the Scanner interface for NullString
 func (ns *NullString) Scan(value interface{}) error {
 	var s sql.NullString
@@ -247,6 +272,11 @@ func (ns *NullString) Scan(value interface{}) error {
 
 // NullTime is an alias for mysql.NullTime data type
 type NullTime sql.NullTime
+
+func (ns *NullTime) Value(valor time.Time) {
+	ns.Time = valor
+	ns.Valid = true
+}
 
 // Scan implements the Scanner interface for NullTime
 func (nt *NullTime) Scan(value interface{}) error {
