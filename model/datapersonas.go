@@ -67,6 +67,22 @@ func (e DataPersonasE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
+type PersonaInfoE struct {
+	Info      *DataPersonasE         `json:"info"`
+	Detail    *DataPersonaDetailE    `json:"detail"`
+	Ids       []*DataPersonasIdE     `json:"ids"`
+	Medios    []*DataPersonasMedioE  `json:"medios"`
+	Roles     []*DataPersonasRolE    `json:"roles"`
+	Address   []*DataPersonaAddressE `json:"address"`
+	Trusted   []*DataPersonaTrustedE `json:"trusted"`
+	Commerces []*DataComercioE       `json:"commerces"`
+	Terminals []*DataTerminalE       `json:"terminales"`
+}
+
+func (e PersonaInfoE) MarshalJSON() ([]byte, error) {
+	return MarshalJSON_Not_Nulls(e)
+}
+
 const querySelectDataPer = `select * from data_personas_list( $1, $2)`
 
 //---------------------------------------------------------------------
