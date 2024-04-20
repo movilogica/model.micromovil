@@ -205,6 +205,64 @@ func (u *DataPersonaDetailE) GetByUniqueid(token string, uniqueid int) (*DataPer
 	return &rowdata, nil
 }
 
+// GetOne returns one user by id
+func (u *DataPersonaDetailE) GetByPersonaid(token string, uniqueid int) (*DataPersonaDetailE, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := querySelectDataPerDetail
+
+	var rowdata DataPersonaDetailE
+	jsonText := fmt.Sprintf(`{"personaid":%d}`, uniqueid)
+	row := db.QueryRowContext(ctx, query, token, jsonText)
+
+	err := row.Scan(
+		&rowdata.Uniqueid,
+		&rowdata.Owner,
+		&rowdata.Dispositivoid,
+		&rowdata.Id,
+		&rowdata.Sede,
+		&rowdata.Flag1,
+		&rowdata.Flag2,
+		&rowdata.PersonaId,
+		&rowdata.Genero,
+		&rowdata.FechaNacAt,
+		&rowdata.LugarNac,
+		&rowdata.Nacionalidad,
+		&rowdata.EstadoCivil,
+		&rowdata.DivisaId,
+		&rowdata.DivisaText,
+		&rowdata.DivisaSimbolo,
+		&rowdata.DivisaDecimal,
+		&rowdata.GiroProfesionId,
+		&rowdata.GiroProfesionText,
+		&rowdata.Ciiu,
+		&rowdata.CiiuText,
+		&rowdata.GradoInstr,
+		&rowdata.SitGradoInstr,
+		&rowdata.SitLaboral,
+		&rowdata.NombrePadre,
+		&rowdata.NombreMadre,
+		&rowdata.Ruf1,
+		&rowdata.Ruf2,
+		&rowdata.Ruf3,
+		&rowdata.Iv,
+		&rowdata.Salt,
+		&rowdata.Checksum,
+		&rowdata.FCreated,
+		&rowdata.FUpdated,
+		&rowdata.Activo,
+		&rowdata.Estadoreg,
+		&rowdata.TotalRecords,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &rowdata, nil
+}
+
 // Update updates one user in the database, using the information
 // stored in the receiver u
 func (u *DataPersonaDetailE) Update(token string, data string, metricas string) (map[string]any, error) {
