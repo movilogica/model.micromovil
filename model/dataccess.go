@@ -52,6 +52,7 @@ func NewDataAccess(dbPool *sql.DB) DataAccess {
 		DataComercioPersonal:    DataComercioPersonalE{},
 		DataComercioRole:        DataComercioRoleE{},
 		DataTerminal:            DataTerminalE{},
+		CustomerInfo:            CustomerInfoE{},
 		MovPersonas:             MovPersonasE{},
 		MovTerminales:           MovTerminalesE{},
 		BizPersonas:             BizPersonasE{},
