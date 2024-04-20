@@ -71,7 +71,7 @@ func NewDataAccess(dbPool *sql.DB) DataAccess {
 		BizSubscriptionsPay:     BizSubscriptionsPayE{},
 		StoreProduct:            StoreProductE{},
 		StoreParamCategItem:     StoreParamCategItemE{},
-		CustomerInfo:            CustomerInfoE{},
+		PersonaInfo:             PersonaInfoE{},
 		TipoProducto:            TipoProductoE{},
 	}
 }
@@ -117,6 +117,7 @@ type DataAccess struct {
 	DataComercioPersonal    DataComercioPersonalE
 	DataComercioRole        DataComercioRoleE
 	DataTerminal            DataTerminalE
+	PersonaInfo             PersonaInfoE
 	MovPersonas             MovPersonasE
 	MovTerminales           MovTerminalesE
 	BizPersonas             BizPersonasE
