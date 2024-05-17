@@ -2,6 +2,7 @@ package model
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -409,6 +410,151 @@ func (u *CredencialE) DeleteByID(token string, id int, metricas string) (map[str
 
 	retorno := make(map[string]any)
 	retorno["uniqueid"] = uniqueid
+
+	return retorno, nil
+}
+
+func (u *CredencialE) ExistsUserByEmail(token string, jsonData string) (int, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := "select 1 from security_credenciales_list($1, $2)"
+
+	///jsonText := fmt.Sprintf(`{"email":"%s"}`, email)
+	row := db.QueryRowContext(ctx, query, token, jsonData)
+
+	var exists NullInt32
+
+	err := row.Scan(&exists)
+
+	if err != nil && err != sql.ErrNoRows {
+		return 0, err
+	}
+	if exists.Int32 > 0 {
+		return 1, nil
+	} else {
+		return 0, nil
+	}
+}
+
+func (u *CredencialE) ExistsUserByPhone(token string, jsonData string) (int, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := "select 1 from security_credenciales_list($1, $2)"
+
+	///jsonText := fmt.Sprintf(`{"movil":"%s"}`, phone)
+	row := db.QueryRowContext(ctx, query, token, jsonData)
+
+	var exists NullInt32
+
+	err := row.Scan(&exists)
+
+	if err != nil && err != sql.ErrNoRows {
+		return 0, err
+	}
+	if exists.Int32 > 0 {
+		return 1, nil
+	} else {
+		return 0, nil
+	}
+}
+
+// GetOne returns one user by id
+func (u *CredencialE) GetUserByEmailOrPhone(token string, jsonData string) (*CredencialE, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := querySelectCredencial
+
+	var rowdata CredencialE
+	///jsonText := fmt.Sprintf(`{"email":%s}`, email)
+	row := db.QueryRowContext(ctx, query, token, jsonData)
+
+	err := row.Scan(
+		&rowdata.Uniqueid,
+		&rowdata.Owner,
+		&rowdata.Dispositivoid,
+		&rowdata.Id,
+		&rowdata.Sede,
+		&rowdata.Flag1,
+		&rowdata.Flag2,
+		&rowdata.Nivel,
+		&rowdata.Tipo,
+		&rowdata.Username,
+		&rowdata.Email,
+		&rowdata.Movil,
+		&rowdata.Imei,
+		&rowdata.Social,
+		&rowdata.Googleidtoken,
+		&rowdata.Password,
+		&rowdata.ModoAutenticacion,
+		&rowdata.ModoAcceso,
+		&rowdata.Changepwd,
+		&rowdata.NextChangepwdAt,
+		&rowdata.LastAccessAt,
+		&rowdata.SedeActual,
+		&rowdata.Welcome,
+		&rowdata.WelcomeAt,
+		&rowdata.Notifier,
+		&rowdata.NotifierAt,
+		&rowdata.Mailing,
+		&rowdata.MailingAt,
+		&rowdata.Pdf,
+		&rowdata.PdfAt,
+		&rowdata.Idioma,
+		&rowdata.Avatar,
+		&rowdata.TokenTerminal,
+		&rowdata.Manual,
+		&rowdata.Ruf1,
+		&rowdata.Ruf2,
+		&rowdata.Ruf3,
+		&rowdata.Iv,
+		&rowdata.Salt,
+		&rowdata.Checksum,
+		&rowdata.FCreated,
+		&rowdata.FUpdated,
+		&rowdata.Activo,
+		&rowdata.Estadoreg,
+		&rowdata.TotalRecords,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &rowdata, nil
+}
+
+/*****
+ * Este procedimiento requiere la generacion de multiples tablas transaccionales.-
+ *********/
+func (u *CredencialE) RegisterAccount(token string, data string, auth string, metricas string) (map[string]any, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	log.Printf("RegisterAccount [data]=%s [auth]=%s [metricas]=%s\n", data, auth, metricas)
+
+	query := `CALL auth_register_user($1, $2, $3, $4, $5)`
+	stmt, err := db.Prepare(query)
+	if err != nil {
+		return nil, err
+	}
+
+	// _, err := db.ExecContext(ctx, "ProcName", sql.Named("Arg1", sql.Out{Dest: &outArg}))
+
+	var tokensession string
+	_, err = stmt.ExecContext(ctx, token, data, auth, metricas, &tokensession)
+	//_, err = stmt.ExecContext(ctx, token, data, auth, metricas, sql.Out{Dest: &tokensession})
+	if err != nil {
+		return nil, err
+	}
+	///defer result.Close()
+
+	retorno := make(map[string]any)
+	retorno["tokensession"] = tokensession
+
+	log.Printf("RegisterAccount [token]=%s\n", tokensession)
 
 	return retorno, nil
 }
