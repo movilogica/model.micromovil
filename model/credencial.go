@@ -4,8 +4,11 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 // Tipos de autos
@@ -576,4 +579,24 @@ func (u *CredencialE) RegisterAccount(token string, data string, auth string, me
 	log.Printf("RegisterAccount [token]=%s\n", tokensession)
 
 	return retorno, nil
+}
+
+func (u *CredencialE) ToText() string {
+	jsonCredencial, _ := json.Marshal(u)
+	return string(jsonCredencial)
+}
+
+func (u *CredencialE) PasswordMatches(plainText string) (bool, error) {
+	err := bcrypt.CompareHashAndPassword([]byte(u.Password.String), []byte(plainText))
+	if err != nil {
+		switch {
+		case errors.Is(err, bcrypt.ErrMismatchedHashAndPassword):
+			// invalid password
+			return false, nil
+		default:
+			return false, err
+		}
+	}
+
+	return true, nil
 }
