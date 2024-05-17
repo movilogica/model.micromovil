@@ -526,6 +526,25 @@ func (u *CredencialE) GetUserByEmailOrPhone(token string, jsonData string) (*Cre
 	return &rowdata, nil
 }
 
+func (u *CredencialE) Save(token string, jsonData string, metricas string) (int64, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := "select * from security_credenciales_save($1, $2, $3)"
+
+	///jsonText := fmt.Sprintf(`{"email":"%s"}`, email)
+	row := db.QueryRowContext(ctx, query, token, jsonData, metricas)
+
+	var uniqueid NullInt64
+
+	err := row.Scan(&uniqueid)
+
+	if err != nil && err != sql.ErrNoRows {
+		return 0, err
+	}
+	return uniqueid.Int64, nil
+}
+
 /*****
  * Este procedimiento requiere la generacion de multiples tablas transaccionales.-
  *********/
