@@ -32,7 +32,7 @@ type GirosE struct {
 	FUpdated      NullTime   `json:"fupdated,omitempty"`
 	Activo        int32      `json:"activo,omitempty"`
 	Estadoreg     int32      `json:"estadoreg,omitempty"`
-	TotalRecords  int64      `json:"total_records"`
+	TotalRecords  int64      `json:"total_records,omitempty"`
 }
 
 func (e GirosE) MarshalJSON() ([]byte, error) {

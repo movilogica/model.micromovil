@@ -88,7 +88,7 @@ type CoqTorneosE struct {
 	Activo               int32       `json:"activo,omitempty"`
 	Estadoreg            int32       `json:"estadoreg,omitempty"`
 	Distance             NullFloat64 `json:"distance,omitempty"`
-	TotalRecords         int64       `json:"total_records"`
+	TotalRecords         int64       `json:"total_records,omitempty"`
 }
 
 func (e CoqTorneosE) MarshalJSON() ([]byte, error) {
