@@ -7,44 +7,45 @@ import (
 	"log"
 )
 
-// Duties detalles
-type DutieDetailE struct {
-	Uniqueid      int64       `json:"uniqueid,omitempty"`
-	Owner         NullInt32   `json:"owner,omitempty"`
-	Dispositivoid NullInt32   `json:"dispositivoid,omitempty"`
-	Id            int32       `json:"id,omitempty"`
-	Sede          int32       `json:"sede"`
-	Flag1         string      `json:"flag1,omitempty"`
-	Flag2         string      `json:"flag2,omitempty"`
-	DutiesId      NullInt64   `json:"dutiesid,omitempty"`
-	Secuencial    NullInt32   `json:"secuencial,omitempty"`
-	Orden         NullInt32   `json:"orden,omitempty"`
-	LabelText     NullString  `json:"labeltext,omitempty"`
-	Aplicadoa     NullString  `json:"aplicadoa,omitempty"`
-	MontoDesde    NullFloat64 `json:"montodesde,omitempty"`
-	MontoHasta    NullFloat64 `json:"montohasta,omitempty"`
-	Fixedamount   NullFloat64 `json:"fixedamount,omitempty"`
-	Percentage    NullFloat64 `json:"percentage,omitempty"`
-	Issued        NullTime    `json:"issued,omitempty"`
-	Expired       NullTime    `json:"expired,omitempty"`
-	Ruf1          NullString  `json:"ruf1,omitempty"`
-	Ruf2          NullString  `json:"ruf2,omitempty"`
-	Ruf3          NullString  `json:"ruf3,omitempty"`
-	Iv            NullString  `json:"iv,omitempty"`
-	Salt          NullString  `json:"salt,omitempty"`
-	Checksum      NullString  `json:"checksum,omitempty"`
-	FCreated      NullTime    `json:"fcreated,omitempty"`
-	FUpdated      NullTime    `json:"fupdated,omitempty"`
-	Activo        int32       `json:"activo,omitempty"`
-	Estadoreg     int32       `json:"estadoreg,omitempty"`
-	TotalRecords  int64       `json:"total_records"`
+// Empadronamiento
+type CoqEmpadronadorE struct {
+	Uniqueid         int64      `json:"uniqueid,omitempty"`
+	Owner            NullInt32  `json:"owner,omitempty"`
+	Dispositivoid    NullInt32  `json:"dispositivoid,omitempty"`
+	Id               int32      `json:"id,omitempty"`
+	Sede             int32      `json:"sede"`
+	Flag1            string     `json:"flag1,omitempty"`
+	Flag2            string     `json:"flag2,omitempty"`
+	CountryCode      NullString `json:"countrycode,omitempty"`
+	Campeonatoid     NullInt64  `json:"campeonato_id,omitempty"`
+	Galponid         NullInt64  `json:"galpon_id,omitempty"`
+	Frenteid         NullInt64  `json:"frente_id,omitempty"`
+	GalponPadre      NullInt64  `json:"galpon_padre,omitempty"`
+	PlacaPropietario NullString `json:"placa_propietario,omitempty"`
+	PlacaAsociacion  NullString `json:"placa_asociacion,omitempty"`
+	ColorGalloid     NullInt64  `json:"color_gallo_id,omitempty"`
+	ColorPicoid      NullInt64  `json:"color_pico_id,omitempty"`
+	ColorPataid      NullInt64  `json:"color_pata_id,omitempty"`
+	Adhoc            NullInt64  `json:"adhoc,omitempty"`
+	Fecha            NullTime   `json:"fecha,omitempty"`
+	Ruf1             NullString `json:"ruf1,omitempty"`
+	Ruf2             NullString `json:"ruf2,omitempty"`
+	Ruf3             NullString `json:"ruf3,omitempty"`
+	Iv               NullString `json:"iv,omitempty"`
+	Salt             NullString `json:"salt,omitempty"`
+	Checksum         NullString `json:"checksum,omitempty"`
+	FCreated         NullTime   `json:"fcreated,omitempty"`
+	FUpdated         NullTime   `json:"fupdated,omitempty"`
+	Activo           int32      `json:"activo,omitempty"`
+	Estadoreg        int32      `json:"estadoreg,omitempty"`
+	TotalRecords     int64      `json:"total_records"`
 }
 
-func (e DutieDetailE) MarshalJSON() ([]byte, error) {
+func (e CoqEmpadronadorE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const querySelectDutiesDetail = `select * from param_duties_detail_list( $1, $2)`
+const querySelectCoqEmpadrona = `select * from coq_empadronamiento_list( $1, $2)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -54,11 +55,11 @@ const querySelectDutiesDetail = `select * from param_duties_detail_list( $1, $2)
 //---------------------------------------------------------------------
 
 // GetAll returns a slice of all users, sorted by last name
-func (u *DutieDetailE) GetAll(token string, filter string) ([]*DutieDetailE, error) {
+func (u *CoqEmpadronadorE) GetAll(token string, filter string) ([]*CoqEmpadronadorE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectDutiesDetail
+	query := querySelectCoqEmpadrona
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -85,35 +86,36 @@ func (u *DutieDetailE) GetAll(token string, filter string) ([]*DutieDetailE, err
 	}
 	defer rows.Close()
 
-	var lista []*DutieDetailE
+	var lista []*CoqEmpadronadorE
 
 	for rows.Next() {
-		var rowdata DutieDetailE
+		var rowdata CoqEmpadronadorE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
+			//&rowdata.Owner,
+			//&rowdata.Dispositivoid,
 			&rowdata.Id,
 			&rowdata.Sede,
-			&rowdata.Flag1,
-			&rowdata.Flag2,
-			&rowdata.DutiesId,
-			&rowdata.Secuencial,
-			&rowdata.Orden,
-			&rowdata.LabelText,
-			&rowdata.Aplicadoa,
-			&rowdata.MontoDesde,
-			&rowdata.MontoHasta,
-			&rowdata.Fixedamount,
-			&rowdata.Percentage,
-			&rowdata.Issued,
-			&rowdata.Expired,
-			&rowdata.Ruf1,
+			//&rowdata.Flag1,
+			//&rowdata.Flag2,
+			&rowdata.CountryCode,
+			&rowdata.Campeonatoid,
+			&rowdata.Galponid,
+			&rowdata.Frenteid,
+			&rowdata.GalponPadre,
+			&rowdata.PlacaPropietario,
+			&rowdata.PlacaAsociacion,
+			&rowdata.ColorGalloid,
+			&rowdata.ColorPicoid,
+			&rowdata.ColorPataid,
+			&rowdata.Adhoc,
+			&rowdata.Fecha,
+			/*&rowdata.Ruf1,
 			&rowdata.Ruf2,
 			&rowdata.Ruf3,
 			&rowdata.Iv,
 			&rowdata.Salt,
-			&rowdata.Checksum,
+			&rowdata.Checksum,*/
 			&rowdata.FCreated,
 			&rowdata.FUpdated,
 			&rowdata.Activo,
@@ -132,41 +134,42 @@ func (u *DutieDetailE) GetAll(token string, filter string) ([]*DutieDetailE, err
 }
 
 // GetOne returns one user by id
-func (u *DutieDetailE) GetByUniqueid(token string, uniqueid int) (*DutieDetailE, error) {
+func (u *CoqEmpadronadorE) GetByUniqueid(token string, uniqueid int) (*CoqEmpadronadorE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectDutiesDetail
+	query := querySelectCoqEmpadrona
 
-	var rowdata DutieDetailE
+	var rowdata CoqEmpadronadorE
 	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
 		&rowdata.Uniqueid,
-		&rowdata.Owner,
-		&rowdata.Dispositivoid,
+		//&rowdata.Owner,
+		//&rowdata.Dispositivoid,
 		&rowdata.Id,
 		&rowdata.Sede,
-		&rowdata.Flag1,
-		&rowdata.Flag2,
-		&rowdata.DutiesId,
-		&rowdata.Secuencial,
-		&rowdata.Orden,
-		&rowdata.LabelText,
-		&rowdata.Aplicadoa,
-		&rowdata.MontoDesde,
-		&rowdata.MontoHasta,
-		&rowdata.Fixedamount,
-		&rowdata.Percentage,
-		&rowdata.Issued,
-		&rowdata.Expired,
-		&rowdata.Ruf1,
+		//&rowdata.Flag1,
+		//&rowdata.Flag2,
+		&rowdata.CountryCode,
+		&rowdata.Campeonatoid,
+		&rowdata.Galponid,
+		&rowdata.Frenteid,
+		&rowdata.GalponPadre,
+		&rowdata.PlacaPropietario,
+		&rowdata.PlacaAsociacion,
+		&rowdata.ColorGalloid,
+		&rowdata.ColorPicoid,
+		&rowdata.ColorPataid,
+		&rowdata.Adhoc,
+		&rowdata.Fecha,
+		/*&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
 		&rowdata.Iv,
 		&rowdata.Salt,
-		&rowdata.Checksum,
+		&rowdata.Checksum,*/
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
 		&rowdata.Activo,
@@ -183,7 +186,7 @@ func (u *DutieDetailE) GetByUniqueid(token string, uniqueid int) (*DutieDetailE,
 
 // Update updates one user in the database, using the information
 // stored in the receiver u
-func (u *DutieDetailE) Update(token string, data string, metricas string) (map[string]any, error) {
+func (u *CoqEmpadronadorE) Update(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -204,7 +207,7 @@ func (u *DutieDetailE) Update(token string, data string, metricas string) (map[s
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := `SELECT param_duties_detail_save($1, $2, $3)`
+	query := `SELECT coq_empadronamiento_save($1, $2, $3)`
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -233,7 +236,7 @@ func (u *DutieDetailE) Update(token string, data string, metricas string) (map[s
 }
 
 // Delete deletes one user from the database, by User.ID
-func (u *DutieDetailE) Delete(token string, data string, metricas string) (map[string]any, error) {
+func (u *CoqEmpadronadorE) Delete(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -254,7 +257,7 @@ func (u *DutieDetailE) Delete(token string, data string, metricas string) (map[s
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := `SELECT param_duties_detail_save($1, $2, $3)`
+	query := `SELECT coq_empadronamiento_save($1, $2, $3)`
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -283,16 +286,17 @@ func (u *DutieDetailE) Delete(token string, data string, metricas string) (map[s
 }
 
 // DeleteByID deletes one user from the database, by ID
-func (u *DutieDetailE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
+func (u *CoqEmpadronadorE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	jsonText := fmt.Sprintf(`{"uniqueid":%d, 
+	jsonText := fmt.Sprintf(`{"id":%d, 
+							  "uniqueid":%d, 
 							  "estadoreg":%d
 							  }`,
-		id, 300)
+		id, id, 300)
 
-	query := `SELECT param_duties_detail_save($1, $2, $3)`
+	query := `SELECT coq_empadronamiento_save($1, $2, $3)`
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err

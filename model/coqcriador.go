@@ -7,44 +7,50 @@ import (
 	"log"
 )
 
-// Duties detalles
-type DutieDetailE struct {
-	Uniqueid      int64       `json:"uniqueid,omitempty"`
-	Owner         NullInt32   `json:"owner,omitempty"`
-	Dispositivoid NullInt32   `json:"dispositivoid,omitempty"`
-	Id            int32       `json:"id,omitempty"`
-	Sede          int32       `json:"sede"`
-	Flag1         string      `json:"flag1,omitempty"`
-	Flag2         string      `json:"flag2,omitempty"`
-	DutiesId      NullInt64   `json:"dutiesid,omitempty"`
-	Secuencial    NullInt32   `json:"secuencial,omitempty"`
-	Orden         NullInt32   `json:"orden,omitempty"`
-	LabelText     NullString  `json:"labeltext,omitempty"`
-	Aplicadoa     NullString  `json:"aplicadoa,omitempty"`
-	MontoDesde    NullFloat64 `json:"montodesde,omitempty"`
-	MontoHasta    NullFloat64 `json:"montohasta,omitempty"`
-	Fixedamount   NullFloat64 `json:"fixedamount,omitempty"`
-	Percentage    NullFloat64 `json:"percentage,omitempty"`
-	Issued        NullTime    `json:"issued,omitempty"`
-	Expired       NullTime    `json:"expired,omitempty"`
-	Ruf1          NullString  `json:"ruf1,omitempty"`
-	Ruf2          NullString  `json:"ruf2,omitempty"`
-	Ruf3          NullString  `json:"ruf3,omitempty"`
-	Iv            NullString  `json:"iv,omitempty"`
-	Salt          NullString  `json:"salt,omitempty"`
-	Checksum      NullString  `json:"checksum,omitempty"`
-	FCreated      NullTime    `json:"fcreated,omitempty"`
-	FUpdated      NullTime    `json:"fupdated,omitempty"`
-	Activo        int32       `json:"activo,omitempty"`
-	Estadoreg     int32       `json:"estadoreg,omitempty"`
-	TotalRecords  int64       `json:"total_records"`
+// Criador
+type CoqCriadorE struct {
+	Uniqueid        int64      `json:"uniqueid,omitempty"`
+	Owner           NullInt32  `json:"owner,omitempty"`
+	Dispositivoid   NullInt32  `json:"dispositivoid,omitempty"`
+	Id              int32      `json:"id,omitempty"`
+	Sede            int32      `json:"sede"`
+	Flag1           string     `json:"flag1,omitempty"`
+	Flag2           string     `json:"flag2,omitempty"`
+	CountryCode     NullString `json:"countrycode,omitempty"`
+	Tokendataid     NullString `json:"tokendataid,omitempty"`
+	Nombre          NullString `json:"nombre,omitempty"`
+	Apellido        NullString `json:"apellido,omitempty"`
+	ApellidoMaterno NullString `json:"apellido_materno,omitempty"`
+	GalponText      NullString `json:"galpon_text,omitempty"`
+	TipodocId       NullInt64  `json:"tipodoc_id,omitempty"`
+	Nrodoc          NullString `json:"nrodoc,omitempty"`
+	Dni             NullString `json:"dni,omitempty"`
+	Direccion       NullString `json:"direccion,omitempty"`
+	Urbaniza        NullString `json:"urbaniza,omitempty"`
+	Email1          NullString `json:"email1,omitempty"`
+	Email2          NullString `json:"email2,omitempty"`
+	Celular1        NullString `json:"celular1,omitempty"`
+	Celular2        NullString `json:"celular2,omitempty"`
+	Celular3        NullString `json:"celular3,omitempty"`
+	FInscripcion    NullTime   `json:"fecha_inscripcion,omitempty"`
+	Ruf1            NullString `json:"ruf1,omitempty"`
+	Ruf2            NullString `json:"ruf2,omitempty"`
+	Ruf3            NullString `json:"ruf3,omitempty"`
+	Iv              NullString `json:"iv,omitempty"`
+	Salt            NullString `json:"salt,omitempty"`
+	Checksum        NullString `json:"checksum,omitempty"`
+	FCreated        NullTime   `json:"fcreated,omitempty"`
+	FUpdated        NullTime   `json:"fupdated,omitempty"`
+	Activo          int32      `json:"activo,omitempty"`
+	Estadoreg       int32      `json:"estadoreg,omitempty"`
+	TotalRecords    int64      `json:"total_records"`
 }
 
-func (e DutieDetailE) MarshalJSON() ([]byte, error) {
+func (e CoqCriadorE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const querySelectDutiesDetail = `select * from param_duties_detail_list( $1, $2)`
+const querySelectCoqCriador = `select * from coq_criador_list( $1, $2)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -54,11 +60,11 @@ const querySelectDutiesDetail = `select * from param_duties_detail_list( $1, $2)
 //---------------------------------------------------------------------
 
 // GetAll returns a slice of all users, sorted by last name
-func (u *DutieDetailE) GetAll(token string, filter string) ([]*DutieDetailE, error) {
+func (u *CoqCriadorE) GetAll(token string, filter string) ([]*CoqCriadorE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectDutiesDetail
+	query := querySelectCoqCriador
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -85,35 +91,41 @@ func (u *DutieDetailE) GetAll(token string, filter string) ([]*DutieDetailE, err
 	}
 	defer rows.Close()
 
-	var lista []*DutieDetailE
+	var lista []*CoqCriadorE
 
 	for rows.Next() {
-		var rowdata DutieDetailE
+		var rowdata CoqCriadorE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
+			//&rowdata.Owner,
+			//&rowdata.Dispositivoid,
 			&rowdata.Id,
 			&rowdata.Sede,
-			&rowdata.Flag1,
-			&rowdata.Flag2,
-			&rowdata.DutiesId,
-			&rowdata.Secuencial,
-			&rowdata.Orden,
-			&rowdata.LabelText,
-			&rowdata.Aplicadoa,
-			&rowdata.MontoDesde,
-			&rowdata.MontoHasta,
-			&rowdata.Fixedamount,
-			&rowdata.Percentage,
-			&rowdata.Issued,
-			&rowdata.Expired,
-			&rowdata.Ruf1,
+			//&rowdata.Flag1,
+			//&rowdata.Flag2,
+			&rowdata.CountryCode,
+			&rowdata.Tokendataid,
+			&rowdata.Nombre,
+			&rowdata.Apellido,
+			&rowdata.ApellidoMaterno,
+			&rowdata.GalponText,
+			&rowdata.TipodocId,
+			&rowdata.Nrodoc,
+			&rowdata.Dni,
+			&rowdata.Direccion,
+			&rowdata.Urbaniza,
+			&rowdata.Email1,
+			&rowdata.Email2,
+			&rowdata.Celular1,
+			&rowdata.Celular2,
+			&rowdata.Celular3,
+			&rowdata.FInscripcion,
+			/*&rowdata.Ruf1,
 			&rowdata.Ruf2,
 			&rowdata.Ruf3,
 			&rowdata.Iv,
 			&rowdata.Salt,
-			&rowdata.Checksum,
+			&rowdata.Checksum,*/
 			&rowdata.FCreated,
 			&rowdata.FUpdated,
 			&rowdata.Activo,
@@ -132,41 +144,47 @@ func (u *DutieDetailE) GetAll(token string, filter string) ([]*DutieDetailE, err
 }
 
 // GetOne returns one user by id
-func (u *DutieDetailE) GetByUniqueid(token string, uniqueid int) (*DutieDetailE, error) {
+func (u *CoqCriadorE) GetByUniqueid(token string, uniqueid int) (*CoqCriadorE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectDutiesDetail
+	query := querySelectCoqCriador
 
-	var rowdata DutieDetailE
+	var rowdata CoqCriadorE
 	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
 		&rowdata.Uniqueid,
-		&rowdata.Owner,
-		&rowdata.Dispositivoid,
+		//&rowdata.Owner,
+		//&rowdata.Dispositivoid,
 		&rowdata.Id,
 		&rowdata.Sede,
-		&rowdata.Flag1,
-		&rowdata.Flag2,
-		&rowdata.DutiesId,
-		&rowdata.Secuencial,
-		&rowdata.Orden,
-		&rowdata.LabelText,
-		&rowdata.Aplicadoa,
-		&rowdata.MontoDesde,
-		&rowdata.MontoHasta,
-		&rowdata.Fixedamount,
-		&rowdata.Percentage,
-		&rowdata.Issued,
-		&rowdata.Expired,
-		&rowdata.Ruf1,
+		//&rowdata.Flag1,
+		//&rowdata.Flag2,
+		&rowdata.CountryCode,
+		&rowdata.Tokendataid,
+		&rowdata.Nombre,
+		&rowdata.Apellido,
+		&rowdata.ApellidoMaterno,
+		&rowdata.GalponText,
+		&rowdata.TipodocId,
+		&rowdata.Nrodoc,
+		&rowdata.Dni,
+		&rowdata.Direccion,
+		&rowdata.Urbaniza,
+		&rowdata.Email1,
+		&rowdata.Email2,
+		&rowdata.Celular1,
+		&rowdata.Celular2,
+		&rowdata.Celular3,
+		&rowdata.FInscripcion,
+		/*&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
 		&rowdata.Iv,
 		&rowdata.Salt,
-		&rowdata.Checksum,
+		&rowdata.Checksum,*/
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
 		&rowdata.Activo,
@@ -183,7 +201,7 @@ func (u *DutieDetailE) GetByUniqueid(token string, uniqueid int) (*DutieDetailE,
 
 // Update updates one user in the database, using the information
 // stored in the receiver u
-func (u *DutieDetailE) Update(token string, data string, metricas string) (map[string]any, error) {
+func (u *CoqCriadorE) Update(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -204,7 +222,7 @@ func (u *DutieDetailE) Update(token string, data string, metricas string) (map[s
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := `SELECT param_duties_detail_save($1, $2, $3)`
+	query := `SELECT coq_criador_save($1, $2, $3)`
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -233,7 +251,7 @@ func (u *DutieDetailE) Update(token string, data string, metricas string) (map[s
 }
 
 // Delete deletes one user from the database, by User.ID
-func (u *DutieDetailE) Delete(token string, data string, metricas string) (map[string]any, error) {
+func (u *CoqCriadorE) Delete(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -254,7 +272,7 @@ func (u *DutieDetailE) Delete(token string, data string, metricas string) (map[s
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := `SELECT param_duties_detail_save($1, $2, $3)`
+	query := `SELECT coq_criador_save($1, $2, $3)`
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -283,16 +301,17 @@ func (u *DutieDetailE) Delete(token string, data string, metricas string) (map[s
 }
 
 // DeleteByID deletes one user from the database, by ID
-func (u *DutieDetailE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
+func (u *CoqCriadorE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	jsonText := fmt.Sprintf(`{"uniqueid":%d, 
+	jsonText := fmt.Sprintf(`{"id":%d, 
+							  "uniqueid":%d, 
 							  "estadoreg":%d
 							  }`,
-		id, 300)
+		id, id, 300)
 
-	query := `SELECT param_duties_detail_save($1, $2, $3)`
+	query := `SELECT coq_criador_save($1, $2, $3)`
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err

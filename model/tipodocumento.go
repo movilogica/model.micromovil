@@ -11,7 +11,7 @@ import (
 type TipoDocumentoE struct {
 	Uniqueid      int64      `json:"uniqueid,omitempty"`
 	Owner         NullInt32  `json:"owner,omitempty"`
-	Dispositivoid int32      `json:"dispositivoid,omitempty"`
+	Dispositivoid NullInt32  `json:"dispositivoid,omitempty"`
 	Id            int32      `json:"id,omitempty"`
 	Sede          int32      `json:"sede"`
 	Flag1         string     `json:"flag1,omitempty"`

@@ -7,46 +7,62 @@ import (
 	"log"
 )
 
-// Tipos de autos
-type RegionE struct {
-	Uniqueid      int64       `json:"uniqueid,omitempty"`
-	Owner         NullInt32   `json:"owner,omitempty"`
-	Dispositivoid NullInt32   `json:"dispositivoid,omitempty"`
-	Id            int32       `json:"id,omitempty"`
-	Sede          int32       `json:"sede"`
-	Flag1         string      `json:"flag1,omitempty"`
-	Flag2         string      `json:"flag2,omitempty"`
-	CountryCode   NullString  `json:"countrycode,omitempty"`
-	Code          NullString  `json:"code,omitempty"`
-	Descrip       NullString  `json:"descrip,omitempty"`
-	UbgCodReg     NullInt64   `json:"ubgcodreg,omitempty"`
-	UbgCodDep     NullInt64   `json:"ubgcoddep,omitempty"`
-	UbgCodPro     NullInt64   `json:"ubgcodpro,omitempty"`
-	UbgCodDis     NullInt64   `json:"ubgcoddis,omitempty"`
-	UbgCodDepSbs  NullInt64   `json:"ubgcoddep_sbs,omitempty"`
-	UbgCodProSbs  NullInt64   `json:"ubgcodpro_sbs,omitempty"`
-	UbgCodDisSbs  NullInt64   `json:"ubgcoddis_sbs,omitempty"`
-	Poblacion     NullInt32   `json:"poblacion,omitempty"`
-	Latitud       NullFloat64 `json:"latitud,omitempty"`
-	Longitud      NullFloat64 `json:"longitud,omitempty"`
-	Ruf1          NullString  `json:"ruf1,omitempty"`
-	Ruf2          NullString  `json:"ruf2,omitempty"`
-	Ruf3          NullString  `json:"ruf3,omitempty"`
-	Iv            NullString  `json:"iv,omitempty"`
-	Salt          NullString  `json:"salt,omitempty"`
-	Checksum      NullString  `json:"checksum,omitempty"`
-	FCreated      NullTime    `json:"fcreated,omitempty"`
-	FUpdated      NullTime    `json:"fupdated,omitempty"`
-	Activo        int32       `json:"activo,omitempty"`
-	Estadoreg     int32       `json:"estadoreg,omitempty"`
-	TotalRecords  int64       `json:"total_records"`
+// Galpon
+type CoqGalponE struct {
+	Uniqueid          int64      `json:"uniqueid,omitempty"`
+	Owner             NullInt32  `json:"owner,omitempty"`
+	Dispositivoid     NullInt32  `json:"dispositivoid,omitempty"`
+	Id                int32      `json:"id,omitempty"`
+	Sede              int32      `json:"sede"`
+	Flag1             string     `json:"flag1,omitempty"`
+	Flag2             string     `json:"flag2,omitempty"`
+	CountryCode       NullString `json:"countrycode,omitempty"`
+	Nombre            NullString `json:"nombre,omitempty"`
+	Tokendataid       NullString `json:"tokendataid,omitempty"`
+	PropietarioId     NullInt64  `json:"propietario_id,omitempty"`
+	CriadorText       NullString `json:"criadortext,omitempty"`
+	MovilCriador      NullString `json:"movilcriador,omitempty"`
+	TorneoAnual       NullInt32  `json:"torneo_anual,omitempty"`
+	GalponPadre       NullInt32  `json:"galpon_padre,omitempty"`
+	Direccion         NullString `json:"direccion,omitempty"`
+	Urbaniza          NullString `json:"urbaniza,omitempty"`
+	Comodin           NullInt32  `json:"comodin,omitempty"`
+	RegionId          NullInt64  `json:"regionid,omitempty"`
+	RegionText        NullString `json:"regiontext,omitempty"`
+	DepartamentoId    NullInt64  `json:"departamentoid,omitempty"`
+	DepartamentoText  NullString `json:"departamentotext,omitempty"`
+	ProvinciaId       NullInt64  `json:"provinciaid,omitempty"`
+	ProvinciaText     NullString `json:"provinciatext,omitempty"`
+	DistritoId        NullInt64  `json:"distritoid,omitempty"`
+	DistritoText      NullString `json:"distritotext,omitempty"`
+	CodigoPostal      NullString `json:"codigopostal,omitempty"`
+	CodigoPostalText  NullString `json:"codigopostaltext,omitempty"`
+	PaisId            NullInt64  `json:"paisid,omitempty"`
+	PaisText          NullString `json:"paistext,omitempty"`
+	Latitud           NullString `json:"latitud,omitempty"`
+	Longitud          NullString `json:"longitud,omitempty"`
+	NormalImageUrl    NullString `json:"normal_image_url,omitempty"`
+	ThumbnailImageUrl NullString `json:"thumbnail_image_url,omitempty"`
+	Ruf1              NullString `json:"ruf1,omitempty"`
+	Ruf2              NullString `json:"ruf2,omitempty"`
+	Ruf3              NullString `json:"ruf3,omitempty"`
+	Iv                NullString `json:"iv,omitempty"`
+	Salt              NullString `json:"salt,omitempty"`
+	Checksum          NullString `json:"checksum,omitempty"`
+	UCreated          NullString `json:"ucreated,omitempty"`
+	UUpdated          NullString `json:"uupdated,omitempty"`
+	FCreated          NullTime   `json:"fcreated,omitempty"`
+	FUpdated          NullTime   `json:"fupdated,omitempty"`
+	Activo            int32      `json:"activo,omitempty"`
+	Estadoreg         int32      `json:"estadoreg,omitempty"`
+	TotalRecords      int64      `json:"total_records"`
 }
 
-func (e RegionE) MarshalJSON() ([]byte, error) {
+func (e CoqGalponE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const querySelectRegion = `select * from tbl_regiones_list( $1, $2)`
+const querySelectCoqGalpon = `select * from coq_galpon_list( $1, $2)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -56,11 +72,11 @@ const querySelectRegion = `select * from tbl_regiones_list( $1, $2)`
 //---------------------------------------------------------------------
 
 // GetAll returns a slice of all users, sorted by last name
-func (u *RegionE) GetAll(token string, filter string) ([]*RegionE, error) {
+func (u *CoqGalponE) GetAll(token string, filter string) ([]*CoqGalponE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectRegion
+	query := querySelectCoqGalpon
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -87,37 +103,53 @@ func (u *RegionE) GetAll(token string, filter string) ([]*RegionE, error) {
 	}
 	defer rows.Close()
 
-	var lista []*RegionE
+	var lista []*CoqGalponE
 
 	for rows.Next() {
-		var rowdata RegionE
+		var rowdata CoqGalponE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
+			//&rowdata.Owner,
+			//&rowdata.Dispositivoid,
 			&rowdata.Id,
 			&rowdata.Sede,
-			&rowdata.Flag1,
-			&rowdata.Flag2,
+			//&rowdata.Flag1,
+			//&rowdata.Flag2,
 			&rowdata.CountryCode,
-			&rowdata.UbgCodReg,
-			&rowdata.UbgCodDep,
-			&rowdata.UbgCodPro,
-			&rowdata.UbgCodDis,
-			&rowdata.Code,
-			&rowdata.Descrip,
-			&rowdata.UbgCodDepSbs,
-			&rowdata.UbgCodProSbs,
-			&rowdata.UbgCodDisSbs,
-			&rowdata.Poblacion,
+			&rowdata.Nombre,
+			&rowdata.Tokendataid,
+			&rowdata.PropietarioId,
+			&rowdata.CriadorText,
+			&rowdata.MovilCriador,
+			&rowdata.TorneoAnual,
+			&rowdata.GalponPadre,
+			&rowdata.Direccion,
+			&rowdata.Urbaniza,
+			&rowdata.Comodin,
+			&rowdata.RegionId,
+			&rowdata.RegionText,
+			&rowdata.DepartamentoId,
+			&rowdata.DepartamentoText,
+			&rowdata.PropietarioId,
+			&rowdata.ProvinciaText,
+			&rowdata.DistritoId,
+			&rowdata.DistritoText,
+			&rowdata.CodigoPostal,
+			&rowdata.CodigoPostalText,
+			&rowdata.PaisId,
+			&rowdata.PaisText,
 			&rowdata.Latitud,
 			&rowdata.Longitud,
+			&rowdata.NormalImageUrl,
+			&rowdata.ThumbnailImageUrl,
 			&rowdata.Ruf1,
 			&rowdata.Ruf2,
 			&rowdata.Ruf3,
 			&rowdata.Iv,
 			&rowdata.Salt,
 			&rowdata.Checksum,
+			&rowdata.UCreated,
+			&rowdata.UUpdated,
 			&rowdata.FCreated,
 			&rowdata.FUpdated,
 			&rowdata.Activo,
@@ -136,43 +168,59 @@ func (u *RegionE) GetAll(token string, filter string) ([]*RegionE, error) {
 }
 
 // GetOne returns one user by id
-func (u *RegionE) GetByUniqueid(token string, uniqueid int) (*RegionE, error) {
+func (u *CoqGalponE) GetByUniqueid(token string, uniqueid int) (*CoqGalponE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectRegion
+	query := querySelectCoqGalpon
 
-	var rowdata RegionE
+	var rowdata CoqGalponE
 	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
 		&rowdata.Uniqueid,
-		&rowdata.Owner,
-		&rowdata.Dispositivoid,
+		//&rowdata.Owner,
+		//&rowdata.Dispositivoid,
 		&rowdata.Id,
 		&rowdata.Sede,
-		&rowdata.Flag1,
-		&rowdata.Flag2,
+		//&rowdata.Flag1,
+		//&rowdata.Flag2,
 		&rowdata.CountryCode,
-		&rowdata.UbgCodReg,
-		&rowdata.UbgCodDep,
-		&rowdata.UbgCodPro,
-		&rowdata.UbgCodDis,
-		&rowdata.Code,
-		&rowdata.Descrip,
-		&rowdata.UbgCodDepSbs,
-		&rowdata.UbgCodProSbs,
-		&rowdata.UbgCodDisSbs,
-		&rowdata.Poblacion,
+		&rowdata.Nombre,
+		&rowdata.Tokendataid,
+		&rowdata.PropietarioId,
+		&rowdata.CriadorText,
+		&rowdata.MovilCriador,
+		&rowdata.TorneoAnual,
+		&rowdata.GalponPadre,
+		&rowdata.Direccion,
+		&rowdata.Urbaniza,
+		&rowdata.Comodin,
+		&rowdata.RegionId,
+		&rowdata.RegionText,
+		&rowdata.DepartamentoId,
+		&rowdata.DepartamentoText,
+		&rowdata.PropietarioId,
+		&rowdata.ProvinciaText,
+		&rowdata.DistritoId,
+		&rowdata.DistritoText,
+		&rowdata.CodigoPostal,
+		&rowdata.CodigoPostalText,
+		&rowdata.PaisId,
+		&rowdata.PaisText,
 		&rowdata.Latitud,
 		&rowdata.Longitud,
+		&rowdata.NormalImageUrl,
+		&rowdata.ThumbnailImageUrl,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
 		&rowdata.Iv,
 		&rowdata.Salt,
 		&rowdata.Checksum,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
 		&rowdata.Activo,
@@ -187,42 +235,9 @@ func (u *RegionE) GetByUniqueid(token string, uniqueid int) (*RegionE, error) {
 	return &rowdata, nil
 }
 
-// GetOne returns one user by id
-func (u *RegionE) GetTextByUniqueid(token string, regionid int, dptoid int, provid int, distrid int) (map[string]any, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
-	defer cancel()
-
-	query := "select * from tbl_regiones_text($1, $2, $3, $4)"
-
-	var regiontext string
-	var dptotext string
-	var provtext string
-	var disttext string
-	row := db.QueryRowContext(ctx, query, token, regionid, dptoid, provid, distrid)
-
-	err := row.Scan(
-		&regiontext,
-		&dptotext,
-		&provtext,
-		&disttext,
-	)
-
-	if err != nil {
-		return nil, err
-	}
-
-	data := make(map[string]any)
-	data["regiontext"] = regiontext
-	data["departamentotext"] = dptotext
-	data["provinciatext"] = provtext
-	data["distritotext"] = disttext
-
-	return data, nil
-}
-
 // Update updates one user in the database, using the information
 // stored in the receiver u
-func (u *RegionE) Update(token string, data string, metricas string) (map[string]any, error) {
+func (u *CoqGalponE) Update(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -243,7 +258,7 @@ func (u *RegionE) Update(token string, data string, metricas string) (map[string
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := `SELECT tbl_regiones_save($1, $2, $3)`
+	query := `SELECT coq_galpon_save($1, $2, $3)`
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -272,7 +287,7 @@ func (u *RegionE) Update(token string, data string, metricas string) (map[string
 }
 
 // Delete deletes one user from the database, by User.ID
-func (u *RegionE) Delete(token string, data string, metricas string) (map[string]any, error) {
+func (u *CoqGalponE) Delete(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -293,7 +308,7 @@ func (u *RegionE) Delete(token string, data string, metricas string) (map[string
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := `SELECT tbl_regiones_save($1, $2, $3)`
+	query := `SELECT coq_galpon_save($1, $2, $3)`
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -322,16 +337,17 @@ func (u *RegionE) Delete(token string, data string, metricas string) (map[string
 }
 
 // DeleteByID deletes one user from the database, by ID
-func (u *RegionE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
+func (u *CoqGalponE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	jsonText := fmt.Sprintf(`{"uniqueid":%d, 
+	jsonText := fmt.Sprintf(`{"id":%d, 
+							  "uniqueid":%d, 
 							  "estadoreg":%d
 							  }`,
-		id, 300)
+		id, id, 300)
 
-	query := `SELECT tbl_regiones_save($1, $2, $3)`
+	query := `SELECT coq_galpon_save($1, $2, $3)`
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
