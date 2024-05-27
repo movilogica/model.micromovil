@@ -7,66 +7,58 @@ import (
 	"log"
 )
 
-// Pelea
-type CoqPeleaE struct {
-	Uniqueid           int64       `json:"uniqueid,omitempty"`
-	Owner              NullInt32   `json:"owner,omitempty"`
-	Dispositivoid      NullInt32   `json:"dispositivoid,omitempty"`
-	Id                 int32       `json:"id,omitempty"`
-	Sede               int32       `json:"sede"`
-	Flag1              string      `json:"flag1,omitempty"`
-	Flag2              string      `json:"flag2,omitempty"`
-	CountryCode        NullString  `json:"countrycode,omitempty"`
-	Campeonatoid       NullInt64   `json:"campeonato_id,omitempty"`
-	FechaNumero        NullInt32   `json:"fecha_numero_id,omitempty"`
-	FechaTorneoid      NullInt64   `json:"fecha_torneo_id,omitempty"`
-	Orden              NullInt32   `json:"orden,omitempty"`
-	Gallo1id           NullInt64   `json:"gallo1_id,omitempty"`
-	Gallo1Pesoid       NullInt64   `json:"gallo1_peso_id,omitempty"`
-	Gallo1Placa        NullString  `json:"gallo1_placa,omitempty"`
-	Gallo1Galponid     NullInt64   `json:"gallo1_galpon_id,omitempty"`
-	Gallo1GalponText   NullString  `json:"gallo1_galpon_text,omitempty"`
-	Gallo1Criadorid    NullInt64   `json:"gallo1_criador_id,omitempty"`
-	Gallo1CriadorText  NullString  `json:"gallo1_criador_text,omitempty"`
-	Gallo1Urbaniza     NullString  `json:"gallo1_urbaniza,omitempty"`
-	Gallo1ColorGalloid NullInt64   `json:"gallo1_color_gallo_id,omitempty"`
-	Gallo1Peso         NullFloat64 `json:"gallo1_peso,omitempty"`
-	Gallo2id           NullInt64   `json:"gallo2_id,omitempty"`
-	Gallo2Pesoid       NullInt64   `json:"gallo2_peso_id,omitempty"`
-	Gallo2Placa        NullString  `json:"gallo2_placa,omitempty"`
-	Gallo2Galponid     NullInt64   `json:"gallo2_galpon_id,omitempty"`
-	Gallo2GalponText   NullString  `json:"gallo2_galpon_text,omitempty"`
-	Gallo2Criadorid    NullInt64   `json:"gallo2_criador_id,omitempty"`
-	Gallo2CriadorText  NullString  `json:"gallo2_criador_text,omitempty"`
-	Gallo2Urbaniza     NullString  `json:"gallo2_urbaniza,omitempty"`
-	Gallo2ColorGalloid NullInt64   `json:"gallo2_color_gallo_id,omitempty"`
-	Gallo2Peso         NullFloat64 `json:"gallo2_peso,omitempty"`
-	Resultado          NullInt32   `json:"resultado,omitempty"`
-	Duracion           NullInt32   `json:"duracion,omitempty"`
-	GalloGanadorid     NullInt64   `json:"gallo_ganador_id,omitempty"`
-	FinalizoInd        NullInt32   `json:"finalizo_ind,omitempty"`
-	CotejadaInd        NullInt32   `json:"cotejada_ind,omitempty"`
-	CotejaNumero       NullInt32   `json:"coteja_numero,omitempty"`
-	FechaUpdated       NullString  `json:"fecha_updated,omitempty"`
-	MontoPactada       NullFloat64 `json:"monto_pactada,omitempty"`
-	Ruf1               NullString  `json:"ruf1,omitempty"`
-	Ruf2               NullString  `json:"ruf2,omitempty"`
-	Ruf3               NullString  `json:"ruf3,omitempty"`
-	Iv                 NullString  `json:"iv,omitempty"`
-	Salt               NullString  `json:"salt,omitempty"`
-	Checksum           NullString  `json:"checksum,omitempty"`
-	FCreated           NullTime    `json:"fcreated,omitempty"`
-	FUpdated           NullTime    `json:"fupdated,omitempty"`
-	Activo             int32       `json:"activo,omitempty"`
-	Estadoreg          int32       `json:"estadoreg,omitempty"`
-	TotalRecords       int64       `json:"total_records,omitempty"`
+// Pesaje
+type CoqPesajeE struct {
+	Uniqueid         int64       `json:"uniqueid,omitempty"`
+	Owner            NullInt32   `json:"owner,omitempty"`
+	Dispositivoid    NullInt32   `json:"dispositivoid,omitempty"`
+	Id               int32       `json:"id,omitempty"`
+	Sede             int32       `json:"sede"`
+	Flag1            string      `json:"flag1,omitempty"`
+	Flag2            string      `json:"flag2,omitempty"`
+	CountryCode      NullString  `json:"countrycode,omitempty"`
+	Campeonatoid     NullInt64   `json:"campeonato_id,omitempty"`
+	FechaNumero      NullInt32   `json:"fecha_numero_id,omitempty"`
+	FechaTorneoid    NullInt64   `json:"fecha_torneo_id,omitempty"`
+	FechaGalponid    NullInt64   `json:"fecha_galpon_id,omitempty"`
+	Peleaid          NullInt64   `json:"pelea_id,omitempty"`
+	Galponid         NullInt64   `json:"galpon_id,omitempty"`
+	Frenteid         NullInt64   `json:"frente_id,omitempty"`
+	GalponText       NullString  `json:"galpon_text,omitempty"`
+	Criadorid        NullInt64   `json:"criador_id,omitempty"`
+	CriadorText      NullString  `json:"criador_text,omitempty"`
+	Urbaniza         NullString  `json:"urbaniza,omitempty"`
+	Galloid          NullInt64   `json:"gallo_id,omitempty"`
+	PlacaPropietario NullString  `json:"placa_propietario,omitempty"`
+	PlacaAsociacion  NullString  `json:"placa_asociacion,omitempty"`
+	ColorGalloid     NullInt64   `json:"colo_gallo_id,omitempty"`
+	ColorPicoid      NullInt64   `json:"color_pico_id,omitempty"`
+	ColorPataid      NullInt64   `json:"color_pata_id,omitempty"`
+	Peso             NullFloat64 `json:"peso,omitempty"`
+	FechaRegistro    NullString  `json:"fecha_registro,omitempty"`
+	Temp             NullString  `json:"temp,omitempty"`
+	Invalidoind      NullInt32   `json:"invalido_ind,omitempty"`
+	ExcluirRanking   NullInt32   `json:"excluir_ranking,omitempty"`
+	Tardia           NullInt32   `json:"tardia,omitempty"`
+	Libre            NullString  `json:"libre,omitempty"`
+	Ruf1             NullString  `json:"ruf1,omitempty"`
+	Ruf2             NullString  `json:"ruf2,omitempty"`
+	Ruf3             NullString  `json:"ruf3,omitempty"`
+	Iv               NullString  `json:"iv,omitempty"`
+	Salt             NullString  `json:"salt,omitempty"`
+	Checksum         NullString  `json:"checksum,omitempty"`
+	FCreated         NullTime    `json:"fcreated,omitempty"`
+	FUpdated         NullTime    `json:"fupdated,omitempty"`
+	Activo           int32       `json:"activo,omitempty"`
+	Estadoreg        int32       `json:"estadoreg,omitempty"`
+	TotalRecords     int64       `json:"total_records,omitempty"`
 }
 
-func (e CoqPeleaE) MarshalJSON() ([]byte, error) {
+func (e CoqPesajeE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const querySelectCoqPelea = `select * from coq_pelea_list( $1, $2)`
+const querySelectCoqPesaje = `select * from coq_pesaje_list( $1, $2)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -76,11 +68,11 @@ const querySelectCoqPelea = `select * from coq_pelea_list( $1, $2)`
 //---------------------------------------------------------------------
 
 // GetAll returns a slice of all users, sorted by last name
-func (u *CoqPeleaE) GetAll(token string, filter string) ([]*CoqPeleaE, error) {
+func (u *CoqPesajeE) GetAll(token string, filter string) ([]*CoqPesajeE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectCoqPelea
+	query := querySelectCoqPesaje
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -107,10 +99,10 @@ func (u *CoqPeleaE) GetAll(token string, filter string) ([]*CoqPeleaE, error) {
 	}
 	defer rows.Close()
 
-	var lista []*CoqPeleaE
+	var lista []*CoqPesajeE
 
 	for rows.Next() {
-		var rowdata CoqPeleaE
+		var rowdata CoqPesajeE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
 			//&rowdata.Owner,
@@ -123,35 +115,26 @@ func (u *CoqPeleaE) GetAll(token string, filter string) ([]*CoqPeleaE, error) {
 			&rowdata.Campeonatoid,
 			&rowdata.FechaNumero,
 			&rowdata.FechaTorneoid,
-			&rowdata.Orden,
-			&rowdata.Gallo1id,
-			&rowdata.Gallo1Pesoid,
-			&rowdata.Gallo1Placa,
-			&rowdata.Gallo1Galponid,
-			&rowdata.Gallo1GalponText,
-			&rowdata.Gallo1Criadorid,
-			&rowdata.Gallo1CriadorText,
-			&rowdata.Gallo1Urbaniza,
-			&rowdata.Gallo1ColorGalloid,
-			&rowdata.Gallo1Peso,
-			&rowdata.Gallo2id,
-			&rowdata.Gallo2Pesoid,
-			&rowdata.Gallo2Placa,
-			&rowdata.Gallo2Galponid,
-			&rowdata.Gallo2GalponText,
-			&rowdata.Gallo2Criadorid,
-			&rowdata.Gallo2CriadorText,
-			&rowdata.Gallo2Urbaniza,
-			&rowdata.Gallo2ColorGalloid,
-			&rowdata.Gallo2Peso,
-			&rowdata.Resultado,
-			&rowdata.Duracion,
-			&rowdata.GalloGanadorid,
-			&rowdata.FinalizoInd,
-			&rowdata.CotejadaInd,
-			&rowdata.CotejaNumero,
-			&rowdata.FechaUpdated,
-			&rowdata.MontoPactada,
+			&rowdata.FechaGalponid,
+			&rowdata.Peleaid,
+			&rowdata.Galponid,
+			&rowdata.Frenteid,
+			&rowdata.GalponText,
+			&rowdata.Criadorid,
+			&rowdata.CriadorText,
+			&rowdata.Galloid,
+			&rowdata.PlacaPropietario,
+			&rowdata.PlacaAsociacion,
+			&rowdata.ColorGalloid,
+			&rowdata.ColorPicoid,
+			&rowdata.ColorPataid,
+			&rowdata.Peso,
+			&rowdata.FechaRegistro,
+			&rowdata.Temp,
+			&rowdata.Invalidoind,
+			&rowdata.ExcluirRanking,
+			&rowdata.Tardia,
+			&rowdata.Libre,
 			/*&rowdata.Ruf1,
 			&rowdata.Ruf2,
 			&rowdata.Ruf3,
@@ -176,13 +159,13 @@ func (u *CoqPeleaE) GetAll(token string, filter string) ([]*CoqPeleaE, error) {
 }
 
 // GetOne returns one user by id
-func (u *CoqPeleaE) GetByUniqueid(token string, uniqueid int) (*CoqPeleaE, error) {
+func (u *CoqPesajeE) GetByUniqueid(token string, uniqueid int) (*CoqPesajeE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectCoqPelea
+	query := querySelectCoqPesaje
 
-	var rowdata CoqPeleaE
+	var rowdata CoqPesajeE
 	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
@@ -198,35 +181,26 @@ func (u *CoqPeleaE) GetByUniqueid(token string, uniqueid int) (*CoqPeleaE, error
 		&rowdata.Campeonatoid,
 		&rowdata.FechaNumero,
 		&rowdata.FechaTorneoid,
-		&rowdata.Orden,
-		&rowdata.Gallo1id,
-		&rowdata.Gallo1Pesoid,
-		&rowdata.Gallo1Placa,
-		&rowdata.Gallo1Galponid,
-		&rowdata.Gallo1GalponText,
-		&rowdata.Gallo1Criadorid,
-		&rowdata.Gallo1CriadorText,
-		&rowdata.Gallo1Urbaniza,
-		&rowdata.Gallo1ColorGalloid,
-		&rowdata.Gallo1Peso,
-		&rowdata.Gallo2id,
-		&rowdata.Gallo2Pesoid,
-		&rowdata.Gallo2Placa,
-		&rowdata.Gallo2Galponid,
-		&rowdata.Gallo2GalponText,
-		&rowdata.Gallo2Criadorid,
-		&rowdata.Gallo2CriadorText,
-		&rowdata.Gallo2Urbaniza,
-		&rowdata.Gallo2ColorGalloid,
-		&rowdata.Gallo2Peso,
-		&rowdata.Resultado,
-		&rowdata.Duracion,
-		&rowdata.GalloGanadorid,
-		&rowdata.FinalizoInd,
-		&rowdata.CotejadaInd,
-		&rowdata.CotejaNumero,
-		&rowdata.FechaUpdated,
-		&rowdata.MontoPactada,
+		&rowdata.FechaGalponid,
+		&rowdata.Peleaid,
+		&rowdata.Galponid,
+		&rowdata.Frenteid,
+		&rowdata.GalponText,
+		&rowdata.Criadorid,
+		&rowdata.CriadorText,
+		&rowdata.Galloid,
+		&rowdata.PlacaPropietario,
+		&rowdata.PlacaAsociacion,
+		&rowdata.ColorGalloid,
+		&rowdata.ColorPicoid,
+		&rowdata.ColorPataid,
+		&rowdata.Peso,
+		&rowdata.FechaRegistro,
+		&rowdata.Temp,
+		&rowdata.Invalidoind,
+		&rowdata.ExcluirRanking,
+		&rowdata.Tardia,
+		&rowdata.Libre,
 		/*&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
@@ -248,11 +222,96 @@ func (u *CoqPeleaE) GetByUniqueid(token string, uniqueid int) (*CoqPeleaE, error
 }
 
 // GetInfo about one record
-func (u *CoqPeleaE) GetInfo(token string, filter string) (map[string]interface{}, error) {
+func (u *CoqPesajeE) GetInfo(token string, filter string) (*CoqPesajeE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `select * from coq_pelea_info( $1, $2)`
+	query := `select * from coq_pesaje_info( $1, $2)`
+
+	// Se deseenvuelve el JSON del Filter para adicionar filtros
+	var mapFilter map[string]interface{}
+	json.Unmarshal([]byte(filter), &mapFilter)
+	if mapFilter == nil {
+		mapFilter = make(map[string]interface{})
+	}
+	// --- Adicion de filtros
+	// mapFilter["tipo"] = tabla
+	// Se empaqueta el JSON del Filter
+	jsonFilter, err := json.Marshal(mapFilter)
+	if err != nil {
+		log.Println("Error convirtiendo el Filter")
+	}
+	log.Println("Where = " + string(jsonFilter))
+
+	stmt, err := db.Prepare(query)
+	if err != nil {
+		return nil, err
+	}
+	rows, err := stmt.QueryContext(ctx, token, string(jsonFilter))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var rowdata CoqPesajeE
+
+	err = rows.Scan(
+		&rowdata.Uniqueid,
+		//&rowdata.Owner,
+		//&rowdata.Dispositivoid,
+		&rowdata.Id,
+		&rowdata.Sede,
+		//&rowdata.Flag1,
+		//&rowdata.Flag2,
+		&rowdata.CountryCode,
+		&rowdata.Campeonatoid,
+		&rowdata.FechaGalponid,
+		&rowdata.FechaNumero,
+		&rowdata.Peleaid,
+		&rowdata.Galponid,
+		&rowdata.Frenteid,
+		&rowdata.GalponText,
+		&rowdata.CriadorText,
+		&rowdata.Urbaniza,
+		&rowdata.Galloid,
+		&rowdata.PlacaPropietario,
+		&rowdata.PlacaAsociacion,
+		&rowdata.ColorGalloid,
+		&rowdata.ColorPicoid,
+		&rowdata.ColorPataid,
+		&rowdata.Peso,
+		&rowdata.FechaRegistro,
+		&rowdata.Temp,
+		&rowdata.Invalidoind,
+		&rowdata.ExcluirRanking,
+		&rowdata.Tardia,
+		&rowdata.Libre,
+		/*&rowdata.Ruf1,
+		&rowdata.Ruf2,
+		&rowdata.Ruf3,
+		&rowdata.Iv,
+		&rowdata.Salt,
+		&rowdata.Checksum,*/
+		&rowdata.FCreated,
+		&rowdata.FUpdated,
+		&rowdata.Activo,
+		&rowdata.Estadoreg,
+		&rowdata.TotalRecords,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &rowdata, nil
+}
+
+// Validacion y registro de placa
+func (u *CoqPesajeE) PlacaValidate(token string, filter string) (map[string]interface{}, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := `select * from coq_pesaje_placa_validate( $1, $2)`
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -293,7 +352,7 @@ func (u *CoqPeleaE) GetInfo(token string, filter string) (map[string]interface{}
 
 // Update updates one user in the database, using the information
 // stored in the receiver u
-func (u *CoqPeleaE) Update(token string, data string, metricas string) (map[string]any, error) {
+func (u *CoqPesajeE) Update(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -314,7 +373,7 @@ func (u *CoqPeleaE) Update(token string, data string, metricas string) (map[stri
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := `SELECT coq_pelea_save($1, $2, $3)`
+	query := `SELECT coq_pesaje_save($1, $2, $3)`
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -343,7 +402,7 @@ func (u *CoqPeleaE) Update(token string, data string, metricas string) (map[stri
 }
 
 // Delete deletes one user from the database, by User.ID
-func (u *CoqPeleaE) Delete(token string, data string, metricas string) (map[string]any, error) {
+func (u *CoqPesajeE) Delete(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -364,7 +423,7 @@ func (u *CoqPeleaE) Delete(token string, data string, metricas string) (map[stri
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := `SELECT coq_pelea_save($1, $2, $3)`
+	query := `SELECT coq_pesaje_delete($1, $2, $3)`
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -393,7 +452,7 @@ func (u *CoqPeleaE) Delete(token string, data string, metricas string) (map[stri
 }
 
 // DeleteByID deletes one user from the database, by ID
-func (u *CoqPeleaE) DeleteByID(token string, id int, orden int, metricas string) (map[string]any, error) {
+func (u *CoqPesajeE) DeleteByID(token string, id int, orden int, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -404,7 +463,7 @@ func (u *CoqPeleaE) DeleteByID(token string, id int, orden int, metricas string)
 							  }`,
 		id, id, orden, 300)
 
-	query := `SELECT coq_pelea_delete($1, $2, $3)`
+	query := `SELECT coq_pesaje_delete($1, $2, $3)`
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
