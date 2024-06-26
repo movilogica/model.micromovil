@@ -101,7 +101,7 @@ func (e DataComercioMinimalE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const querySelectDataComer = `select * from data_comercios_list( $1, $2)`
+const querySelectDataComer = `select * from data_comercios_list( $1, $2) `
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
