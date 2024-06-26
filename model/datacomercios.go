@@ -359,6 +359,50 @@ func (u *DataComercioE) GetByUniqueid(token string, uniqueid int) (*DataComercio
 	return &rowdata, nil
 }
 
+// GetOne returns one user by id
+func (u *DataComercioE) GetByUniqueidWithAllParams(token string, uniqueid int) (*DataComercioMinimalE, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := `select * from data_comercios_minimal_list($1, $2)`
+
+	var rowdata DataComercioMinimalE
+	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	row := db.QueryRowContext(ctx, query, token, jsonText)
+
+	err := row.Scan(
+		&rowdata.Uniqueid,
+		&rowdata.Sede,
+		&rowdata.Flag1,
+		&rowdata.Flag2,
+		&rowdata.PersonaId,
+		&rowdata.TokenDataId,
+		&rowdata.Orden,
+		&rowdata.TradeName,
+		&rowdata.Domicilio,
+		&rowdata.City,
+		&rowdata.Zipcode,
+		&rowdata.Latitud,
+		&rowdata.Longitud,
+		&rowdata.Distance,
+		&rowdata.LocationType,
+		&rowdata.ParkingLotName,
+		&rowdata.ParkingSpots,
+		&rowdata.TemsUseTicket,
+		&rowdata.LocationPhoto,
+		&rowdata.FterminatedAt,
+		&rowdata.Activo,
+		&rowdata.Estadoreg,
+		&rowdata.TotalRecords,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &rowdata, nil
+}
+
 // Update updates one user in the database, using the information
 // stored in the receiver u
 func (u *DataComercioE) Update(token string, data string, metricas string) (map[string]any, error) {
