@@ -82,11 +82,11 @@ type DataComercioMinimalE struct {
 	Latitud        NullString  `json:"latitud,omitempty"`
 	Longitud       NullString  `json:"longitud,omitempty"`
 	Distance       NullFloat64 `json:"distance,omitempty"`
-	LocationType   NullString  `json:"location_type,omitempty"`
-	ParkingLotName NullString  `json:"parking_lot_name,omitempty"`
-	ParkingSpots   NullString  `json:"parking_spots,omitempty"`
-	TemsUseTicket  NullString  `json:"terms_use_ticket,omitempty"`
-	LocationPhoto  NullString  `json:"location_photo,omitempty"`
+	LocationType   NullString  `json:"locationtype,omitempty"`
+	ParkingLotName NullString  `json:"parkinglotname,omitempty"`
+	ParkingSpots   NullString  `json:"parkingspots,omitempty"`
+	TemsUseTicket  NullString  `json:"termsuseticket,omitempty"`
+	LocationPhoto  NullString  `json:"locationphoto,omitempty"`
 	FterminatedAt  NullTime    `json:"fterminated,omitempty"`
 	Activo         int32       `json:"activo,omitempty"`
 	Estadoreg      int32       `json:"estadoreg,omitempty"`
