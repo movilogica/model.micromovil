@@ -7,14 +7,19 @@ import (
 
 // Items Recount Summary
 type StoreInventRecountSummaryE struct {
-	GroupText  NullString  `json:"grouptext,omitempty"`
-	PersonText NullString  `json:"persontext,omitempty"`
-	StyleCode  NullString  `json:"stylecode,omitempty"`
-	Qpersons   NullInt64   `json:"qpersons,omitempty"`
-	Qitems     NullInt64   `json:"qitems,omitempty"`
-	Qboxes     NullInt64   `json:"qboxes,omitempty"`
-	Qstyles    NullInt64   `json:"qstyles,omitempty"`
-	Percent    NullFloat64 `json:"percent,omitempty"`
+	Sede        int32       `json:"sede"`
+	PersonaId   NullInt64   `json:"personaid,omitempty"`
+	TokendataId NullString  `json:"tokendataid,omitempty"`
+	WarehouseId NullInt64   `json:"warehouseid,omitempty"`
+	RecountId   NullInt64   `json:"recountid,omitempty"`
+	GroupText   NullString  `json:"grouptext,omitempty"`
+	PersonText  NullString  `json:"persontext,omitempty"`
+	StyleCode   NullString  `json:"stylecode,omitempty"`
+	Qpersons    NullInt64   `json:"qpersons,omitempty"`
+	Qitems      NullInt64   `json:"qitems,omitempty"`
+	Qboxes      NullInt64   `json:"qboxes,omitempty"`
+	Qstyles     NullInt64   `json:"qstyles,omitempty"`
+	Percent     NullFloat64 `json:"percent,omitempty"`
 }
 
 func (e StoreInventRecountSummaryE) MarshalJSON() ([]byte, error) {
@@ -49,6 +54,11 @@ func (u *StoreInventRecountSummaryE) GetSummaryGlobal(token string, filter strin
 	for rows.Next() {
 		var rowdata StoreInventRecountSummaryE
 		err := rows.Scan(
+			&rowdata.Sede,
+			&rowdata.PersonaId,
+			&rowdata.TokendataId,
+			&rowdata.WarehouseId,
+			&rowdata.RecountId,
 			&rowdata.Qitems,
 			&rowdata.Qboxes,
 			&rowdata.Qstyles,
@@ -85,6 +95,11 @@ func (u *StoreInventRecountSummaryE) GetSummaryGroup(token string, filter string
 	for rows.Next() {
 		var rowdata StoreInventRecountSummaryE
 		err := rows.Scan(
+			&rowdata.Sede,
+			&rowdata.PersonaId,
+			&rowdata.TokendataId,
+			&rowdata.WarehouseId,
+			&rowdata.RecountId,
 			&rowdata.GroupText,
 			&rowdata.Qpersons,
 			&rowdata.Qitems,
@@ -123,6 +138,11 @@ func (u *StoreInventRecountSummaryE) GetSummaryPersons(token string, filter stri
 	for rows.Next() {
 		var rowdata StoreInventRecountSummaryE
 		err := rows.Scan(
+			&rowdata.Sede,
+			&rowdata.PersonaId,
+			&rowdata.TokendataId,
+			&rowdata.WarehouseId,
+			&rowdata.RecountId,
 			&rowdata.PersonText,
 			&rowdata.Qstyles,
 			&rowdata.Qitems,
@@ -160,6 +180,11 @@ func (u *StoreInventRecountSummaryE) GetSummaryStyles(token string, filter strin
 	for rows.Next() {
 		var rowdata StoreInventRecountSummaryE
 		err := rows.Scan(
+			&rowdata.Sede,
+			&rowdata.PersonaId,
+			&rowdata.TokendataId,
+			&rowdata.WarehouseId,
+			&rowdata.RecountId,
 			&rowdata.StyleCode,
 			&rowdata.Qitems,
 			&rowdata.Qboxes,
