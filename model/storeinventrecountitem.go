@@ -22,6 +22,7 @@ type StoreInventRecountItemE struct {
 	RecountId     NullInt64  `json:"recountid,omitempty"`
 	GroupId       NullInt64  `json:"groupid,omitempty"`
 	Grouptext     NullString `json:"grouptext,omitempty"`
+	Personatext   NullString `json:"personatext,omitempty"`
 	Numero        NullInt32  `json:"numero,omitempty"`
 	BoxId         NullInt64  `json:"boxid,omitempty"`
 	BoxIdentityId NullInt32  `json:"boxidentityid,omitempty"`
@@ -129,6 +130,7 @@ func (u *StoreInventRecountItemE) GetAll(token string, filter string) ([]*StoreI
 			&rowdata.RecountId,
 			&rowdata.GroupId,
 			&rowdata.Grouptext,
+			&rowdata.Personatext,
 			&rowdata.Numero,
 			&rowdata.BoxId,
 			&rowdata.BoxIdentityId,
@@ -204,6 +206,7 @@ func (u *StoreInventRecountItemE) GetByUniqueid(token string, uniqueid int) (*St
 		&rowdata.RecountId,
 		&rowdata.GroupId,
 		&rowdata.Grouptext,
+		&rowdata.Personatext,
 		&rowdata.Numero,
 		&rowdata.BoxId,
 		&rowdata.BoxIdentityId,
