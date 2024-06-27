@@ -97,6 +97,8 @@ const TBL_BIZ_PAYMENT_STATUS = "bizpaystatus"
 // --- STORE
 const TBL_STORE_PARAM_CATEG_ITEM = "storeparamcateitem"
 const TBL_STORE_PRODUCTS = "storeproducts"
+const TBL_STORE_INV_RECOUNT_ITEMS = "storeinvrecitem"
+const TBL_STORE_INV_RECOUNT_SUMMARY = "storeinvrecsum"
 
 // --- PROCEDIMIENTOS
 const PROCEDURE_BIZ_FULLDATA = "bizpersfulldata"
