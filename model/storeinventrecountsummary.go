@@ -62,6 +62,7 @@ func (u *StoreInventRecountSummaryE) GetSummaryGlobal(token string, filter strin
 			&rowdata.Qitems,
 			&rowdata.Qboxes,
 			&rowdata.Qstyles,
+			&rowdata.Qpersons,
 		)
 		if err != nil {
 			log.Println("Error scanning", err)
