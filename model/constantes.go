@@ -100,6 +100,20 @@ const TBL_STORE_PRODUCTS = "storeproducts"
 const TBL_STORE_INV_RECOUNT_ITEMS = "storeinvrecitem"
 const TBL_STORE_INV_RECOUNT_SUMMARY = "storeinvrecsum"
 
+// --- GALLOS
+const TBL_COQ_CRIADORES = "coqcriador"
+const TBL_COQ_GALPONES = "coqgalpon"
+const TBL_COQ_EMPADRONADOR = "coqempadrona"
+const TBL_COQ_FECHA_GALPON = "coqfechagalpon"
+const TBL_COQ_FECHA_TORNEO = "coqfechatorneo"
+const TBL_COQ_GALPON_TORNEO = "coqgalpontorneo"
+const TBL_COQ_PELEA = "coqpelea"
+const TBL_COQ_PESAJE = "coqpesaje"
+const TBL_COQ_REPORTE = "coqreporte"
+const TBL_COQ_RANKING = "coqranking"
+const TBL_COQ_SORTEO = "coqsorteo"
+const TBL_COQ_TORNEOS = "coqtorneos"
+
 // --- PROCEDIMIENTOS
 const PROCEDURE_BIZ_FULLDATA = "bizpersfulldata"
 const PROCEDURE_BIZ_PAYMENT = "bizpayment"
