@@ -75,6 +75,18 @@ func NewDataAccess(dbPool *sql.DB) DataAccess {
 		StoreInventRecountSummaryE: StoreInventRecountSummaryE{},
 		PersonaInfo:                PersonaInfoE{},
 		TipoProducto:               TipoProductoE{},
+		CoqCriador:                 CoqCriadorE{},
+		CoqGalpon:                  CoqGalponE{},
+		CoqGalponTorneo:            CoqGalponTorneoE{},
+		CoqFechaGalpon:             CoqFechaGalponE{},
+		CoqFechaTorneo:             CoqFechaTorneoE{},
+		CoqEmpadronador:            CoqEmpadronadorE{},
+		CoqPelea:                   CoqPeleaE{},
+		CoqPesaje:                  CoqPesajeE{},
+		CoqRanking:                 CoqRankingE{},
+		CoqReference:               CoqReferenceE{},
+		CoqSorteo:                  CoqSorteoE{},
+		CoqTorneos:                 CoqTorneosE{},
 	}
 }
 
@@ -144,4 +156,16 @@ type DataAccess struct {
 	CustomerInfo               CustomerInfoE
 	ResumenGlobal              ResumenGlobalE
 	TipoProducto               TipoProductoE
+	CoqCriador                 CoqCriadorE
+	CoqGalpon                  CoqGalponE
+	CoqGalponTorneo            CoqGalponTorneoE
+	CoqFechaGalpon             CoqFechaGalponE
+	CoqFechaTorneo             CoqFechaTorneoE
+	CoqEmpadronador            CoqEmpadronadorE
+	CoqPelea                   CoqPeleaE
+	CoqPesaje                  CoqPesajeE
+	CoqRanking                 CoqRankingE
+	CoqReference               CoqReferenceE
+	CoqSorteo                  CoqSorteoE
+	CoqTorneos                 CoqTorneosE
 }
