@@ -9,34 +9,36 @@ import (
 
 // Tipos de autos
 type RolesE struct {
-	Uniqueid      int64      `json:"uniqueid,omitempty"`
-	Owner         NullInt32  `json:"owner,omitempty"`
-	Dispositivoid NullInt32  `json:"dispositivoid,omitempty"`
-	Id            int32      `json:"id,omitempty"`
-	Sede          int32      `json:"sede"`
-	Flag1         string     `json:"flag1,omitempty"`
-	Flag2         string     `json:"flag2,omitempty"`
-	Code          NullString `json:"code,omitempty"`
-	Descrip       NullString `json:"descrip,omitempty"`
-	Superadmin    NullInt32  `json:"superadmin,omitempty"`
-	Datacenter    NullInt32  `json:"datacenter,omitempty"`
-	Gerencial     NullInt32  `json:"gerencial,omitempty"`
-	Bydefault     NullInt32  `json:"bydefault,omitempty"`
-	Crear         NullInt32  `json:"crear,omitempty"`
-	Editar        NullInt32  `json:"editar,omitempty"`
-	Eliminar      NullInt32  `json:"eliminar,omitempty"`
-	Exportar      NullInt32  `json:"exportar,omitempty"`
-	Ruf1          NullString `json:"ruf1,omitempty"`
-	Ruf2          NullString `json:"ruf2,omitempty"`
-	Ruf3          NullString `json:"ruf3,omitempty"`
-	Iv            NullString `json:"iv,omitempty"`
-	Salt          NullString `json:"salt,omitempty"`
-	Checksum      NullString `json:"checksum,omitempty"`
-	FCreated      NullTime   `json:"fcreated,omitempty"`
-	FUpdated      NullTime   `json:"fupdated,omitempty"`
-	Activo        int32      `json:"activo,omitempty"`
-	Estadoreg     int32      `json:"estadoreg,omitempty"`
-	TotalRecords  int64      `json:"total_records,omitempty"`
+	Uniqueid          int64      `json:"uniqueid,omitempty"`
+	Owner             NullInt32  `json:"owner,omitempty"`
+	Dispositivoid     NullInt32  `json:"dispositivoid,omitempty"`
+	Id                int32      `json:"id,omitempty"`
+	Sede              int32      `json:"sede"`
+	Flag1             string     `json:"flag1,omitempty"`
+	Flag2             string     `json:"flag2,omitempty"`
+	Code              NullString `json:"code,omitempty"`
+	Descrip           NullString `json:"descrip,omitempty"`
+	ModoAutenticacion NullInt32  `json:"modoautenticacion,omitempty"`
+	ModoAcceso        NullInt32  `json:"modoacceso,omitempty"`
+	Superadmin        NullInt32  `json:"superadmin,omitempty"`
+	Datacenter        NullInt32  `json:"datacenter,omitempty"`
+	Gerencial         NullInt32  `json:"gerencial,omitempty"`
+	Bydefault         NullInt32  `json:"bydefault,omitempty"`
+	Crear             NullInt32  `json:"crear,omitempty"`
+	Editar            NullInt32  `json:"editar,omitempty"`
+	Eliminar          NullInt32  `json:"eliminar,omitempty"`
+	Exportar          NullInt32  `json:"exportar,omitempty"`
+	Ruf1              NullString `json:"ruf1,omitempty"`
+	Ruf2              NullString `json:"ruf2,omitempty"`
+	Ruf3              NullString `json:"ruf3,omitempty"`
+	Iv                NullString `json:"iv,omitempty"`
+	Salt              NullString `json:"salt,omitempty"`
+	Checksum          NullString `json:"checksum,omitempty"`
+	FCreated          NullTime   `json:"fcreated,omitempty"`
+	FUpdated          NullTime   `json:"fupdated,omitempty"`
+	Activo            int32      `json:"activo,omitempty"`
+	Estadoreg         int32      `json:"estadoreg,omitempty"`
+	TotalRecords      int64      `json:"total_records,omitempty"`
 }
 
 func (e RolesE) MarshalJSON() ([]byte, error) {
@@ -98,6 +100,8 @@ func (u *RolesE) GetAll(token string, filter string) ([]*RolesE, error) {
 			&rowdata.Flag2,
 			&rowdata.Code,
 			&rowdata.Descrip,
+			&rowdata.ModoAutenticacion,
+			&rowdata.ModoAcceso,
 			&rowdata.Superadmin,
 			&rowdata.Datacenter,
 			&rowdata.Gerencial,
@@ -150,6 +154,8 @@ func (u *RolesE) GetByUniqueid(token string, uniqueid int) (*RolesE, error) {
 		&rowdata.Flag2,
 		&rowdata.Code,
 		&rowdata.Descrip,
+		&rowdata.ModoAutenticacion,
+		&rowdata.ModoAcceso,
 		&rowdata.Superadmin,
 		&rowdata.Datacenter,
 		&rowdata.Gerencial,
