@@ -322,3 +322,31 @@ func (u *RolesE) DeleteByID(token string, id int, metricas string) (map[string]a
 
 	return retorno, nil
 }
+
+func (e RolesE) ModoAutenticacionText() string {
+	switch e.ModoAutenticacion.Int32 {
+	case 1:
+		return "By IMEI"
+	case 2:
+		return "By User & Password"
+	case 3:
+		return "By IMEI & Password"
+	case 4:
+		return "By IMEI & User & Password"
+	default:
+		return "By Default"
+	}
+}
+
+func (e RolesE) ModoAccesoText() string {
+	switch e.ModoAcceso.Int32 {
+	case 1:
+		return "Web only"
+	case 2:
+		return "App only"
+	case 9:
+		return "Not matter"
+	default:
+		return "By Default"
+	}
+}
