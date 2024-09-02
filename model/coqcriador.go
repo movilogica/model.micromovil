@@ -17,6 +17,7 @@ type CoqCriadorE struct {
 	Flag1           string     `json:"flag1,omitempty"`
 	Flag2           string     `json:"flag2,omitempty"`
 	CountryCode     NullString `json:"countrycode,omitempty"`
+	PersonaId       NullInt64  `json:"personaid,omitempty"`
 	Tokendataid     NullString `json:"tokendataid,omitempty"`
 	Nombre          NullString `json:"nombre,omitempty"`
 	Apellido        NullString `json:"apellido,omitempty"`
@@ -104,6 +105,7 @@ func (u *CoqCriadorE) GetAll(token string, filter string) ([]*CoqCriadorE, error
 			//&rowdata.Flag1,
 			//&rowdata.Flag2,
 			&rowdata.CountryCode,
+			&rowdata.PersonaId,
 			&rowdata.Tokendataid,
 			&rowdata.Nombre,
 			&rowdata.Apellido,
@@ -163,6 +165,7 @@ func (u *CoqCriadorE) GetByUniqueid(token string, uniqueid int) (*CoqCriadorE, e
 		//&rowdata.Flag1,
 		//&rowdata.Flag2,
 		&rowdata.CountryCode,
+		&rowdata.PersonaId,
 		&rowdata.Tokendataid,
 		&rowdata.Nombre,
 		&rowdata.Apellido,
