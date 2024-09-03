@@ -17,6 +17,8 @@ type RequestPayload struct {
 	Filter   any            `json:"filter,omitempty"`
 	Metrica  MetricaPayload `json:"metrica,omitempty"`
 	Auth     AuthPayload    `json:"auth,omitempty"`
+	Log      LogPayLoad     `json:"log,omitempty"`
+	Mail     MailPayload    `json:"mail,omitempty"`
 	Uniqueid string         `json:"uniqueid,omitempty"`
 	Uuid     string         `json:"uuid,omitempty"`
 	Version  string         `json:"version,omitempty"`
@@ -76,6 +78,18 @@ type AuthPayload struct {
 	Password      string `json:"password,omitempty"`
 	Otp           string `json:"otp,omitempty"`
 	Teclado       string `json:"teclado,omitempty"`
+}
+
+type LogPayLoad struct {
+	Name string `json:"name"`
+	Data string `json:"data"`
+}
+
+type MailPayload struct {
+	From    string `json:"from"`
+	To      string `json:"to"`
+	Subject string `json:"subject"`
+	Message string `json:"message"`
 }
 
 // ---- SessionData no debe de estar en el lado cliente, siempre debe estar en el Memcache ----
