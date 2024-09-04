@@ -193,6 +193,7 @@ func (u *CoqCriadorE) GetByUniqueid(token string, uniqueid int) (*CoqCriadorE, e
 		&rowdata.Celular3,
 		&rowdata.FInscripcion,
 		&rowdata.FBirthdate,
+		&rowdata.SocioCriador,
 		&rowdata.FirmaReglPelea,
 		&rowdata.FirmaCodEtica,
 		&rowdata.FirmaReglTorneo,
