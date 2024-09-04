@@ -35,6 +35,10 @@ type CoqCriadorE struct {
 	Celular3        NullString `json:"celular3,omitempty"`
 	FInscripcion    NullTime   `json:"fecha_inscripcion,omitempty"`
 	FBirthdate      NullTime   `json:"fecha_nacimiento,omitempty"`
+	SocioCriador    NullInt32  `json:"socio_criador,omitempty"`
+	FirmaReglPelea  NullInt32  `json:"firma_regl_pelea,omitempty"`
+	FirmaCodEtica   NullInt32  `json:"firma_cod_etica,omitempty"`
+	FirmaReglTorneo NullInt32  `json:"firma_regl_campeona,omitempty"`
 	Ruf1            NullString `json:"ruf1,omitempty"`
 	Ruf2            NullString `json:"ruf2,omitempty"`
 	Ruf3            NullString `json:"ruf3,omitempty"`
@@ -124,6 +128,10 @@ func (u *CoqCriadorE) GetAll(token string, filter string) ([]*CoqCriadorE, error
 			&rowdata.Celular3,
 			&rowdata.FInscripcion,
 			&rowdata.FBirthdate,
+			&rowdata.SocioCriador,
+			&rowdata.FirmaReglPelea,
+			&rowdata.FirmaCodEtica,
+			&rowdata.FirmaReglTorneo,
 			/*&rowdata.Ruf1,
 			&rowdata.Ruf2,
 			&rowdata.Ruf3,
@@ -185,6 +193,9 @@ func (u *CoqCriadorE) GetByUniqueid(token string, uniqueid int) (*CoqCriadorE, e
 		&rowdata.Celular3,
 		&rowdata.FInscripcion,
 		&rowdata.FBirthdate,
+		&rowdata.FirmaReglPelea,
+		&rowdata.FirmaCodEtica,
+		&rowdata.FirmaReglTorneo,
 		/*&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
