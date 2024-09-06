@@ -17,6 +17,7 @@ type CoqGalponE struct {
 	Flag1             string     `json:"flag1,omitempty"`
 	Flag2             string     `json:"flag2,omitempty"`
 	CountryCode       NullString `json:"countrycode,omitempty"`
+	PersonaId         NullInt64  `json:"personaid,omitempty"`
 	Nombre            NullString `json:"nombre,omitempty"`
 	Tokendataid       NullString `json:"tokendataid,omitempty"`
 	PropietarioId     NullInt64  `json:"propietario_id,omitempty"`
@@ -116,6 +117,7 @@ func (u *CoqGalponE) GetAll(token string, filter string) ([]*CoqGalponE, error) 
 			//&rowdata.Flag1,
 			//&rowdata.Flag2,
 			&rowdata.CountryCode,
+			&rowdata.PersonaId,
 			&rowdata.Nombre,
 			&rowdata.Tokendataid,
 			&rowdata.PropietarioId,
@@ -187,6 +189,7 @@ func (u *CoqGalponE) GetByUniqueid(token string, uniqueid int) (*CoqGalponE, err
 		//&rowdata.Flag1,
 		//&rowdata.Flag2,
 		&rowdata.CountryCode,
+		&rowdata.PersonaId,
 		&rowdata.Nombre,
 		&rowdata.Tokendataid,
 		&rowdata.PropietarioId,
