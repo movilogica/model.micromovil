@@ -101,6 +101,12 @@ const TBL_STORE_INV_RECOUNT_ITEMS = "storeinvrecitem"
 const TBL_STORE_INV_RECOUNT_SUMMARY = "storeinvrecsum"
 
 // --- GALLOS
+const TBL_COQ_FICHA_CRIADORES = "coqfichacriador"
+const TBL_COQ_FICHA_GALPONES = "coqfichagalpon"
+const TBL_COQ_FICHA_AVES = "coqfichaaves"
+const TBL_COQ_FICHA_SKU = "coqfichasku"
+const TBL_COQ_FICHA_FOTOS = "coqfichafotos"
+const TBL_COQ_FICHA_CONSANGUINEA = "coqfichaconsanguinea"
 const TBL_COQ_CRIADORES = "coqcriador"
 const TBL_COQ_GALPONES = "coqgalpon"
 const TBL_COQ_EMPADRONADOR = "coqempadrona"
