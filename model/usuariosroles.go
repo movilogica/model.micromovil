@@ -21,6 +21,15 @@ type UsuariosRolesE struct {
 	RolCode       NullString `json:"rolcode,omitempty"`
 	RolDescrip    NullString `json:"roldescrip,omitempty"`
 	Profiles      NullString `json:"profiles,omitempty"`
+	Superadmin    NullInt32  `json:"superadmin,omitempty"`
+	Datacenter    NullInt32  `json:"datacenter,omitempty"`
+	Gerencial     NullInt32  `json:"gerencial,omitempty"`
+	Bydefault     NullInt32  `json:"bydefault,omitempty"`
+	Crear         NullInt32  `json:"crear,omitempty"`
+	Editar        NullInt32  `json:"editar,omitempty"`
+	Eliminar      NullInt32  `json:"eliminar,omitempty"`
+	Exportar      NullInt32  `json:"exportar,omitempty"`
+	Commerce      NullInt32  `json:"commerce,omitempty"`
 	Ruf1          NullString `json:"ruf1,omitempty"`
 	Ruf2          NullString `json:"ruf2,omitempty"`
 	Ruf3          NullString `json:"ruf3,omitempty"`
@@ -96,6 +105,15 @@ func (u *UsuariosRolesE) GetAll(token string, filter string) ([]*UsuariosRolesE,
 			&rowdata.RolCode,
 			&rowdata.RolDescrip,
 			&rowdata.Profiles,
+			&rowdata.Superadmin,
+			&rowdata.Datacenter,
+			&rowdata.Gerencial,
+			&rowdata.Bydefault,
+			&rowdata.Crear,
+			&rowdata.Editar,
+			&rowdata.Eliminar,
+			&rowdata.Exportar,
+			&rowdata.Commerce,
 			&rowdata.Ruf1,
 			&rowdata.Ruf2,
 			&rowdata.Ruf3,
@@ -143,6 +161,15 @@ func (u *UsuariosRolesE) GetByUniqueid(token string, uniqueid int) (*UsuariosRol
 		&rowdata.RolCode,
 		&rowdata.RolDescrip,
 		&rowdata.Profiles,
+		&rowdata.Superadmin,
+		&rowdata.Datacenter,
+		&rowdata.Gerencial,
+		&rowdata.Bydefault,
+		&rowdata.Crear,
+		&rowdata.Editar,
+		&rowdata.Eliminar,
+		&rowdata.Exportar,
+		&rowdata.Commerce,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
