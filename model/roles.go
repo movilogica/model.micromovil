@@ -21,6 +21,7 @@ type RolesE struct {
 	ModoAutenticacion NullInt32  `json:"modoautenticacion,omitempty"`
 	ModoAcceso        NullInt32  `json:"modoacceso,omitempty"`
 	Superadmin        NullInt32  `json:"superadmin,omitempty"`
+	Soporte           NullInt32  `json:"soporte,omitempty"`
 	Datacenter        NullInt32  `json:"datacenter,omitempty"`
 	Gerencial         NullInt32  `json:"gerencial,omitempty"`
 	Bydefault         NullInt32  `json:"bydefault,omitempty"`
@@ -104,6 +105,7 @@ func (u *RolesE) GetAll(token string, filter string) ([]*RolesE, error) {
 			&rowdata.ModoAutenticacion,
 			&rowdata.ModoAcceso,
 			&rowdata.Superadmin,
+			&rowdata.Soporte,
 			&rowdata.Datacenter,
 			&rowdata.Gerencial,
 			&rowdata.Bydefault,
@@ -159,6 +161,7 @@ func (u *RolesE) GetByUniqueid(token string, uniqueid int) (*RolesE, error) {
 		&rowdata.ModoAutenticacion,
 		&rowdata.ModoAcceso,
 		&rowdata.Superadmin,
+		&rowdata.Soporte,
 		&rowdata.Datacenter,
 		&rowdata.Gerencial,
 		&rowdata.Bydefault,
