@@ -47,6 +47,7 @@ type CredencialE struct {
 	Avatar            NullString `json:"avatar,omitempty"`
 	TokenTerminal     NullString `json:"tokenterminal,omitempty"`
 	Manual            NullInt32  `json:"manual,omitempty"`
+	HasRole           NullInt32  `json:"hasrole,omitempty"`
 	Ruf1              NullString `json:"ruf1,omitempty"`
 	Ruf2              NullString `json:"ruf2,omitempty"`
 	Ruf3              NullString `json:"ruf3,omitempty"`
@@ -144,6 +145,7 @@ func (u *CredencialE) GetAll(token string, filter string) ([]*CredencialE, error
 			&rowdata.Avatar,
 			&rowdata.TokenTerminal,
 			&rowdata.Manual,
+			&rowdata.HasRole,
 			&rowdata.Ruf1,
 			&rowdata.Ruf2,
 			&rowdata.Ruf3,
@@ -258,6 +260,7 @@ func (u *CredencialE) GetByUniqueid(token string, uniqueid int) (*CredencialE, e
 		&rowdata.Avatar,
 		&rowdata.TokenTerminal,
 		&rowdata.Manual,
+		&rowdata.HasRole,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
@@ -509,6 +512,7 @@ func (u *CredencialE) GetUserByEmailOrPhone(token string, jsonData string) (*Cre
 		&rowdata.Avatar,
 		&rowdata.TokenTerminal,
 		&rowdata.Manual,
+		&rowdata.HasRole,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
