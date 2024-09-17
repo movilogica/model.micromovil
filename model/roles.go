@@ -28,6 +28,7 @@ type RolesE struct {
 	Editar            NullInt32  `json:"editar,omitempty"`
 	Eliminar          NullInt32  `json:"eliminar,omitempty"`
 	Exportar          NullInt32  `json:"exportar,omitempty"`
+	Commerce          NullInt32  `json:"commerce,omitempty"`
 	Ruf1              NullString `json:"ruf1,omitempty"`
 	Ruf2              NullString `json:"ruf2,omitempty"`
 	Ruf3              NullString `json:"ruf3,omitempty"`
@@ -110,6 +111,7 @@ func (u *RolesE) GetAll(token string, filter string) ([]*RolesE, error) {
 			&rowdata.Editar,
 			&rowdata.Eliminar,
 			&rowdata.Exportar,
+			&rowdata.Commerce,
 			&rowdata.Ruf1,
 			&rowdata.Ruf2,
 			&rowdata.Ruf3,
@@ -164,6 +166,7 @@ func (u *RolesE) GetByUniqueid(token string, uniqueid int) (*RolesE, error) {
 		&rowdata.Editar,
 		&rowdata.Eliminar,
 		&rowdata.Exportar,
+		&rowdata.Commerce,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
