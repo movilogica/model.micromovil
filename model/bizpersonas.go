@@ -17,7 +17,6 @@ type BizPersonasE struct {
 	Flag1           string      `json:"flag1,omitempty"`
 	Flag2           string      `json:"flag2,omitempty"`
 	PersonaId       NullInt64   `json:"personaid,omitempty"`
-	TokendataId     NullString  `json:"tokendataid,omitempty"`
 	Nroperacion     NullString  `json:"nroperacion,omitempty"`
 	Maskoperacion   NullString  `json:"maskoperacion,omitempty"`
 	Nickname        NullString  `json:"nickname,omitempty"`
@@ -92,7 +91,7 @@ func (e CustomerInfoE) MarshalJSON() ([]byte, error) {
 }
 
 const querySelectBizPer = `select * from biz_personas_list( $1, $2)`
-const querySelectBizPerMinimal = `select uniqueid, sede, flag1, flag2, personaid, tokendataid, nroperacion, maskoperacion, nombres, apaterno, movil, email, phone, role_type_id, privado, suscribed, balance, activo, estadoreg, total_records from biz_personas_list( $1, $2)`
+const querySelectBizPerMinimal = `select uniqueid, sede, flag1, flag2, personaid, nroperacion, maskoperacion, nombres, apaterno, movil, email, phone, role_type_id, privado, suscribed, balance, activo, estadoreg, total_records from biz_personas_list( $1, $2)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -146,7 +145,6 @@ func (u *BizPersonasE) GetAll(token string, filter string) ([]*BizPersonasE, err
 			&rowdata.Flag1,
 			&rowdata.Flag2,
 			&rowdata.PersonaId,
-			&rowdata.TokendataId,
 			&rowdata.Nroperacion,
 			&rowdata.Maskoperacion,
 			&rowdata.Nickname,
@@ -250,7 +248,6 @@ func (u *BizPersonasE) LookingFor(token string, filter string) ([]*BizPersonasE,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
 			&rowdata.PersonaId,
-			&rowdata.TokendataId,
 			&rowdata.Nroperacion,
 			&rowdata.Maskoperacion,
 			&rowdata.Nombres,
@@ -297,7 +294,6 @@ func (u *BizPersonasE) GetByUniqueid(token string, uniqueid int) (*BizPersonasE,
 		&rowdata.Flag1,
 		&rowdata.Flag2,
 		&rowdata.PersonaId,
-		&rowdata.TokendataId,
 		&rowdata.Nroperacion,
 		&rowdata.Maskoperacion,
 		&rowdata.Nickname,

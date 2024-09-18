@@ -37,7 +37,7 @@ type DataComercioE struct {
 	CiiuText        NullString  `json:"ciiutext,omitempty"`
 	AddressId       NullInt64   `json:"addressid,omitempty"`
 	Domicilio       NullString  `json:"domicilio,omitempty"`
-	City            NullString  `json:"city,omitempty"`
+	City            NullString  `json:"cityaddress,omitempty"`
 	Zipcode         NullString  `json:"zipcode,omitempty"`
 	Latitud         NullString  `json:"latitud,omitempty"`
 	Longitud        NullString  `json:"longitud,omitempty"`
@@ -77,7 +77,7 @@ type DataComercioMinimalE struct {
 	Orden          NullInt32   `json:"orden"`
 	TradeName      NullString  `json:"tradename,omitempty"`
 	Domicilio      NullString  `json:"domicilio,omitempty"`
-	City           NullString  `json:"city,omitempty"`
+	City           NullString  `json:"cityaddress,omitempty"`
 	Zipcode        NullString  `json:"zipcode,omitempty"`
 	Latitud        NullString  `json:"latitud,omitempty"`
 	Longitud       NullString  `json:"longitud,omitempty"`

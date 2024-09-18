@@ -7,51 +7,66 @@ import (
 	"log"
 )
 
-// Customer Medios
-type BizPersonasMedioE struct {
-	Uniqueid      int64      `json:"uniqueid,omitempty"`
-	Owner         NullInt32  `json:"owner,omitempty"`
-	Dispositivoid NullInt32  `json:"dispositivoid,omitempty"`
-	Id            int32      `json:"id,omitempty"`
-	Sede          int32      `json:"sede"`
-	Flag1         string     `json:"flag1,omitempty"`
-	Flag2         string     `json:"flag2,omitempty"`
-	PersonaId     NullInt64  `json:"personaid,omitempty"`
-	TokendataId   NullString `json:"tokendataid,omitempty"`
-	BizPersonaId  NullInt64  `json:"bizpersonaid,omitempty"`
-	Secuencial    NullInt32  `json:"secuencial"`
-	Orden         NullInt32  `json:"orden"`
-	ChannelTypeId NullString `json:"channeltypeid,omitempty"`
-	ChannelId     NullString `json:"channelid,omitempty"`
-	Descrip       NullString `json:"descrip,omitempty"`
-	IssuedAt      NullTime   `json:"issued,omitempty"`
-	ExpiredAt     NullTime   `json:"expired,omitempty"`
-	Notes         NullString `json:"notes,omitempty"`
-	Validated     NullInt32  `json:"validated,omitempty"`
-	FvalidatedAt  NullTime   `json:"fvalidated,omitempty"`
-	ValidatedBy   NullString `json:"validatedby,omitempty"`
-	StatusChannel NullInt32  `json:"statuschannel,omitempty"`
-	StatusDetail  NullString `json:"statusdetail,omitempty"`
-	StatusDateAt  NullTime   `json:"statusdate,omitempty"`
-	Foremost      NullInt32  `json:"foremost,omitempty"`
-	Ruf1          NullString `json:"ruf1,omitempty"`
-	Ruf2          NullString `json:"ruf2,omitempty"`
-	Ruf3          NullString `json:"ruf3,omitempty"`
-	Iv            NullString `json:"iv,omitempty"`
-	Salt          NullString `json:"salt,omitempty"`
-	Checksum      NullString `json:"checksum,omitempty"`
-	FCreated      NullTime   `json:"fcreated,omitempty"`
-	FUpdated      NullTime   `json:"fupdated,omitempty"`
-	Activo        int32      `json:"activo,omitempty"`
-	Estadoreg     int32      `json:"estadoreg,omitempty"`
-	TotalRecords  int64      `json:"total_records,omitempty"`
+// Customer Address
+type BizPersonasAddressE struct {
+	Uniqueid         int64      `json:"uniqueid,omitempty"`
+	Owner            NullInt32  `json:"owner,omitempty"`
+	Dispositivoid    NullInt32  `json:"dispositivoid,omitempty"`
+	Id               int32      `json:"id,omitempty"`
+	Sede             int32      `json:"sede"`
+	Flag1            string     `json:"flag1,omitempty"`
+	Flag2            string     `json:"flag2,omitempty"`
+	PersonaId        NullInt64  `json:"personaid,omitempty"`
+	BizPersonaId     NullInt64  `json:"bizpersonaid,omitempty"`
+	Secuencial       NullInt32  `json:"secuencial"`
+	Orden            NullInt32  `json:"orden"`
+	AddressTypeId    NullString `json:"addresstypeid,omitempty"`
+	FullAddress      NullString `json:"fulladdress,omitempty"`
+	StreetAddress    NullString `json:"streetaddress,omitempty"`
+	NumberAddress    NullString `json:"numberaddress,omitempty"`
+	CityAddress      NullString `json:"cityaddress,omitempty"`
+	Zipcode          NullString `json:"zipcode,omitempty"`
+	ZipcodeText      NullString `json:"zipcodetext,omitempty"`
+	RegionId         NullInt64  `json:"regionid,omitempty"`
+	RegionText       NullString `json:"regiontext,omitempty"`
+	DepartamentoId   NullInt64  `json:"departamentoid,omitempty"`
+	DepartamentoText NullString `json:"departamentotext,omitempty"`
+	ProvinciaId      NullInt64  `json:"provinciaid,omitempty"`
+	ProvinciaText    NullString `json:"provinciatext,omitempty"`
+	DistritoId       NullInt64  `json:"distritoid,omitempty"`
+	DistritoText     NullString `json:"distritotext,omitempty"`
+	PaisId           NullInt64  `json:"paisid,omitempty"`
+	PaisText         NullString `json:"paistext,omitempty"`
+	Latitud          NullString `json:"latitud,omitempty"`
+	Longitud         NullString `json:"longitud,omitempty"`
+	IssuedAt         NullTime   `json:"issued,omitempty"`
+	ExpiredAt        NullTime   `json:"expired,omitempty"`
+	Notes            NullString `json:"notes,omitempty"`
+	Validated        NullInt32  `json:"validated,omitempty"`
+	FvalidatedAt     NullTime   `json:"fvalidated,omitempty"`
+	ValidatedBy      NullString `json:"validatedby,omitempty"`
+	StatusAddress    NullInt32  `json:"status_address,omitempty"`
+	StatusDetail     NullString `json:"status_detail,omitempty"`
+	StatusDateAt     NullTime   `json:"status_date,omitempty"`
+	Foremost         NullInt32  `json:"foremost,omitempty"`
+	Ruf1             NullString `json:"ruf1,omitempty"`
+	Ruf2             NullString `json:"ruf2,omitempty"`
+	Ruf3             NullString `json:"ruf3,omitempty"`
+	Iv               NullString `json:"iv,omitempty"`
+	Salt             NullString `json:"salt,omitempty"`
+	Checksum         NullString `json:"checksum,omitempty"`
+	FCreated         NullTime   `json:"fcreated,omitempty"`
+	FUpdated         NullTime   `json:"fupdated,omitempty"`
+	Activo           int32      `json:"activo,omitempty"`
+	Estadoreg        int32      `json:"estadoreg,omitempty"`
+	TotalRecords     int64      `json:"total_records,omitempty"`
 }
 
-func (e BizPersonasMedioE) MarshalJSON() ([]byte, error) {
+func (e BizPersonasAddressE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const querySelectBizPerMedios = `select * from biz_personas_medios_list( $1, $2)`
+const querySelectBizPerAddr = `select * from biz_personas_address_list( $1, $2)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -61,11 +76,11 @@ const querySelectBizPerMedios = `select * from biz_personas_medios_list( $1, $2)
 //---------------------------------------------------------------------
 
 // GetAll returns a slice of all users, sorted by last name
-func (u *BizPersonasMedioE) GetAll(token string, filter string) ([]*BizPersonasMedioE, error) {
+func (u *BizPersonasAddressE) GetAll(token string, filter string) ([]*BizPersonasAddressE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectBizPerMedios
+	query := querySelectBizPerAddr
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -92,10 +107,10 @@ func (u *BizPersonasMedioE) GetAll(token string, filter string) ([]*BizPersonasM
 	}
 	defer rows.Close()
 
-	var lista []*BizPersonasMedioE
+	var lista []*BizPersonasAddressE
 
 	for rows.Next() {
-		var rowdata BizPersonasMedioE
+		var rowdata BizPersonasAddressE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
 			&rowdata.Owner,
@@ -105,20 +120,35 @@ func (u *BizPersonasMedioE) GetAll(token string, filter string) ([]*BizPersonasM
 			&rowdata.Flag1,
 			&rowdata.Flag2,
 			&rowdata.PersonaId,
-			&rowdata.TokendataId,
 			&rowdata.BizPersonaId,
 			&rowdata.Secuencial,
 			&rowdata.Orden,
-			&rowdata.ChannelTypeId,
-			&rowdata.ChannelId,
-			&rowdata.Descrip,
+			&rowdata.AddressTypeId,
+			&rowdata.FullAddress,
+			&rowdata.StreetAddress,
+			&rowdata.NumberAddress,
+			&rowdata.CityAddress,
+			&rowdata.Zipcode,
+			&rowdata.ZipcodeText,
+			&rowdata.RegionId,
+			&rowdata.RegionText,
+			&rowdata.DepartamentoId,
+			&rowdata.DepartamentoText,
+			&rowdata.ProvinciaId,
+			&rowdata.ProvinciaText,
+			&rowdata.DistritoId,
+			&rowdata.DistritoText,
+			&rowdata.PaisId,
+			&rowdata.PaisText,
+			&rowdata.Latitud,
+			&rowdata.Longitud,
 			&rowdata.IssuedAt,
 			&rowdata.ExpiredAt,
 			&rowdata.Notes,
 			&rowdata.Validated,
 			&rowdata.FvalidatedAt,
 			&rowdata.ValidatedBy,
-			&rowdata.StatusChannel,
+			&rowdata.StatusAddress,
 			&rowdata.StatusDetail,
 			&rowdata.StatusDateAt,
 			&rowdata.Foremost,
@@ -146,13 +176,13 @@ func (u *BizPersonasMedioE) GetAll(token string, filter string) ([]*BizPersonasM
 }
 
 // GetOne returns one user by id
-func (u *BizPersonasMedioE) GetByUniqueid(token string, uniqueid int) (*BizPersonasMedioE, error) {
+func (u *BizPersonasAddressE) GetByUniqueid(token string, uniqueid int) (*BizPersonasAddressE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectBizPerMedios
+	query := querySelectBizPerAddr
 
-	var rowdata BizPersonasMedioE
+	var rowdata BizPersonasAddressE
 	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
@@ -165,20 +195,35 @@ func (u *BizPersonasMedioE) GetByUniqueid(token string, uniqueid int) (*BizPerso
 		&rowdata.Flag1,
 		&rowdata.Flag2,
 		&rowdata.PersonaId,
-		&rowdata.TokendataId,
 		&rowdata.BizPersonaId,
 		&rowdata.Secuencial,
 		&rowdata.Orden,
-		&rowdata.ChannelTypeId,
-		&rowdata.ChannelId,
-		&rowdata.Descrip,
+		&rowdata.AddressTypeId,
+		&rowdata.FullAddress,
+		&rowdata.StreetAddress,
+		&rowdata.NumberAddress,
+		&rowdata.CityAddress,
+		&rowdata.Zipcode,
+		&rowdata.ZipcodeText,
+		&rowdata.RegionId,
+		&rowdata.RegionText,
+		&rowdata.DepartamentoId,
+		&rowdata.DepartamentoText,
+		&rowdata.ProvinciaId,
+		&rowdata.ProvinciaText,
+		&rowdata.DistritoId,
+		&rowdata.DistritoText,
+		&rowdata.PaisId,
+		&rowdata.PaisText,
+		&rowdata.Latitud,
+		&rowdata.Longitud,
 		&rowdata.IssuedAt,
 		&rowdata.ExpiredAt,
 		&rowdata.Notes,
 		&rowdata.Validated,
 		&rowdata.FvalidatedAt,
 		&rowdata.ValidatedBy,
-		&rowdata.StatusChannel,
+		&rowdata.StatusAddress,
 		&rowdata.StatusDetail,
 		&rowdata.StatusDateAt,
 		&rowdata.Foremost,
@@ -204,7 +249,7 @@ func (u *BizPersonasMedioE) GetByUniqueid(token string, uniqueid int) (*BizPerso
 
 // Update updates one user in the database, using the information
 // stored in the receiver u
-func (u *BizPersonasMedioE) Update(token string, data string, metricas string) (map[string]any, error) {
+func (u *BizPersonasAddressE) Update(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -225,7 +270,7 @@ func (u *BizPersonasMedioE) Update(token string, data string, metricas string) (
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := `SELECT biz_personas_medios_save($1, $2, $3)`
+	query := `SELECT biz_personas_address_save($1, $2, $3)`
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -254,7 +299,7 @@ func (u *BizPersonasMedioE) Update(token string, data string, metricas string) (
 }
 
 // Delete deletes one user from the database, by User.ID
-func (u *BizPersonasMedioE) Delete(token string, data string, metricas string) (map[string]any, error) {
+func (u *BizPersonasAddressE) Delete(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -275,7 +320,7 @@ func (u *BizPersonasMedioE) Delete(token string, data string, metricas string) (
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := `SELECT biz_personas_medios_save($1, $2, $3)`
+	query := `SELECT biz_personas_address_save($1, $2, $3)`
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -304,7 +349,7 @@ func (u *BizPersonasMedioE) Delete(token string, data string, metricas string) (
 }
 
 // DeleteByID deletes one user from the database, by ID
-func (u *BizPersonasMedioE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
+func (u *BizPersonasAddressE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -313,7 +358,7 @@ func (u *BizPersonasMedioE) DeleteByID(token string, id int, metricas string) (m
 							  }`,
 		id, 300)
 
-	query := `SELECT biz_personas_medios_save($1, $2, $3)`
+	query := `SELECT biz_personas_address_save($1, $2, $3)`
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err

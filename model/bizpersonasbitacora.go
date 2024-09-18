@@ -7,8 +7,8 @@ import (
 	"log"
 )
 
-// Customer Vehicles
-type BizPersonasVehiclesE struct {
+// Customer Bitacora
+type BizPersonasBitacoraE struct {
 	Uniqueid      int64      `json:"uniqueid,omitempty"`
 	Owner         NullInt32  `json:"owner,omitempty"`
 	Dispositivoid NullInt32  `json:"dispositivoid,omitempty"`
@@ -19,17 +19,11 @@ type BizPersonasVehiclesE struct {
 	PersonaId     NullInt64  `json:"personaid,omitempty"`
 	BizPersonaId  NullInt64  `json:"bizpersonaid,omitempty"`
 	Secuencial    NullInt32  `json:"secuencial"`
-	Orden         NullInt32  `json:"orden"`
-	License       NullString `json:"license,omitempty"`
-	CarTypeId     NullInt64  `json:"cartypeid,omitempty"`
-	CarBrandId    NullInt64  `json:"carbrandid,omitempty"`
-	CarColorId    NullInt64  `json:"carcolorid,omitempty"`
-	CarType       NullString `json:"cartype,omitempty"`
-	CarBrand      NullString `json:"carbrand,omitempty"`
-	CarModel      NullString `json:"carmodel,omitempty"`
-	CarColor      NullString `json:"carcolor,omitempty"`
-	CarYear       NullInt32  `json:"caryear,omitempty"`
-	Notes         NullString `json:"notes,omitempty"`
+	Fecha         NullTime   `json:"fecha,omitempty"`
+	TipoMov       NullString `json:"tipomov,omitempty"`
+	Subject       NullString `json:"subject,omitempty"`
+	Contenido     NullString `json:"contenido,omitempty"`
+	Username      NullString `json:"username,omitempty"`
 	Ruf1          NullString `json:"ruf1,omitempty"`
 	Ruf2          NullString `json:"ruf2,omitempty"`
 	Ruf3          NullString `json:"ruf3,omitempty"`
@@ -43,11 +37,11 @@ type BizPersonasVehiclesE struct {
 	TotalRecords  int64      `json:"total_records,omitempty"`
 }
 
-func (e BizPersonasVehiclesE) MarshalJSON() ([]byte, error) {
+func (e BizPersonasBitacoraE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const querySelectBizPerVehicl = `select * from biz_personas_vehicles_list( $1, $2)`
+const querySelectBizPerBita = `select * from biz_personas_address_list( $1, $2)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -57,11 +51,11 @@ const querySelectBizPerVehicl = `select * from biz_personas_vehicles_list( $1, $
 //---------------------------------------------------------------------
 
 // GetAll returns a slice of all users, sorted by last name
-func (u *BizPersonasVehiclesE) GetAll(token string, filter string) ([]*BizPersonasVehiclesE, error) {
+func (u *BizPersonasBitacoraE) GetAll(token string, filter string) ([]*BizPersonasBitacoraE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectBizPerVehicl
+	query := querySelectBizPerBita
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -88,10 +82,10 @@ func (u *BizPersonasVehiclesE) GetAll(token string, filter string) ([]*BizPerson
 	}
 	defer rows.Close()
 
-	var lista []*BizPersonasVehiclesE
+	var lista []*BizPersonasBitacoraE
 
 	for rows.Next() {
-		var rowdata BizPersonasVehiclesE
+		var rowdata BizPersonasBitacoraE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
 			&rowdata.Owner,
@@ -103,17 +97,11 @@ func (u *BizPersonasVehiclesE) GetAll(token string, filter string) ([]*BizPerson
 			&rowdata.PersonaId,
 			&rowdata.BizPersonaId,
 			&rowdata.Secuencial,
-			&rowdata.Orden,
-			&rowdata.License,
-			&rowdata.CarTypeId,
-			&rowdata.CarBrandId,
-			&rowdata.CarColorId,
-			&rowdata.CarType,
-			&rowdata.CarBrand,
-			&rowdata.CarModel,
-			&rowdata.CarColor,
-			&rowdata.CarYear,
-			&rowdata.Notes,
+			&rowdata.Fecha,
+			&rowdata.TipoMov,
+			&rowdata.Subject,
+			&rowdata.Contenido,
+			&rowdata.Username,
 			&rowdata.Ruf1,
 			&rowdata.Ruf2,
 			&rowdata.Ruf3,
@@ -138,13 +126,13 @@ func (u *BizPersonasVehiclesE) GetAll(token string, filter string) ([]*BizPerson
 }
 
 // GetOne returns one user by id
-func (u *BizPersonasVehiclesE) GetByUniqueid(token string, uniqueid int) (*BizPersonasVehiclesE, error) {
+func (u *BizPersonasBitacoraE) GetByUniqueid(token string, uniqueid int) (*BizPersonasBitacoraE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectBizPerVehicl
+	query := querySelectBizPerBita
 
-	var rowdata BizPersonasVehiclesE
+	var rowdata BizPersonasBitacoraE
 	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
@@ -159,17 +147,11 @@ func (u *BizPersonasVehiclesE) GetByUniqueid(token string, uniqueid int) (*BizPe
 		&rowdata.PersonaId,
 		&rowdata.BizPersonaId,
 		&rowdata.Secuencial,
-		&rowdata.Orden,
-		&rowdata.License,
-		&rowdata.CarTypeId,
-		&rowdata.CarBrandId,
-		&rowdata.CarColorId,
-		&rowdata.CarType,
-		&rowdata.CarBrand,
-		&rowdata.CarModel,
-		&rowdata.CarColor,
-		&rowdata.CarYear,
-		&rowdata.Notes,
+		&rowdata.Fecha,
+		&rowdata.TipoMov,
+		&rowdata.Subject,
+		&rowdata.Contenido,
+		&rowdata.Username,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
@@ -192,7 +174,7 @@ func (u *BizPersonasVehiclesE) GetByUniqueid(token string, uniqueid int) (*BizPe
 
 // Update updates one user in the database, using the information
 // stored in the receiver u
-func (u *BizPersonasVehiclesE) Update(token string, data string, metricas string) (map[string]any, error) {
+func (u *BizPersonasBitacoraE) Update(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -213,7 +195,7 @@ func (u *BizPersonasVehiclesE) Update(token string, data string, metricas string
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := `SELECT biz_personas_vehicles_save($1, $2, $3)`
+	query := `SELECT biz_personas_bitacora_save($1, $2, $3)`
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -242,7 +224,7 @@ func (u *BizPersonasVehiclesE) Update(token string, data string, metricas string
 }
 
 // Delete deletes one user from the database, by User.ID
-func (u *BizPersonasVehiclesE) Delete(token string, data string, metricas string) (map[string]any, error) {
+func (u *BizPersonasBitacoraE) Delete(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -263,7 +245,7 @@ func (u *BizPersonasVehiclesE) Delete(token string, data string, metricas string
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := `SELECT biz_personas_vehicles_save($1, $2, $3)`
+	query := `SELECT biz_personas_bitacora_save($1, $2, $3)`
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -292,7 +274,7 @@ func (u *BizPersonasVehiclesE) Delete(token string, data string, metricas string
 }
 
 // DeleteByID deletes one user from the database, by ID
-func (u *BizPersonasVehiclesE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
+func (u *BizPersonasBitacoraE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -301,7 +283,7 @@ func (u *BizPersonasVehiclesE) DeleteByID(token string, id int, metricas string)
 							  }`,
 		id, 300)
 
-	query := `SELECT biz_personas_vehicles_save($1, $2, $3)`
+	query := `SELECT biz_personas_bitacora_save($1, $2, $3)`
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err

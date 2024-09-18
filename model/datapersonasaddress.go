@@ -20,11 +20,11 @@ type DataPersonaAddressE struct {
 	Secuencial       NullInt32   `json:"secuencial"`
 	Orden            NullInt32   `json:"orden"`
 	TokenAddress     NullString  `json:"tokenaddress,omitempty"`
-	AddressTypeId    NullString  `json:"address_type_id,omitempty"`
-	FullAddress      NullString  `json:"full_address,omitempty"`
-	StreetAddress    NullString  `json:"street_address,omitempty"`
-	NumberAddress    NullString  `json:"number_address,omitempty"`
-	CityAddress      NullString  `json:"city_address,omitempty"`
+	AddressTypeId    NullString  `json:"addresstypeid,omitempty"`
+	FullAddress      NullString  `json:"fulladdress,omitempty"`
+	StreetAddress    NullString  `json:"streetaddress,omitempty"`
+	NumberAddress    NullString  `json:"numberaddress,omitempty"`
+	CityAddress      NullString  `json:"cityaddress,omitempty"`
 	Zipcode          NullString  `json:"zipcode,omitempty"`
 	ZipcodeText      NullString  `json:"zipcodetext,omitempty"`
 	RegionId         NullInt64   `json:"regionid,omitempty"`
