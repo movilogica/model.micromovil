@@ -36,6 +36,7 @@ type BizPersonasE struct {
 	Documento       NullString  `json:"documento,omitempty"`
 	RoleTypeId      NullString  `json:"roletypeid,omitempty"`
 	Clasificacion   NullInt32   `json:"clasificacion,omitempty"`
+	Privado         NullInt32   `json:"privado,omitempty"`
 	HourValue       NullFloat64 `json:"hourvalue,omitempty"`
 	Mailing         NullInt32   `json:"mailing,omitempty"`
 	Notifier        NullInt32   `json:"notifier,omitempty"`
@@ -91,7 +92,7 @@ func (e CustomerInfoE) MarshalJSON() ([]byte, error) {
 }
 
 const querySelectBizPer = `select * from biz_personas_list( $1, $2)`
-const querySelectBizPerMinimal = `select uniqueid, sede, flag1, flag2, personaid, tokendataid, nroperacion, maskoperacion, nombres, apaterno, movil, email, phone, role_type_id, suscribed, balance, activo, estadoreg, total_records from biz_personas_list( $1, $2)`
+const querySelectBizPerMinimal = `select uniqueid, sede, flag1, flag2, personaid, tokendataid, nroperacion, maskoperacion, nombres, apaterno, movil, email, phone, role_type_id, privado, suscribed, balance, activo, estadoreg, total_records from biz_personas_list( $1, $2)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -164,6 +165,7 @@ func (u *BizPersonasE) GetAll(token string, filter string) ([]*BizPersonasE, err
 			&rowdata.Documento,
 			&rowdata.RoleTypeId,
 			&rowdata.Clasificacion,
+			&rowdata.Privado,
 			&rowdata.HourValue,
 			&rowdata.Mailing,
 			&rowdata.Notifier,
@@ -257,6 +259,7 @@ func (u *BizPersonasE) LookingFor(token string, filter string) ([]*BizPersonasE,
 			&rowdata.Email,
 			&rowdata.Phone,
 			&rowdata.RoleTypeId,
+			&rowdata.Privado,
 			&rowdata.Suscribed,
 			&rowdata.Balance,
 			&rowdata.Activo,
@@ -313,6 +316,7 @@ func (u *BizPersonasE) GetByUniqueid(token string, uniqueid int) (*BizPersonasE,
 		&rowdata.Documento,
 		&rowdata.RoleTypeId,
 		&rowdata.Clasificacion,
+		&rowdata.Privado,
 		&rowdata.HourValue,
 		&rowdata.Mailing,
 		&rowdata.Notifier,
