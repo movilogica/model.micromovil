@@ -9,57 +9,58 @@ import (
 
 // Customer Address
 type BizPersonasAddressE struct {
-	Uniqueid         int64      `json:"uniqueid,omitempty"`
-	Owner            NullInt32  `json:"owner,omitempty"`
-	Dispositivoid    NullInt32  `json:"dispositivoid,omitempty"`
-	Id               int32      `json:"id,omitempty"`
-	Sede             int32      `json:"sede"`
-	Flag1            string     `json:"flag1,omitempty"`
-	Flag2            string     `json:"flag2,omitempty"`
-	PersonaId        NullInt64  `json:"personaid,omitempty"`
-	BizPersonaId     NullInt64  `json:"bizpersonaid,omitempty"`
-	Secuencial       NullInt32  `json:"secuencial"`
-	Orden            NullInt32  `json:"orden"`
-	AddressTypeId    NullString `json:"addresstypeid,omitempty"`
-	FullAddress      NullString `json:"fulladdress,omitempty"`
-	StreetAddress    NullString `json:"streetaddress,omitempty"`
-	NumberAddress    NullString `json:"numberaddress,omitempty"`
-	CityAddress      NullString `json:"cityaddress,omitempty"`
-	Zipcode          NullString `json:"zipcode,omitempty"`
-	ZipcodeText      NullString `json:"zipcodetext,omitempty"`
-	RegionId         NullInt64  `json:"regionid,omitempty"`
-	RegionText       NullString `json:"regiontext,omitempty"`
-	DepartamentoId   NullInt64  `json:"departamentoid,omitempty"`
-	DepartamentoText NullString `json:"departamentotext,omitempty"`
-	ProvinciaId      NullInt64  `json:"provinciaid,omitempty"`
-	ProvinciaText    NullString `json:"provinciatext,omitempty"`
-	DistritoId       NullInt64  `json:"distritoid,omitempty"`
-	DistritoText     NullString `json:"distritotext,omitempty"`
-	PaisId           NullInt64  `json:"paisid,omitempty"`
-	PaisText         NullString `json:"paistext,omitempty"`
-	Latitud          NullString `json:"latitud,omitempty"`
-	Longitud         NullString `json:"longitud,omitempty"`
-	IssuedAt         NullTime   `json:"issued,omitempty"`
-	ExpiredAt        NullTime   `json:"expired,omitempty"`
-	Notes            NullString `json:"notes,omitempty"`
-	Validated        NullInt32  `json:"validated,omitempty"`
-	FvalidatedAt     NullTime   `json:"fvalidated,omitempty"`
-	ValidatedBy      NullString `json:"validatedby,omitempty"`
-	StatusAddress    NullInt32  `json:"status_address,omitempty"`
-	StatusDetail     NullString `json:"status_detail,omitempty"`
-	StatusDateAt     NullTime   `json:"status_date,omitempty"`
-	Foremost         NullInt32  `json:"foremost,omitempty"`
-	Ruf1             NullString `json:"ruf1,omitempty"`
-	Ruf2             NullString `json:"ruf2,omitempty"`
-	Ruf3             NullString `json:"ruf3,omitempty"`
-	Iv               NullString `json:"iv,omitempty"`
-	Salt             NullString `json:"salt,omitempty"`
-	Checksum         NullString `json:"checksum,omitempty"`
-	FCreated         NullTime   `json:"fcreated,omitempty"`
-	FUpdated         NullTime   `json:"fupdated,omitempty"`
-	Activo           int32      `json:"activo,omitempty"`
-	Estadoreg        int32      `json:"estadoreg,omitempty"`
-	TotalRecords     int64      `json:"total_records,omitempty"`
+	Uniqueid         int64       `json:"uniqueid,omitempty"`
+	Owner            NullInt32   `json:"owner,omitempty"`
+	Dispositivoid    NullInt32   `json:"dispositivoid,omitempty"`
+	Id               int32       `json:"id,omitempty"`
+	Sede             int32       `json:"sede"`
+	Flag1            string      `json:"flag1,omitempty"`
+	Flag2            string      `json:"flag2,omitempty"`
+	PersonaId        NullInt64   `json:"personaid,omitempty"`
+	BizPersonaId     NullInt64   `json:"bizpersonaid,omitempty"`
+	Secuencial       NullInt32   `json:"secuencial"`
+	Orden            NullInt32   `json:"orden"`
+	AddressTypeId    NullString  `json:"addresstypeid,omitempty"`
+	FullAddress      NullString  `json:"fulladdress,omitempty"`
+	StreetAddress    NullString  `json:"streetaddress,omitempty"`
+	NumberAddress    NullString  `json:"numberaddress,omitempty"`
+	CityAddress      NullString  `json:"cityaddress,omitempty"`
+	Zipcode          NullString  `json:"zipcode,omitempty"`
+	ZipcodeText      NullString  `json:"zipcodetext,omitempty"`
+	RegionId         NullInt64   `json:"regionid,omitempty"`
+	RegionText       NullString  `json:"regiontext,omitempty"`
+	DepartamentoId   NullInt64   `json:"departamentoid,omitempty"`
+	DepartamentoText NullString  `json:"departamentotext,omitempty"`
+	ProvinciaId      NullInt64   `json:"provinciaid,omitempty"`
+	ProvinciaText    NullString  `json:"provinciatext,omitempty"`
+	DistritoId       NullInt64   `json:"distritoid,omitempty"`
+	DistritoText     NullString  `json:"distritotext,omitempty"`
+	PaisId           NullInt64   `json:"paisid,omitempty"`
+	PaisText         NullString  `json:"paistext,omitempty"`
+	Latitud          NullString  `json:"latitud,omitempty"`
+	Longitud         NullString  `json:"longitud,omitempty"`
+	IssuedAt         NullTime    `json:"issued,omitempty"`
+	ExpiredAt        NullTime    `json:"expired,omitempty"`
+	Notes            NullString  `json:"notes,omitempty"`
+	Validated        NullInt32   `json:"validated,omitempty"`
+	FvalidatedAt     NullTime    `json:"fvalidated,omitempty"`
+	ValidatedBy      NullString  `json:"validatedby,omitempty"`
+	StatusAddress    NullInt32   `json:"status_address,omitempty"`
+	StatusDetail     NullString  `json:"status_detail,omitempty"`
+	StatusDateAt     NullTime    `json:"status_date,omitempty"`
+	Foremost         NullInt32   `json:"foremost,omitempty"`
+	Distance         NullFloat64 `json:"distance,omitempty"` /// Auxiliar
+	Ruf1             NullString  `json:"ruf1,omitempty"`
+	Ruf2             NullString  `json:"ruf2,omitempty"`
+	Ruf3             NullString  `json:"ruf3,omitempty"`
+	Iv               NullString  `json:"iv,omitempty"`
+	Salt             NullString  `json:"salt,omitempty"`
+	Checksum         NullString  `json:"checksum,omitempty"`
+	FCreated         NullTime    `json:"fcreated,omitempty"`
+	FUpdated         NullTime    `json:"fupdated,omitempty"`
+	Activo           int32       `json:"activo,omitempty"`
+	Estadoreg        int32       `json:"estadoreg,omitempty"`
+	TotalRecords     int64       `json:"total_records,omitempty"`
 }
 
 func (e BizPersonasAddressE) MarshalJSON() ([]byte, error) {
@@ -152,6 +153,7 @@ func (u *BizPersonasAddressE) GetAll(token string, filter string) ([]*BizPersona
 			&rowdata.StatusDetail,
 			&rowdata.StatusDateAt,
 			&rowdata.Foremost,
+			&rowdata.Distance,
 			&rowdata.Ruf1,
 			&rowdata.Ruf2,
 			&rowdata.Ruf3,
@@ -227,6 +229,7 @@ func (u *BizPersonasAddressE) GetByUniqueid(token string, uniqueid int) (*BizPer
 		&rowdata.StatusDetail,
 		&rowdata.StatusDateAt,
 		&rowdata.Foremost,
+		&rowdata.Distance,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,

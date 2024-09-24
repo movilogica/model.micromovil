@@ -7,43 +7,50 @@ import (
 	"log"
 )
 
-// Categoria de Items
-type StoreParamCategItemE struct {
-	Uniqueid      int64      `json:"uniqueid,omitempty"`
-	Owner         NullInt32  `json:"owner,omitempty"`
-	Dispositivoid NullInt32  `json:"dispositivoid,omitempty"`
-	Id            int32      `json:"id,omitempty"`
-	Sede          int32      `json:"sede"`
-	Flag1         string     `json:"flag1,omitempty"`
-	Flag2         string     `json:"flag2,omitempty"`
-	PersonaId     NullInt64  `json:"personaid,omitempty"`
-	TokendataId   NullString `json:"tokendataid,omitempty"`
-	ParentId      NullInt64  `json:"parentid,omitempty"`
-	Code          NullString `json:"code,omitempty"`
-	CategoryType  NullString `json:"categorytype,omitempty"`
-	Name          NullString `json:"name,omitempty"`
-	Descrip       NullString `json:"descrip,omitempty"`
-	UrlImage      NullString `json:"urlimage,omitempty"`
-	UrlLink       NullString `json:"urllink,omitempty"`
-	Ruf1          NullString `json:"ruf1,omitempty"`
-	Ruf2          NullString `json:"ruf2,omitempty"`
-	Ruf3          NullString `json:"ruf3,omitempty"`
-	Iv            NullString `json:"iv,omitempty"`
-	Salt          NullString `json:"salt,omitempty"`
-	Checksum      NullString `json:"checksum,omitempty"`
-	FCreated      NullTime   `json:"fcreated,omitempty"`
-	FUpdated      NullTime   `json:"fupdated,omitempty"`
-	Activo        int32      `json:"activo,omitempty"`
-	Estadoreg     int32      `json:"estadoreg,omitempty"`
-	TotalRecords  int64      `json:"total_records,omitempty"`
+// Reglas de Picking - Acciones
+type StoreRulePickingActionsE struct {
+	Uniqueid           int64      `json:"uniqueid,omitempty"`
+	Owner              NullInt32  `json:"owner,omitempty"`
+	Dispositivoid      NullInt32  `json:"dispositivoid,omitempty"`
+	Id                 int32      `json:"id,omitempty"`
+	Sede               int32      `json:"sede"`
+	Flag1              string     `json:"flag1,omitempty"`
+	Flag2              string     `json:"flag2,omitempty"`
+	PersonaId          NullInt64  `json:"personaid,omitempty"`
+	TokendataId        NullString `json:"tokendataid,omitempty"`
+	RulePickId         NullInt64  `json:"rulepickid,omitempty"`
+	RulePickZoneId     NullInt64  `json:"rulepickzoneid,omitempty"`
+	Secuencial         NullInt32  `json:"secuencial,omitempty"`
+	Orden              NullInt32  `json:"orden,omitempty"`
+	WarehouseId        NullInt64  `json:"warehouseid,omitempty"`
+	StorageTypeId      NullInt64  `json:"storagetypeid,omitempty"`
+	LocationTypeEnumId NullString `json:"locationtypeenumid,omitempty"`
+	LocationStatusId   NullString `json:"locationstatusid,omitempty"`
+	Permanent          NullInt32  `json:"permanent,omitempty"`
+	ProductTypeId      NullString `json:"producttypeid,omitempty"`
+	CategItemId        NullInt64  `json:"categitemid,omitempty"`
+	InventoryTypeId    NullString `json:"inventorytypeid,omitempty"`
+	StatusItemId       NullString `json:"statusitemid,omitempty"`
+	UMedida            NullString `json:"umedida,omitempty"`
+	Ruf1               NullString `json:"ruf1,omitempty"`
+	Ruf2               NullString `json:"ruf2,omitempty"`
+	Ruf3               NullString `json:"ruf3,omitempty"`
+	Iv                 NullString `json:"iv,omitempty"`
+	Salt               NullString `json:"salt,omitempty"`
+	Checksum           NullString `json:"checksum,omitempty"`
+	FCreated           NullTime   `json:"fcreated,omitempty"`
+	FUpdated           NullTime   `json:"fupdated,omitempty"`
+	Activo             int32      `json:"activo,omitempty"`
+	Estadoreg          int32      `json:"estadoreg,omitempty"`
+	TotalRecords       int64      `json:"total_records,omitempty"`
 }
 
-func (e StoreParamCategItemE) MarshalJSON() ([]byte, error) {
+func (e StoreRulePickingActionsE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreParamCategItem = `select * from store_param_categ_items_list( $1, $2)`
-const querySaveStoreParamCategItem = `SELECT store_param_categ_items_save($1, $2, $3)`
+const queryListStoreRulePickingActionsE = `select * from store_rules_pick_actions_list( $1, $2)`
+const querySaveStoreRulePickingActionsE = `SELECT store_rules_pick_actions_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -53,11 +60,11 @@ const querySaveStoreParamCategItem = `SELECT store_param_categ_items_save($1, $2
 //---------------------------------------------------------------------
 
 // GetAll returns a slice of all users, sorted by last name
-func (u *StoreParamCategItemE) GetAll(token string, filter string) ([]*StoreParamCategItemE, error) {
+func (u *StoreRulePickingActionsE) GetAll(token string, filter string) ([]*StoreRulePickingActionsE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreParamCategItem
+	query := queryListStoreRulePickingActionsE
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -84,10 +91,10 @@ func (u *StoreParamCategItemE) GetAll(token string, filter string) ([]*StorePara
 	}
 	defer rows.Close()
 
-	var lista []*StoreParamCategItemE
+	var lista []*StoreRulePickingActionsE
 
 	for rows.Next() {
-		var rowdata StoreParamCategItemE
+		var rowdata StoreRulePickingActionsE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
 			&rowdata.Owner,
@@ -98,13 +105,20 @@ func (u *StoreParamCategItemE) GetAll(token string, filter string) ([]*StorePara
 			&rowdata.Flag2,
 			&rowdata.PersonaId,
 			&rowdata.TokendataId,
-			&rowdata.ParentId,
-			&rowdata.Code,
-			&rowdata.CategoryType,
-			&rowdata.Name,
-			&rowdata.Descrip,
-			&rowdata.UrlImage,
-			&rowdata.UrlLink,
+			&rowdata.RulePickId,
+			&rowdata.RulePickZoneId,
+			&rowdata.Secuencial,
+			&rowdata.Orden,
+			&rowdata.WarehouseId,
+			&rowdata.StorageTypeId,
+			&rowdata.LocationTypeEnumId,
+			&rowdata.LocationStatusId,
+			&rowdata.Permanent,
+			&rowdata.ProductTypeId,
+			&rowdata.CategItemId,
+			&rowdata.InventoryTypeId,
+			&rowdata.StatusItemId,
+			&rowdata.UMedida,
 			&rowdata.Ruf1,
 			&rowdata.Ruf2,
 			&rowdata.Ruf3,
@@ -129,13 +143,13 @@ func (u *StoreParamCategItemE) GetAll(token string, filter string) ([]*StorePara
 }
 
 // GetOne returns one user by id
-func (u *StoreParamCategItemE) GetByUniqueid(token string, uniqueid int) (*StoreParamCategItemE, error) {
+func (u *StoreRulePickingActionsE) GetByUniqueid(token string, uniqueid int) (*StoreRulePickingActionsE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreParamCategItem
+	query := queryListStoreRulePickingActionsE
 
-	var rowdata StoreParamCategItemE
+	var rowdata StoreRulePickingActionsE
 	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
@@ -149,13 +163,20 @@ func (u *StoreParamCategItemE) GetByUniqueid(token string, uniqueid int) (*Store
 		&rowdata.Flag2,
 		&rowdata.PersonaId,
 		&rowdata.TokendataId,
-		&rowdata.ParentId,
-		&rowdata.Code,
-		&rowdata.CategoryType,
-		&rowdata.Name,
-		&rowdata.Descrip,
-		&rowdata.UrlImage,
-		&rowdata.UrlLink,
+		&rowdata.RulePickId,
+		&rowdata.RulePickZoneId,
+		&rowdata.Secuencial,
+		&rowdata.Orden,
+		&rowdata.WarehouseId,
+		&rowdata.StorageTypeId,
+		&rowdata.LocationTypeEnumId,
+		&rowdata.LocationStatusId,
+		&rowdata.Permanent,
+		&rowdata.ProductTypeId,
+		&rowdata.CategItemId,
+		&rowdata.InventoryTypeId,
+		&rowdata.StatusItemId,
+		&rowdata.UMedida,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
@@ -178,7 +199,7 @@ func (u *StoreParamCategItemE) GetByUniqueid(token string, uniqueid int) (*Store
 
 // Update updates one user in the database, using the information
 // stored in the receiver u
-func (u *StoreParamCategItemE) Update(token string, data string, metricas string) (map[string]any, error) {
+func (u *StoreRulePickingActionsE) Update(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -199,7 +220,7 @@ func (u *StoreParamCategItemE) Update(token string, data string, metricas string
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := querySaveStoreParamCategItem
+	query := querySaveStoreRulePickingActionsE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -228,7 +249,7 @@ func (u *StoreParamCategItemE) Update(token string, data string, metricas string
 }
 
 // Delete deletes one user from the database, by User.ID
-func (u *StoreParamCategItemE) Delete(token string, data string, metricas string) (map[string]any, error) {
+func (u *StoreRulePickingActionsE) Delete(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -249,7 +270,7 @@ func (u *StoreParamCategItemE) Delete(token string, data string, metricas string
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := querySaveStoreParamCategItem
+	query := querySaveStoreRulePickingActionsE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -278,7 +299,7 @@ func (u *StoreParamCategItemE) Delete(token string, data string, metricas string
 }
 
 // DeleteByID deletes one user from the database, by ID
-func (u *StoreParamCategItemE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
+func (u *StoreRulePickingActionsE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -287,7 +308,7 @@ func (u *StoreParamCategItemE) DeleteByID(token string, id int, metricas string)
 							  }`,
 		id, 300)
 
-	query := querySaveStoreParamCategItem
+	query := querySaveStoreRulePickingActionsE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err

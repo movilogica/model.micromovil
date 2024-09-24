@@ -7,43 +7,66 @@ import (
 	"log"
 )
 
-// Categoria de Items
-type StoreParamCategItemE struct {
-	Uniqueid      int64      `json:"uniqueid,omitempty"`
-	Owner         NullInt32  `json:"owner,omitempty"`
-	Dispositivoid NullInt32  `json:"dispositivoid,omitempty"`
-	Id            int32      `json:"id,omitempty"`
-	Sede          int32      `json:"sede"`
-	Flag1         string     `json:"flag1,omitempty"`
-	Flag2         string     `json:"flag2,omitempty"`
-	PersonaId     NullInt64  `json:"personaid,omitempty"`
-	TokendataId   NullString `json:"tokendataid,omitempty"`
-	ParentId      NullInt64  `json:"parentid,omitempty"`
-	Code          NullString `json:"code,omitempty"`
-	CategoryType  NullString `json:"categorytype,omitempty"`
-	Name          NullString `json:"name,omitempty"`
-	Descrip       NullString `json:"descrip,omitempty"`
-	UrlImage      NullString `json:"urlimage,omitempty"`
-	UrlLink       NullString `json:"urllink,omitempty"`
-	Ruf1          NullString `json:"ruf1,omitempty"`
-	Ruf2          NullString `json:"ruf2,omitempty"`
-	Ruf3          NullString `json:"ruf3,omitempty"`
-	Iv            NullString `json:"iv,omitempty"`
-	Salt          NullString `json:"salt,omitempty"`
-	Checksum      NullString `json:"checksum,omitempty"`
-	FCreated      NullTime   `json:"fcreated,omitempty"`
-	FUpdated      NullTime   `json:"fupdated,omitempty"`
-	Activo        int32      `json:"activo,omitempty"`
-	Estadoreg     int32      `json:"estadoreg,omitempty"`
-	TotalRecords  int64      `json:"total_records,omitempty"`
+// Inventory History
+type StoreInventoryHistoryE struct {
+	Uniqueid        int64       `json:"uniqueid,omitempty"`
+	Owner           NullInt32   `json:"owner,omitempty"`
+	Dispositivoid   NullInt32   `json:"dispositivoid,omitempty"`
+	Id              int32       `json:"id,omitempty"`
+	Sede            int32       `json:"sede"`
+	Flag1           string      `json:"flag1,omitempty"`
+	Flag2           string      `json:"flag2,omitempty"`
+	PersonaId       NullInt64   `json:"personaid,omitempty"`
+	TokendataId     NullString  `json:"tokendataid,omitempty"`
+	WarehouseId     NullInt64   `json:"warehouseid,omitempty"`
+	LocationSeqId   NullString  `json:"locationseqid,omitempty"`
+	InventoryTypeId NullString  `json:"inventorytypeid,omitempty"`
+	ProductId       NullInt64   `json:"productid,omitempty"`
+	Io              NullString  `json:"io,omitempty"`
+	TipoMov         NullString  `json:"tipomov,omitempty"`
+	ReasonEnumId    NullString  `json:"reasonenumid,omitempty"`
+	UDisplay        NullString  `json:"udisplay,omitempty"`
+	Uom             NullString  `json:"uom,omitempty"`
+	Quom            NullInt64   `json:"quom,omitempty"`
+	Quantity        NullFloat64 `json:"quantity,omitempty"`
+	Xs              NullInt64   `json:"xs,omitempty"`
+	S               NullInt64   `json:"s,omitempty"`
+	M               NullInt64   `json:"m,omitempty"`
+	L               NullInt64   `json:"l,omitempty"`
+	Xl              NullInt64   `json:"xl,omitempty"`
+	Xxl             NullInt64   `json:"xxl,omitempty"`
+	Xxxl            NullInt64   `json:"xxxl,omitempty"`
+	Os              NullInt64   `json:"os,omitempty"`
+	Total           NullInt64   `json:"total,omitempty"`
+	ReceiptId       NullInt64   `json:"receiptid,omitempty"`
+	ReceiptText     NullString  `json:"receipttext,omitempty"`
+	OrderId         NullInt64   `json:"orderid,omitempty"`
+	ShiptmentId     NullInt64   `json:"shiptmentid,omitempty"`
+	DocumentText    NullString  `json:"documenttext,omitempty"`
+	Notas           NullString  `json:"notas,omitempty"`
+	Ruf1            NullString  `json:"ruf1,omitempty"`
+	Ruf2            NullString  `json:"ruf2,omitempty"`
+	Ruf3            NullString  `json:"ruf3,omitempty"`
+	Iv              NullString  `json:"iv,omitempty"`
+	Salt            NullString  `json:"salt,omitempty"`
+	Checksum        NullString  `json:"checksum,omitempty"`
+	FCreated        NullTime    `json:"fcreated,omitempty"`
+	FUpdated        NullTime    `json:"fupdated,omitempty"`
+	Activo          int32       `json:"activo,omitempty"`
+	Estadoreg       int32       `json:"estadoreg,omitempty"`
+	TotalRecords    int64       `json:"total_records,omitempty"`
 }
 
-func (e StoreParamCategItemE) MarshalJSON() ([]byte, error) {
+func (e StoreInventoryHistoryE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreParamCategItem = `select * from store_param_categ_items_list( $1, $2)`
-const querySaveStoreParamCategItem = `SELECT store_param_categ_items_save($1, $2, $3)`
+func (e StoreInventoryHistoryE) CreatedFormat() string {
+	return e.FCreated.Time.Format("Jan 2006")
+}
+
+const queryListStoreInventoryHistoryE = `select * from store_inventory_history_list( $1, $2)`
+const querySaveStoreInventoryHistoryE = `SELECT store_inventory_history_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -53,11 +76,11 @@ const querySaveStoreParamCategItem = `SELECT store_param_categ_items_save($1, $2
 //---------------------------------------------------------------------
 
 // GetAll returns a slice of all users, sorted by last name
-func (u *StoreParamCategItemE) GetAll(token string, filter string) ([]*StoreParamCategItemE, error) {
+func (u *StoreInventoryHistoryE) GetAll(token string, filter string) ([]*StoreInventoryHistoryE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreParamCategItem
+	query := queryListStoreInventoryHistoryE
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -84,10 +107,10 @@ func (u *StoreParamCategItemE) GetAll(token string, filter string) ([]*StorePara
 	}
 	defer rows.Close()
 
-	var lista []*StoreParamCategItemE
+	var lista []*StoreInventoryHistoryE
 
 	for rows.Next() {
-		var rowdata StoreParamCategItemE
+		var rowdata StoreInventoryHistoryE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
 			&rowdata.Owner,
@@ -98,13 +121,32 @@ func (u *StoreParamCategItemE) GetAll(token string, filter string) ([]*StorePara
 			&rowdata.Flag2,
 			&rowdata.PersonaId,
 			&rowdata.TokendataId,
-			&rowdata.ParentId,
-			&rowdata.Code,
-			&rowdata.CategoryType,
-			&rowdata.Name,
-			&rowdata.Descrip,
-			&rowdata.UrlImage,
-			&rowdata.UrlLink,
+			&rowdata.WarehouseId,
+			&rowdata.LocationSeqId,
+			&rowdata.InventoryTypeId,
+			&rowdata.ProductId,
+			&rowdata.Io,
+			&rowdata.TipoMov,
+			&rowdata.ReasonEnumId,
+			&rowdata.UDisplay,
+			&rowdata.Uom,
+			&rowdata.Quom,
+			&rowdata.Quantity,
+			&rowdata.Xs,
+			&rowdata.S,
+			&rowdata.M,
+			&rowdata.L,
+			&rowdata.Xl,
+			&rowdata.Xxl,
+			&rowdata.Xxxl,
+			&rowdata.Os,
+			&rowdata.Total,
+			&rowdata.ReceiptId,
+			&rowdata.ReceiptText,
+			&rowdata.OrderId,
+			&rowdata.ShiptmentId,
+			&rowdata.DocumentText,
+			&rowdata.Notas,
 			&rowdata.Ruf1,
 			&rowdata.Ruf2,
 			&rowdata.Ruf3,
@@ -129,13 +171,13 @@ func (u *StoreParamCategItemE) GetAll(token string, filter string) ([]*StorePara
 }
 
 // GetOne returns one user by id
-func (u *StoreParamCategItemE) GetByUniqueid(token string, uniqueid int) (*StoreParamCategItemE, error) {
+func (u *StoreInventoryHistoryE) GetByUniqueid(token string, uniqueid int) (*StoreInventoryHistoryE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreParamCategItem
+	query := queryListStoreInventoryHistoryE
 
-	var rowdata StoreParamCategItemE
+	var rowdata StoreInventoryHistoryE
 	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
@@ -149,13 +191,32 @@ func (u *StoreParamCategItemE) GetByUniqueid(token string, uniqueid int) (*Store
 		&rowdata.Flag2,
 		&rowdata.PersonaId,
 		&rowdata.TokendataId,
-		&rowdata.ParentId,
-		&rowdata.Code,
-		&rowdata.CategoryType,
-		&rowdata.Name,
-		&rowdata.Descrip,
-		&rowdata.UrlImage,
-		&rowdata.UrlLink,
+		&rowdata.WarehouseId,
+		&rowdata.LocationSeqId,
+		&rowdata.InventoryTypeId,
+		&rowdata.ProductId,
+		&rowdata.Io,
+		&rowdata.TipoMov,
+		&rowdata.ReasonEnumId,
+		&rowdata.UDisplay,
+		&rowdata.Uom,
+		&rowdata.Quom,
+		&rowdata.Quantity,
+		&rowdata.Xs,
+		&rowdata.S,
+		&rowdata.M,
+		&rowdata.L,
+		&rowdata.Xl,
+		&rowdata.Xxl,
+		&rowdata.Xxxl,
+		&rowdata.Os,
+		&rowdata.Total,
+		&rowdata.ReceiptId,
+		&rowdata.ReceiptText,
+		&rowdata.OrderId,
+		&rowdata.ShiptmentId,
+		&rowdata.DocumentText,
+		&rowdata.Notas,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
@@ -178,7 +239,7 @@ func (u *StoreParamCategItemE) GetByUniqueid(token string, uniqueid int) (*Store
 
 // Update updates one user in the database, using the information
 // stored in the receiver u
-func (u *StoreParamCategItemE) Update(token string, data string, metricas string) (map[string]any, error) {
+func (u *StoreInventoryHistoryE) Update(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -199,7 +260,7 @@ func (u *StoreParamCategItemE) Update(token string, data string, metricas string
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := querySaveStoreParamCategItem
+	query := querySaveStoreInventoryHistoryE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -228,7 +289,7 @@ func (u *StoreParamCategItemE) Update(token string, data string, metricas string
 }
 
 // Delete deletes one user from the database, by User.ID
-func (u *StoreParamCategItemE) Delete(token string, data string, metricas string) (map[string]any, error) {
+func (u *StoreInventoryHistoryE) Delete(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -249,7 +310,7 @@ func (u *StoreParamCategItemE) Delete(token string, data string, metricas string
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := querySaveStoreParamCategItem
+	query := querySaveStoreInventoryHistoryE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -278,7 +339,7 @@ func (u *StoreParamCategItemE) Delete(token string, data string, metricas string
 }
 
 // DeleteByID deletes one user from the database, by ID
-func (u *StoreParamCategItemE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
+func (u *StoreInventoryHistoryE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -287,7 +348,7 @@ func (u *StoreParamCategItemE) DeleteByID(token string, id int, metricas string)
 							  }`,
 		id, 300)
 
-	query := querySaveStoreParamCategItem
+	query := querySaveStoreInventoryHistoryE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err

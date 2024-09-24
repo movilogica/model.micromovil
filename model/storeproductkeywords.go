@@ -7,8 +7,8 @@ import (
 	"log"
 )
 
-// Categoria de Items
-type StoreParamCategItemE struct {
+// Productos Keywords
+type StoreProductKeywordsE struct {
 	Uniqueid      int64      `json:"uniqueid,omitempty"`
 	Owner         NullInt32  `json:"owner,omitempty"`
 	Dispositivoid NullInt32  `json:"dispositivoid,omitempty"`
@@ -18,13 +18,11 @@ type StoreParamCategItemE struct {
 	Flag2         string     `json:"flag2,omitempty"`
 	PersonaId     NullInt64  `json:"personaid,omitempty"`
 	TokendataId   NullString `json:"tokendataid,omitempty"`
-	ParentId      NullInt64  `json:"parentid,omitempty"`
-	Code          NullString `json:"code,omitempty"`
-	CategoryType  NullString `json:"categorytype,omitempty"`
-	Name          NullString `json:"name,omitempty"`
-	Descrip       NullString `json:"descrip,omitempty"`
-	UrlImage      NullString `json:"urlimage,omitempty"`
-	UrlLink       NullString `json:"urllink,omitempty"`
+	ProductId     NullInt64  `json:"productid,omitempty"`
+	Secuencial    NullInt32  `json:"secuencial,omitempty"`
+	Keyword       NullString `json:"keyword,omitempty"`
+	KeywordType   NullString `json:"keywordtype,omitempty"`
+	Weight        NullInt32  `json:"weight,omitempty"`
 	Ruf1          NullString `json:"ruf1,omitempty"`
 	Ruf2          NullString `json:"ruf2,omitempty"`
 	Ruf3          NullString `json:"ruf3,omitempty"`
@@ -38,12 +36,12 @@ type StoreParamCategItemE struct {
 	TotalRecords  int64      `json:"total_records,omitempty"`
 }
 
-func (e StoreParamCategItemE) MarshalJSON() ([]byte, error) {
+func (e StoreProductKeywordsE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreParamCategItem = `select * from store_param_categ_items_list( $1, $2)`
-const querySaveStoreParamCategItem = `SELECT store_param_categ_items_save($1, $2, $3)`
+const queryListStoreProductKeywordsE = `select * from store_product_keywords_list( $1, $2)`
+const querySaveStoreProductKeywordsE = `SELECT store_product_keywords_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -53,11 +51,11 @@ const querySaveStoreParamCategItem = `SELECT store_param_categ_items_save($1, $2
 //---------------------------------------------------------------------
 
 // GetAll returns a slice of all users, sorted by last name
-func (u *StoreParamCategItemE) GetAll(token string, filter string) ([]*StoreParamCategItemE, error) {
+func (u *StoreProductKeywordsE) GetAll(token string, filter string) ([]*StoreProductKeywordsE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreParamCategItem
+	query := queryListStoreProductKeywordsE
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -84,10 +82,10 @@ func (u *StoreParamCategItemE) GetAll(token string, filter string) ([]*StorePara
 	}
 	defer rows.Close()
 
-	var lista []*StoreParamCategItemE
+	var lista []*StoreProductKeywordsE
 
 	for rows.Next() {
-		var rowdata StoreParamCategItemE
+		var rowdata StoreProductKeywordsE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
 			&rowdata.Owner,
@@ -98,13 +96,10 @@ func (u *StoreParamCategItemE) GetAll(token string, filter string) ([]*StorePara
 			&rowdata.Flag2,
 			&rowdata.PersonaId,
 			&rowdata.TokendataId,
-			&rowdata.ParentId,
-			&rowdata.Code,
-			&rowdata.CategoryType,
-			&rowdata.Name,
-			&rowdata.Descrip,
-			&rowdata.UrlImage,
-			&rowdata.UrlLink,
+			&rowdata.ProductId,
+			&rowdata.Keyword,
+			&rowdata.KeywordType,
+			&rowdata.Weight,
 			&rowdata.Ruf1,
 			&rowdata.Ruf2,
 			&rowdata.Ruf3,
@@ -129,13 +124,13 @@ func (u *StoreParamCategItemE) GetAll(token string, filter string) ([]*StorePara
 }
 
 // GetOne returns one user by id
-func (u *StoreParamCategItemE) GetByUniqueid(token string, uniqueid int) (*StoreParamCategItemE, error) {
+func (u *StoreProductKeywordsE) GetByUniqueid(token string, uniqueid int) (*StoreProductKeywordsE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreParamCategItem
+	query := queryListStoreProductKeywordsE
 
-	var rowdata StoreParamCategItemE
+	var rowdata StoreProductKeywordsE
 	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
@@ -149,13 +144,10 @@ func (u *StoreParamCategItemE) GetByUniqueid(token string, uniqueid int) (*Store
 		&rowdata.Flag2,
 		&rowdata.PersonaId,
 		&rowdata.TokendataId,
-		&rowdata.ParentId,
-		&rowdata.Code,
-		&rowdata.CategoryType,
-		&rowdata.Name,
-		&rowdata.Descrip,
-		&rowdata.UrlImage,
-		&rowdata.UrlLink,
+		&rowdata.ProductId,
+		&rowdata.Keyword,
+		&rowdata.KeywordType,
+		&rowdata.Weight,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
@@ -178,7 +170,7 @@ func (u *StoreParamCategItemE) GetByUniqueid(token string, uniqueid int) (*Store
 
 // Update updates one user in the database, using the information
 // stored in the receiver u
-func (u *StoreParamCategItemE) Update(token string, data string, metricas string) (map[string]any, error) {
+func (u *StoreProductKeywordsE) Update(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -199,7 +191,7 @@ func (u *StoreParamCategItemE) Update(token string, data string, metricas string
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := querySaveStoreParamCategItem
+	query := querySaveStoreProductKeywordsE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -228,7 +220,7 @@ func (u *StoreParamCategItemE) Update(token string, data string, metricas string
 }
 
 // Delete deletes one user from the database, by User.ID
-func (u *StoreParamCategItemE) Delete(token string, data string, metricas string) (map[string]any, error) {
+func (u *StoreProductKeywordsE) Delete(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -249,7 +241,7 @@ func (u *StoreParamCategItemE) Delete(token string, data string, metricas string
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := querySaveStoreParamCategItem
+	query := querySaveStoreProductKeywordsE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -278,7 +270,7 @@ func (u *StoreParamCategItemE) Delete(token string, data string, metricas string
 }
 
 // DeleteByID deletes one user from the database, by ID
-func (u *StoreParamCategItemE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
+func (u *StoreProductKeywordsE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -287,7 +279,7 @@ func (u *StoreParamCategItemE) DeleteByID(token string, id int, metricas string)
 							  }`,
 		id, 300)
 
-	query := querySaveStoreParamCategItem
+	query := querySaveStoreProductKeywordsE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err

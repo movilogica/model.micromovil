@@ -7,8 +7,8 @@ import (
 	"log"
 )
 
-// Items Recount
-type StoreInventRecountItemE struct {
+// Catalogos Categorias
+type StoreCatalogCategItemsE struct {
 	Uniqueid      int64      `json:"uniqueid,omitempty"`
 	Owner         NullInt32  `json:"owner,omitempty"`
 	Dispositivoid NullInt32  `json:"dispositivoid,omitempty"`
@@ -18,38 +18,13 @@ type StoreInventRecountItemE struct {
 	Flag2         string     `json:"flag2,omitempty"`
 	PersonaId     NullInt64  `json:"personaid,omitempty"`
 	TokendataId   NullString `json:"tokendataid,omitempty"`
-	WarehouseId   NullInt64  `json:"warehouseid,omitempty"`
-	RecountId     NullInt64  `json:"recountid,omitempty"`
-	GroupId       NullInt64  `json:"groupid,omitempty"`
-	Grouptext     NullString `json:"grouptext,omitempty"`
-	Personatext   NullString `json:"personatext,omitempty"`
-	Numero        NullInt32  `json:"numero,omitempty"`
-	BoxId         NullInt64  `json:"boxid,omitempty"`
-	BoxIdentityId NullInt32  `json:"boxidentityid,omitempty"`
-	BarcodeBox    NullString `json:"barcodebox,omitempty"`
-	BarcodeItem   NullString `json:"barcodeitem,omitempty"`
-	StyleCode     NullString `json:"stylecode,omitempty"`
-	StyleText     NullString `json:"styletext,omitempty"`
-	ColorCode     NullString `json:"colorcode,omitempty"`
-	DivisionCode  NullString `json:"divisioncode,omitempty"`
-	AreaId        NullString `json:"areaid,omitempty"`
-	AisleId       NullString `json:"aisleid,omitempty"`
-	SectionId     NullString `json:"sectionid,omitempty"`
-	LevelId       NullString `json:"levelid,omitempty"`
-	PositionId    NullString `json:"positionid,omitempty"`
-	Xs            NullInt64  `json:"xs,omitempty"`
-	S             NullInt64  `json:"s,omitempty"`
-	M             NullInt64  `json:"m,omitempty"`
-	L             NullInt64  `json:"l,omitempty"`
-	Xl            NullInt64  `json:"xl,omitempty"`
-	Xxl           NullInt64  `json:"xxl,omitempty"`
-	Xxxl          NullInt64  `json:"xxxl,omitempty"`
-	Os            NullInt64  `json:"os,omitempty"`
-	Total         NullInt64  `json:"total,omitempty"`
-	Reactive      NullInt32  `json:"reactive,omitempty"`
-	Pigment       NullInt32  `json:"pigment,omitempty"`
-	Pfd           NullInt32  `json:"pfd,omitempty"`
-	UrlPhotoImage NullString `json:"urlphotoimage,omitempty"`
+	CatalogId     NullInt64  `json:"catalogid,omitempty"`
+	Secuencial    NullInt32  `json:"secuencial,omitempty"`
+	CategItemId   NullInt64  `json:"categitemid,omitempty"`
+	CategoryType  NullString `json:"categorytype,omitempty"`
+	FromDate      NullTime   `json:"fromdate,omitempty"`
+	ThroughDate   NullTime   `json:"throughdate,omitempty"`
+	PrefixNum     NullString `json:"prefixnum,omitempty"`
 	Ruf1          NullString `json:"ruf1,omitempty"`
 	Ruf2          NullString `json:"ruf2,omitempty"`
 	Ruf3          NullString `json:"ruf3,omitempty"`
@@ -63,15 +38,12 @@ type StoreInventRecountItemE struct {
 	TotalRecords  int64      `json:"total_records,omitempty"`
 }
 
-func (e StoreInventRecountItemE) MarshalJSON() ([]byte, error) {
+func (e StoreCatalogCategItemsE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-func (e StoreInventRecountItemE) CreatedFormat() string {
-	return e.FCreated.Time.Format("Jan 2006")
-}
-
-const querySelectStoreInventRecountItem = `select * from store_inventory_recount_items_list( $1, $2)`
+const queryListStoreCatalogCategItemsE = `select * from store_catalog_categitems_list( $1, $2)`
+const querySaveStoreCatalogCategItemsE = `SELECT store_catalog_categitems_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -81,11 +53,11 @@ const querySelectStoreInventRecountItem = `select * from store_inventory_recount
 //---------------------------------------------------------------------
 
 // GetAll returns a slice of all users, sorted by last name
-func (u *StoreInventRecountItemE) GetAll(token string, filter string) ([]*StoreInventRecountItemE, error) {
+func (u *StoreCatalogCategItemsE) GetAll(token string, filter string) ([]*StoreCatalogCategItemsE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectStoreInventRecountItem
+	query := queryListStoreCatalogCategItemsE
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -112,10 +84,10 @@ func (u *StoreInventRecountItemE) GetAll(token string, filter string) ([]*StoreI
 	}
 	defer rows.Close()
 
-	var lista []*StoreInventRecountItemE
+	var lista []*StoreCatalogCategItemsE
 
 	for rows.Next() {
-		var rowdata StoreInventRecountItemE
+		var rowdata StoreCatalogCategItemsE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
 			&rowdata.Owner,
@@ -126,38 +98,13 @@ func (u *StoreInventRecountItemE) GetAll(token string, filter string) ([]*StoreI
 			&rowdata.Flag2,
 			&rowdata.PersonaId,
 			&rowdata.TokendataId,
-			&rowdata.WarehouseId,
-			&rowdata.RecountId,
-			&rowdata.GroupId,
-			&rowdata.Grouptext,
-			&rowdata.Personatext,
-			&rowdata.Numero,
-			&rowdata.BoxId,
-			&rowdata.BoxIdentityId,
-			&rowdata.BarcodeBox,
-			&rowdata.BarcodeItem,
-			&rowdata.StyleCode,
-			&rowdata.StyleText,
-			&rowdata.ColorCode,
-			&rowdata.DivisionCode,
-			&rowdata.AreaId,
-			&rowdata.AisleId,
-			&rowdata.SectionId,
-			&rowdata.LevelId,
-			&rowdata.PositionId,
-			&rowdata.Xs,
-			&rowdata.S,
-			&rowdata.M,
-			&rowdata.L,
-			&rowdata.Xl,
-			&rowdata.Xxl,
-			&rowdata.Xxxl,
-			&rowdata.Os,
-			&rowdata.Total,
-			&rowdata.Reactive,
-			&rowdata.Pigment,
-			&rowdata.Pfd,
-			&rowdata.UrlPhotoImage,
+			&rowdata.CatalogId,
+			&rowdata.Secuencial,
+			&rowdata.CategItemId,
+			&rowdata.CategoryType,
+			&rowdata.FromDate,
+			&rowdata.ThroughDate,
+			&rowdata.PrefixNum,
 			&rowdata.Ruf1,
 			&rowdata.Ruf2,
 			&rowdata.Ruf3,
@@ -182,13 +129,13 @@ func (u *StoreInventRecountItemE) GetAll(token string, filter string) ([]*StoreI
 }
 
 // GetOne returns one user by id
-func (u *StoreInventRecountItemE) GetByUniqueid(token string, uniqueid int) (*StoreInventRecountItemE, error) {
+func (u *StoreCatalogCategItemsE) GetByUniqueid(token string, uniqueid int) (*StoreCatalogCategItemsE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectStoreInventRecountItem
+	query := queryListStoreCatalogCategItemsE
 
-	var rowdata StoreInventRecountItemE
+	var rowdata StoreCatalogCategItemsE
 	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
@@ -202,38 +149,13 @@ func (u *StoreInventRecountItemE) GetByUniqueid(token string, uniqueid int) (*St
 		&rowdata.Flag2,
 		&rowdata.PersonaId,
 		&rowdata.TokendataId,
-		&rowdata.WarehouseId,
-		&rowdata.RecountId,
-		&rowdata.GroupId,
-		&rowdata.Grouptext,
-		&rowdata.Personatext,
-		&rowdata.Numero,
-		&rowdata.BoxId,
-		&rowdata.BoxIdentityId,
-		&rowdata.BarcodeBox,
-		&rowdata.BarcodeItem,
-		&rowdata.StyleCode,
-		&rowdata.StyleText,
-		&rowdata.ColorCode,
-		&rowdata.DivisionCode,
-		&rowdata.AreaId,
-		&rowdata.AisleId,
-		&rowdata.SectionId,
-		&rowdata.LevelId,
-		&rowdata.PositionId,
-		&rowdata.Xs,
-		&rowdata.S,
-		&rowdata.M,
-		&rowdata.L,
-		&rowdata.Xl,
-		&rowdata.Xxl,
-		&rowdata.Xxxl,
-		&rowdata.Os,
-		&rowdata.Total,
-		&rowdata.Reactive,
-		&rowdata.Pigment,
-		&rowdata.Pfd,
-		&rowdata.UrlPhotoImage,
+		&rowdata.CatalogId,
+		&rowdata.Secuencial,
+		&rowdata.CategItemId,
+		&rowdata.CategoryType,
+		&rowdata.FromDate,
+		&rowdata.ThroughDate,
+		&rowdata.PrefixNum,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
@@ -256,7 +178,7 @@ func (u *StoreInventRecountItemE) GetByUniqueid(token string, uniqueid int) (*St
 
 // Update updates one user in the database, using the information
 // stored in the receiver u
-func (u *StoreInventRecountItemE) Update(token string, data string, metricas string) (map[string]any, error) {
+func (u *StoreCatalogCategItemsE) Update(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -277,7 +199,7 @@ func (u *StoreInventRecountItemE) Update(token string, data string, metricas str
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := `SELECT store_inventory_recount_items_save($1, $2, $3)`
+	query := querySaveStoreCatalogCategItemsE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -306,7 +228,7 @@ func (u *StoreInventRecountItemE) Update(token string, data string, metricas str
 }
 
 // Delete deletes one user from the database, by User.ID
-func (u *StoreInventRecountItemE) Delete(token string, data string, metricas string) (map[string]any, error) {
+func (u *StoreCatalogCategItemsE) Delete(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -327,7 +249,7 @@ func (u *StoreInventRecountItemE) Delete(token string, data string, metricas str
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := `SELECT store_inventory_recount_items_save($1, $2, $3)`
+	query := querySaveStoreCatalogCategItemsE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -356,7 +278,7 @@ func (u *StoreInventRecountItemE) Delete(token string, data string, metricas str
 }
 
 // DeleteByID deletes one user from the database, by ID
-func (u *StoreInventRecountItemE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
+func (u *StoreCatalogCategItemsE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -365,7 +287,7 @@ func (u *StoreInventRecountItemE) DeleteByID(token string, id int, metricas stri
 							  }`,
 		id, 300)
 
-	query := `SELECT store_inventory_recount_items_save($1, $2, $3)`
+	query := querySaveStoreCatalogCategItemsE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err

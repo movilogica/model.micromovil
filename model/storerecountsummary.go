@@ -6,7 +6,7 @@ import (
 )
 
 // Items Recount Summary
-type StoreInventRecountSummaryE struct {
+type StoreRecountSummaryE struct {
 	Sede        int32       `json:"sede"`
 	PersonaId   NullInt64   `json:"personaid,omitempty"`
 	TokendataId NullString  `json:"tokendataid,omitempty"`
@@ -22,7 +22,7 @@ type StoreInventRecountSummaryE struct {
 	Percent     NullFloat64 `json:"percent,omitempty"`
 }
 
-func (e StoreInventRecountSummaryE) MarshalJSON() ([]byte, error) {
+func (e StoreRecountSummaryE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
@@ -33,11 +33,11 @@ func (e StoreInventRecountSummaryE) MarshalJSON() ([]byte, error) {
 //VALUES(?, ?, ?)     VALUES($1, $2, $3)    VALUES(:val1, :val2, :val3)
 //---------------------------------------------------------------------
 
-func (u *StoreInventRecountSummaryE) GetSummaryGlobal(token string, filter string) ([]*StoreInventRecountSummaryE, error) {
+func (u *StoreRecountSummaryE) GetSummaryGlobal(token string, filter string) ([]*StoreRecountSummaryE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `SELECT * FROM view_sto_inv_rec_summary_global`
+	query := `SELECT * FROM view_recount_summary_global`
 
 	stmt, err := db.Prepare(query)
 	if err != nil {
@@ -49,10 +49,10 @@ func (u *StoreInventRecountSummaryE) GetSummaryGlobal(token string, filter strin
 	}
 	defer rows.Close()
 
-	var lista []*StoreInventRecountSummaryE
+	var lista []*StoreRecountSummaryE
 
 	for rows.Next() {
-		var rowdata StoreInventRecountSummaryE
+		var rowdata StoreRecountSummaryE
 		err := rows.Scan(
 			&rowdata.Sede,
 			&rowdata.PersonaId,
@@ -75,11 +75,11 @@ func (u *StoreInventRecountSummaryE) GetSummaryGlobal(token string, filter strin
 	return lista, nil
 }
 
-func (u *StoreInventRecountSummaryE) GetSummaryGroup(token string, filter string) ([]*StoreInventRecountSummaryE, error) {
+func (u *StoreRecountSummaryE) GetSummaryGroup(token string, filter string) ([]*StoreRecountSummaryE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `SELECT * FROM view_sto_inv_rec_summary_groups`
+	query := `SELECT * FROM view_recount_summary_groups`
 
 	stmt, err := db.Prepare(query)
 	if err != nil {
@@ -91,10 +91,10 @@ func (u *StoreInventRecountSummaryE) GetSummaryGroup(token string, filter string
 	}
 	defer rows.Close()
 
-	var lista []*StoreInventRecountSummaryE
+	var lista []*StoreRecountSummaryE
 
 	for rows.Next() {
-		var rowdata StoreInventRecountSummaryE
+		var rowdata StoreRecountSummaryE
 		err := rows.Scan(
 			&rowdata.Sede,
 			&rowdata.PersonaId,
@@ -118,11 +118,11 @@ func (u *StoreInventRecountSummaryE) GetSummaryGroup(token string, filter string
 	return lista, nil
 }
 
-func (u *StoreInventRecountSummaryE) GetSummaryPersons(token string, filter string) ([]*StoreInventRecountSummaryE, error) {
+func (u *StoreRecountSummaryE) GetSummaryPersons(token string, filter string) ([]*StoreRecountSummaryE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `SELECT * FROM view_sto_inv_rec_summary_persons`
+	query := `SELECT * FROM view_recount_summary_persons`
 
 	stmt, err := db.Prepare(query)
 	if err != nil {
@@ -134,10 +134,10 @@ func (u *StoreInventRecountSummaryE) GetSummaryPersons(token string, filter stri
 	}
 	defer rows.Close()
 
-	var lista []*StoreInventRecountSummaryE
+	var lista []*StoreRecountSummaryE
 
 	for rows.Next() {
-		var rowdata StoreInventRecountSummaryE
+		var rowdata StoreRecountSummaryE
 		err := rows.Scan(
 			&rowdata.Sede,
 			&rowdata.PersonaId,
@@ -160,11 +160,11 @@ func (u *StoreInventRecountSummaryE) GetSummaryPersons(token string, filter stri
 	return lista, nil
 }
 
-func (u *StoreInventRecountSummaryE) GetSummaryStyles(token string, filter string) ([]*StoreInventRecountSummaryE, error) {
+func (u *StoreRecountSummaryE) GetSummaryStyles(token string, filter string) ([]*StoreRecountSummaryE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `SELECT * FROM view_sto_inv_rec_summary_styles`
+	query := `SELECT * FROM view_recount_summary_styles`
 
 	stmt, err := db.Prepare(query)
 	if err != nil {
@@ -176,10 +176,10 @@ func (u *StoreInventRecountSummaryE) GetSummaryStyles(token string, filter strin
 	}
 	defer rows.Close()
 
-	var lista []*StoreInventRecountSummaryE
+	var lista []*StoreRecountSummaryE
 
 	for rows.Next() {
-		var rowdata StoreInventRecountSummaryE
+		var rowdata StoreRecountSummaryE
 		err := rows.Scan(
 			&rowdata.Sede,
 			&rowdata.PersonaId,

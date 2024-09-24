@@ -7,8 +7,8 @@ import (
 	"log"
 )
 
-// Items
-type StoreProductE struct {
+// Productos Prices
+type StoreProductPricesE struct {
 	Uniqueid       int64       `json:"uniqueid,omitempty"`
 	Owner          NullInt32   `json:"owner,omitempty"`
 	Dispositivoid  NullInt32   `json:"dispositivoid,omitempty"`
@@ -18,40 +18,18 @@ type StoreProductE struct {
 	Flag2          string      `json:"flag2,omitempty"`
 	PersonaId      NullInt64   `json:"personaid,omitempty"`
 	TokendataId    NullString  `json:"tokendataid,omitempty"`
-	ParentId       NullInt64   `json:"parentid,omitempty"`
-	Code           NullString  `json:"code,omitempty"`
-	BarCode        NullString  `json:"barcode,omitempty"`
-	ProductName    NullString  `json:"productname,omitempty"`
-	InternalName   NullString  `json:"internalname,omitempty"`
-	DetailScreen   NullString  `json:"detailscreen,omitempty"`
-	ProductTypeId  NullString  `json:"producttypeid,omitempty"`
-	BrandCode      NullString  `json:"brandcode,omitempty"`
-	StyleCode      NullString  `json:"stylecode,omitempty"`
-	StyleText      NullString  `json:"styletext,omitempty"`
-	ColorCode      NullString  `json:"colorcode,omitempty"`
-	DivisionCode   NullString  `json:"divisioncode,omitempty"`
-	UDisplay       NullString  `json:"udisplay,omitempty"`
-	UomTypeId      NullString  `json:"uomtypeid,omitempty"`
-	UomDefault     NullString  `json:"uomdefault,omitempty"`
-	QuomDefault    NullFloat64 `json:"quomdefault,omitempty"`
-	CatUbicaId     NullInt64   `json:"catubicaid,omitempty"`
-	CatPickId      NullInt64   `json:"catpickid,omitempty"`
-	CatRepoId      NullInt64   `json:"catrepoid,omitempty"`
-	VirtualInfo    NullString  `json:"virtualinfo,omitempty"`
-	Fechas         NullString  `json:"fechas,omitempty"`
-	Inventario     NullString  `json:"inventario,omitempty"`
-	Rating         NullString  `json:"rating,omitempty"`
-	Cantidad       NullString  `json:"cantidad,omitempty"`
-	Medidas        NullString  `json:"medidas,omitempty"`
-	Shipping       NullString  `json:"shipping,omitempty"`
-	Compra         NullString  `json:"compra,omitempty"`
-	Varios         NullString  `json:"varios,omitempty"`
+	ProductId      NullInt64   `json:"productid,omitempty"`
+	PriceTypeId    NullString  `json:"pricetypeid,omitempty"`
+	PricePurposeId NullString  `json:"pricepurposeid,omitempty"`
+	DivisaId       NullInt64   `json:"divisaid,omitempty"`
+	DivisaText     NullString  `json:"divisatext,omitempty"`
+	DivisaSimbolo  NullString  `json:"divisasimbolo,omitempty"`
+	DivisaDecimal  NullInt32   `json:"divisadecimal,omitempty"`
+	FromDate       NullTime    `json:"fromdate,omitempty"`
+	ThroughDate    NullTime    `json:"throughdate,omitempty"`
 	Price          NullFloat64 `json:"price,omitempty"`
-	Purchase       NullFloat64 `json:"purchase,omitempty"`
-	StockMinimo    NullInt32   `json:"stockminimo,omitempty"`
-	UrlSmallImage  NullString  `json:"urlsmallimage,omitempty"`
-	UrlMediumImage NullString  `json:"urlmediumimage,omitempty"`
-	UrlLargeImage  NullString  `json:"urllargeimage,omitempty"`
+	TaxPercent     NullFloat64 `json:"taxpercent,omitempty"`
+	TaxInPrice     NullFloat64 `json:"taxinprice,omitempty"`
 	Ruf1           NullString  `json:"ruf1,omitempty"`
 	Ruf2           NullString  `json:"ruf2,omitempty"`
 	Ruf3           NullString  `json:"ruf3,omitempty"`
@@ -65,16 +43,12 @@ type StoreProductE struct {
 	TotalRecords   int64       `json:"total_records,omitempty"`
 }
 
-func (e StoreProductE) MarshalJSON() ([]byte, error) {
+func (e StoreProductPricesE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-func (e StoreProductE) CreatedFormat() string {
-	return e.FCreated.Time.Format("Jan 2006")
-}
-
-const queryListStoreProductE = `select * from store_products_list( $1, $2)`
-const querySaveStoreProductE = `SELECT store_products_save($1, $2, $3)`
+const queryListStoreProductPricesE = `select * from store_product_prices_list( $1, $2)`
+const querySaveStoreProductPricesE = `SELECT store_product_prices_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -84,11 +58,11 @@ const querySaveStoreProductE = `SELECT store_products_save($1, $2, $3)`
 //---------------------------------------------------------------------
 
 // GetAll returns a slice of all users, sorted by last name
-func (u *StoreProductE) GetAll(token string, filter string) ([]*StoreProductE, error) {
+func (u *StoreProductPricesE) GetAll(token string, filter string) ([]*StoreProductPricesE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreProductE
+	query := queryListStoreProductPricesE
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -115,10 +89,10 @@ func (u *StoreProductE) GetAll(token string, filter string) ([]*StoreProductE, e
 	}
 	defer rows.Close()
 
-	var lista []*StoreProductE
+	var lista []*StoreProductPricesE
 
 	for rows.Next() {
-		var rowdata StoreProductE
+		var rowdata StoreProductPricesE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
 			&rowdata.Owner,
@@ -129,40 +103,18 @@ func (u *StoreProductE) GetAll(token string, filter string) ([]*StoreProductE, e
 			&rowdata.Flag2,
 			&rowdata.PersonaId,
 			&rowdata.TokendataId,
-			&rowdata.ParentId,
-			&rowdata.Code,
-			&rowdata.BarCode,
-			&rowdata.ProductName,
-			&rowdata.InternalName,
-			&rowdata.DetailScreen,
-			&rowdata.ProductTypeId,
-			&rowdata.BrandCode,
-			&rowdata.StyleCode,
-			&rowdata.StyleText,
-			&rowdata.ColorCode,
-			&rowdata.DivisionCode,
-			&rowdata.UDisplay,
-			&rowdata.UomTypeId,
-			&rowdata.UomDefault,
-			&rowdata.QuomDefault,
-			&rowdata.CatUbicaId,
-			&rowdata.CatPickId,
-			&rowdata.CatRepoId,
-			&rowdata.VirtualInfo,
-			&rowdata.Fechas,
-			&rowdata.Inventario,
-			&rowdata.Rating,
-			&rowdata.Cantidad,
-			&rowdata.Medidas,
-			&rowdata.Shipping,
-			&rowdata.Compra,
-			&rowdata.Varios,
+			&rowdata.ProductId,
+			&rowdata.PriceTypeId,
+			&rowdata.PricePurposeId,
+			&rowdata.DivisaId,
+			&rowdata.DivisaText,
+			&rowdata.DivisaSimbolo,
+			&rowdata.DivisaDecimal,
+			&rowdata.FromDate,
+			&rowdata.ThroughDate,
 			&rowdata.Price,
-			&rowdata.Purchase,
-			&rowdata.StockMinimo,
-			&rowdata.UrlSmallImage,
-			&rowdata.UrlMediumImage,
-			&rowdata.UrlLargeImage,
+			&rowdata.TaxPercent,
+			&rowdata.TaxInPrice,
 			&rowdata.Ruf1,
 			&rowdata.Ruf2,
 			&rowdata.Ruf3,
@@ -187,13 +139,13 @@ func (u *StoreProductE) GetAll(token string, filter string) ([]*StoreProductE, e
 }
 
 // GetOne returns one user by id
-func (u *StoreProductE) GetByUniqueid(token string, uniqueid int) (*StoreProductE, error) {
+func (u *StoreProductPricesE) GetByUniqueid(token string, uniqueid int) (*StoreProductPricesE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreProductE
+	query := queryListStoreProductPricesE
 
-	var rowdata StoreProductE
+	var rowdata StoreProductPricesE
 	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
@@ -207,40 +159,18 @@ func (u *StoreProductE) GetByUniqueid(token string, uniqueid int) (*StoreProduct
 		&rowdata.Flag2,
 		&rowdata.PersonaId,
 		&rowdata.TokendataId,
-		&rowdata.ParentId,
-		&rowdata.Code,
-		&rowdata.BarCode,
-		&rowdata.ProductName,
-		&rowdata.InternalName,
-		&rowdata.DetailScreen,
-		&rowdata.ProductTypeId,
-		&rowdata.BrandCode,
-		&rowdata.StyleCode,
-		&rowdata.StyleText,
-		&rowdata.ColorCode,
-		&rowdata.DivisionCode,
-		&rowdata.UDisplay,
-		&rowdata.UomTypeId,
-		&rowdata.UomDefault,
-		&rowdata.QuomDefault,
-		&rowdata.CatUbicaId,
-		&rowdata.CatPickId,
-		&rowdata.CatRepoId,
-		&rowdata.VirtualInfo,
-		&rowdata.Fechas,
-		&rowdata.Inventario,
-		&rowdata.Rating,
-		&rowdata.Cantidad,
-		&rowdata.Medidas,
-		&rowdata.Shipping,
-		&rowdata.Compra,
-		&rowdata.Varios,
+		&rowdata.ProductId,
+		&rowdata.PriceTypeId,
+		&rowdata.PricePurposeId,
+		&rowdata.DivisaId,
+		&rowdata.DivisaText,
+		&rowdata.DivisaSimbolo,
+		&rowdata.DivisaDecimal,
+		&rowdata.FromDate,
+		&rowdata.ThroughDate,
 		&rowdata.Price,
-		&rowdata.Purchase,
-		&rowdata.StockMinimo,
-		&rowdata.UrlSmallImage,
-		&rowdata.UrlMediumImage,
-		&rowdata.UrlLargeImage,
+		&rowdata.TaxPercent,
+		&rowdata.TaxInPrice,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
@@ -263,7 +193,7 @@ func (u *StoreProductE) GetByUniqueid(token string, uniqueid int) (*StoreProduct
 
 // Update updates one user in the database, using the information
 // stored in the receiver u
-func (u *StoreProductE) Update(token string, data string, metricas string) (map[string]any, error) {
+func (u *StoreProductPricesE) Update(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -284,7 +214,7 @@ func (u *StoreProductE) Update(token string, data string, metricas string) (map[
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := querySaveStoreProductE
+	query := querySaveStoreProductPricesE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -313,7 +243,7 @@ func (u *StoreProductE) Update(token string, data string, metricas string) (map[
 }
 
 // Delete deletes one user from the database, by User.ID
-func (u *StoreProductE) Delete(token string, data string, metricas string) (map[string]any, error) {
+func (u *StoreProductPricesE) Delete(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -334,7 +264,7 @@ func (u *StoreProductE) Delete(token string, data string, metricas string) (map[
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := querySaveStoreProductE
+	query := querySaveStoreProductPricesE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -363,7 +293,7 @@ func (u *StoreProductE) Delete(token string, data string, metricas string) (map[
 }
 
 // DeleteByID deletes one user from the database, by ID
-func (u *StoreProductE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
+func (u *StoreProductPricesE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -372,7 +302,7 @@ func (u *StoreProductE) DeleteByID(token string, id int, metricas string) (map[s
 							  }`,
 		id, 300)
 
-	query := querySaveStoreProductE
+	query := querySaveStoreProductPricesE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
