@@ -57,8 +57,7 @@ func (u *TasaCambioE) GetAll(token string, filter string) ([]*TasaCambioE, error
 	defer cancel()
 
 	query := querySelectTasaCambio
-
-	// Se deseenvuelve el JSON del Filter para adicionar filtros
+	// Se deseenvuelve el JSON del Filter para adicionar filtrosd ddsdddfdfds
 	var mapFilter map[string]interface{}
 	json.Unmarshal([]byte(filter), &mapFilter)
 	if mapFilter == nil {
