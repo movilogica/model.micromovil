@@ -112,14 +112,15 @@ func (u *StoreParametrosE) GetAll(token string, tabla string, filter string) ([]
 }
 
 // GetOne returns one user by id
-func (u *StoreParametrosE) GetByUniqueid(token string, filter string) (*StoreParametrosE, error) {
+func (u *StoreParametrosE) GetByUniqueid(token string, jsonFilter string) (*StoreParametrosE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
 	query := queryLoadStoreParametros
 
+	log.Printf("[%s] Where = %s\n", query, string(jsonFilter))
 	var rowdata StoreParametrosE
-	row := db.QueryRowContext(ctx, query, token, filter)
+	row := db.QueryRowContext(ctx, query, token, jsonFilter)
 
 	err := row.Scan(
 		&rowdata.Uniqueid,
