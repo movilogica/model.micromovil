@@ -48,7 +48,7 @@ from param_variables_list( $1, $2)`
 //---------------------------------------------------------------------
 
 // GetAll returns a slice of all users, sorted by last name
-func (u *ParametersE) GetAll(token string, tabla string, filter string) ([]*ParametersE, error) {
+func (u *ParametersE) GetAll(token string, filter string) ([]*ParametersE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -61,7 +61,7 @@ func (u *ParametersE) GetAll(token string, tabla string, filter string) ([]*Para
 		mapFilter = make(map[string]interface{})
 	}
 	// --- Adicion de filtro de tipos de carros
-	mapFilter["tipo"] = tabla
+	///mapFilter["tipo"] = tabla
 	// Se empaqueta el JSON del Filter
 	jsonFilter, err := json.Marshal(mapFilter)
 	if err != nil {
