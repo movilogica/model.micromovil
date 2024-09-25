@@ -70,7 +70,7 @@ func (u *StoreParametrosE) GetAll(token string, tabla string, filter string) ([]
 	if err != nil {
 		log.Println("Error convirtiendo el Filter")
 	}
-	log.Println("Where = " + string(jsonFilter))
+	log.Printf("[%s] Where = %s\n", query, string(jsonFilter))
 
 	stmt, err := db.Prepare(query)
 	if err != nil {
