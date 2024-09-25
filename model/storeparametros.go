@@ -40,7 +40,7 @@ func (e StoreParametrosE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreParametros = `select * from store_parametros_list( $1, $2, $3)`
+const queryListStoreParametros = `select * from store_parametros_list( $1, $2)`
 const querySaveStoreParametros = `SELECT store_parametros_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
