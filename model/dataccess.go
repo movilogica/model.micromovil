@@ -71,6 +71,7 @@ func NewDataAccess(dbPool *sql.DB) DataAccess {
 		BizKardex:               BizKardexE{},
 		BizSubscriptions:        BizSubscriptionsE{},
 		BizSubscriptionsPay:     BizSubscriptionsPayE{},
+		StoreParametros:         StoreParametrosE{},
 		StoreParamCategItem:     StoreParamCategItemE{},
 		StoreParamCategItemAttr: StoreParamCategItemAttrE{},
 		StoreParamCategItemPers: StoreParamCategItemPersE{},
@@ -116,23 +117,22 @@ func NewDataAccess(dbPool *sql.DB) DataAccess {
 		StoreRecountBoxes:       StoreRecountBoxesE{},
 		StoreRecountItemE:       StoreRecountItemE{},
 		StoreRecountSummaryE:    StoreRecountSummaryE{},
-
-		PersonaInfo:     PersonaInfoE{},
-		TipoProducto:    TipoProductoE{},
-		CoqFichaCriador: CoqFichaCriadorE{},
-		CoqFichaGalpon:  CoqFichaGalponE{},
-		CoqCriador:      CoqCriadorE{},
-		CoqGalpon:       CoqGalponE{},
-		CoqGalponTorneo: CoqGalponTorneoE{},
-		CoqFechaGalpon:  CoqFechaGalponE{},
-		CoqFechaTorneo:  CoqFechaTorneoE{},
-		CoqEmpadronador: CoqEmpadronadorE{},
-		CoqPelea:        CoqPeleaE{},
-		CoqPesaje:       CoqPesajeE{},
-		CoqRanking:      CoqRankingE{},
-		CoqReference:    CoqReferenceE{},
-		CoqSorteo:       CoqSorteoE{},
-		CoqTorneos:      CoqTorneosE{},
+		PersonaInfo:             PersonaInfoE{},
+		TipoProducto:            TipoProductoE{},
+		CoqFichaCriador:         CoqFichaCriadorE{},
+		CoqFichaGalpon:          CoqFichaGalponE{},
+		CoqCriador:              CoqCriadorE{},
+		CoqGalpon:               CoqGalponE{},
+		CoqGalponTorneo:         CoqGalponTorneoE{},
+		CoqFechaGalpon:          CoqFechaGalponE{},
+		CoqFechaTorneo:          CoqFechaTorneoE{},
+		CoqEmpadronador:         CoqEmpadronadorE{},
+		CoqPelea:                CoqPeleaE{},
+		CoqPesaje:               CoqPesajeE{},
+		CoqRanking:              CoqRankingE{},
+		CoqReference:            CoqReferenceE{},
+		CoqSorteo:               CoqSorteoE{},
+		CoqTorneos:              CoqTorneosE{},
 	}
 }
 
@@ -197,6 +197,7 @@ type DataAccess struct {
 	BizSubscriptions        BizSubscriptionsE
 	BizSubscriptionsStatus  BizSubscriptionStatusE
 	BizSubscriptionsPay     BizSubscriptionsPayE
+	StoreParametros         StoreParametrosE
 	StoreParamCategItem     StoreParamCategItemE
 	StoreParamCategItemAttr StoreParamCategItemAttrE
 	StoreParamCategItemPers StoreParamCategItemPersE
