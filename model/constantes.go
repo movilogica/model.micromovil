@@ -95,6 +95,7 @@ const TBL_BIZ_PAYMENT_APL = "bizpayapl"
 const TBL_BIZ_PAYMENT_STATUS = "bizpaystatus"
 
 // --- STORE
+const TBL_STORE_PARAMETROS = "storeparametros"
 const TBL_STORE_PARAM_CATEG_ITEM = "storeparamcatitem"
 const TBL_STORE_PARAM_CATEG_ITEM_ATTR = "storeparamcatitemattr"
 const TBL_STORE_PARAM_CATEG_ITEM_PERS = "storeparamcatitempers"
