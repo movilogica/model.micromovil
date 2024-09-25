@@ -40,7 +40,7 @@ func (e StoreParametrosE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreParametros = `select * from store_parametros_list( $1, $2)`
+const queryListStoreParametros = `select * from store_parametros_list( $1, $2, $3)`
 const querySaveStoreParametros = `SELECT store_parametros_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -51,7 +51,7 @@ const querySaveStoreParametros = `SELECT store_parametros_save($1, $2, $3)`
 //---------------------------------------------------------------------
 
 // GetAll returns a slice of all users, sorted by last name
-func (u *StoreParametrosE) GetAll(token string, filter string) ([]*StoreParametrosE, error) {
+func (u *StoreParametrosE) GetAll(token string, tabla string, filter string) ([]*StoreParametrosE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -64,7 +64,7 @@ func (u *StoreParametrosE) GetAll(token string, filter string) ([]*StoreParametr
 		mapFilter = make(map[string]interface{})
 	}
 	// --- Adicion de filtros
-	// mapFilter["tipo"] = tabla
+	mapFilter["tipo"] = tabla
 	// Se empaqueta el JSON del Filter
 	jsonFilter, err := json.Marshal(mapFilter)
 	if err != nil {
