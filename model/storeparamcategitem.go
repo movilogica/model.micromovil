@@ -42,7 +42,8 @@ func (e StoreParamCategItemE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreParamCategItem = `select * from store_param_categ_items_list( $1, $2)`
+const queryListStoreParamCategItem = `select uniqueid, sede, flag1, flag2, code, name, categorytype, activo, estadoreg, total_records from store_param_categ_items_list( $1, $2)`
+const queryLoadStoreParamCategItem = `select * from store_param_categ_items_list( $1, $2)`
 const querySaveStoreParamCategItem = `SELECT store_param_categ_items_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -86,33 +87,17 @@ func (u *StoreParamCategItemE) GetAll(token string, filter string) ([]*StorePara
 
 	var lista []*StoreParamCategItemE
 
+	// `select uniqueid, sede, flag1, flag2, code, name, categorytype, activo, estadoreg, total_records from store_param_categ_items_list( $1, $2)`
 	for rows.Next() {
 		var rowdata StoreParamCategItemE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
-			&rowdata.ParentId,
 			&rowdata.Code,
-			&rowdata.CategoryType,
 			&rowdata.Name,
-			&rowdata.Descrip,
-			&rowdata.UrlImage,
-			&rowdata.UrlLink,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
+			&rowdata.CategoryType,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -129,15 +114,14 @@ func (u *StoreParamCategItemE) GetAll(token string, filter string) ([]*StorePara
 }
 
 // GetOne returns one user by id
-func (u *StoreParamCategItemE) GetByUniqueid(token string, uniqueid int) (*StoreParamCategItemE, error) {
+func (u *StoreParamCategItemE) GetByUniqueid(token string, jsonFilter string) (*StoreParamCategItemE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreParamCategItem
+	query := queryLoadStoreParamCategItem
 
 	var rowdata StoreParamCategItemE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
-	row := db.QueryRowContext(ctx, query, token, jsonText)
+	row := db.QueryRowContext(ctx, query, token, jsonFilter)
 
 	err := row.Scan(
 		&rowdata.Uniqueid,
