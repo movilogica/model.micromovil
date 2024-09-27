@@ -25,6 +25,8 @@ type SedeE struct {
 	Ruf3          NullString `json:"ruf3,omitempty"`
 	FCreated      NullTime   `json:"fcreated,omitempty"`
 	FUpdated      NullTime   `json:"fupdated,omitempty"`
+	UCreated      NullString `json:"ucreated,omitempty"`
+	UUpdated      NullString `json:"uupdated,omitempty"`
 	Activo        int32      `json:"activo,omitempty"`
 	Estadoreg     int32      `json:"estadoreg,omitempty"`
 	TotalRecords  int64      `json:"total_records,omitempty"`

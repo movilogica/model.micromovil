@@ -33,6 +33,8 @@ type StoreParamCategItemE struct {
 	Checksum      NullString `json:"checksum,omitempty"`
 	FCreated      NullTime   `json:"fcreated,omitempty"`
 	FUpdated      NullTime   `json:"fupdated,omitempty"`
+	UCreated      NullString `json:"ucreated,omitempty"`
+	UUpdated      NullString `json:"uupdated,omitempty"`
 	Activo        int32      `json:"activo,omitempty"`
 	Estadoreg     int32      `json:"estadoreg,omitempty"`
 	TotalRecords  int64      `json:"total_records,omitempty"`
@@ -148,6 +150,8 @@ func (u *StoreParamCategItemE) GetByUniqueid(token string, jsonFilter string) (*
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,

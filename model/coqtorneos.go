@@ -85,6 +85,8 @@ type CoqTorneosE struct {
 	Checksum             NullString  `json:"checksum,omitempty"`
 	FCreated             NullTime    `json:"fcreated,omitempty"`
 	FUpdated             NullTime    `json:"fupdated,omitempty"`
+	UCreated             NullString  `json:"ucreated,omitempty"`
+	UUpdated             NullString  `json:"uupdated,omitempty"`
 	Activo               int32       `json:"activo,omitempty"`
 	Estadoreg            int32       `json:"estadoreg,omitempty"`
 	Distance             NullFloat64 `json:"distance,omitempty"`
