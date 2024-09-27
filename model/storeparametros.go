@@ -147,6 +147,8 @@ func (u *StoreParametrosE) GetByUniqueid(token string, jsonFilter string) (*Stor
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,
