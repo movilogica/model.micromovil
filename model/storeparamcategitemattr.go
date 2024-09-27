@@ -41,7 +41,8 @@ func (e StoreParamCategItemAttrE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreParamCategItemAttr = `select * from store_param_categ_items_attr_list( $1, $2)`
+const queryListStoreParamCategItemAttr = `select uniqueid, sede, flag1, flag2, attrname, attrvalue, activo, estadoreg, total_records from store_param_categ_items_attr_list( $1, $2)`
+const queryLoadStoreParamCategItemAttr = `select * from store_param_categ_items_attr_list( $1, $2)`
 const querySaveStoreParamCategItemAttr = `SELECT store_param_categ_items_attr_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -85,30 +86,16 @@ func (u *StoreParamCategItemAttrE) GetAll(token string, filter string) ([]*Store
 
 	var lista []*StoreParamCategItemAttrE
 
+	// `select uniqueid, sede, flag1, flag2, attrname, attrvalue, activo, estadoreg, total_records from store_param_categ_items_attr_list( $1, $2)`
 	for rows.Next() {
 		var rowdata StoreParamCategItemAttrE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
-			&rowdata.CategItemId,
 			&rowdata.AttrName,
 			&rowdata.AttrValue,
-			&rowdata.Notes,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -129,7 +116,7 @@ func (u *StoreParamCategItemAttrE) GetByUniqueid(token string, uniqueid int) (*S
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreParamCategItemAttr
+	query := queryLoadStoreParamCategItemAttr
 
 	var rowdata StoreParamCategItemAttrE
 	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
