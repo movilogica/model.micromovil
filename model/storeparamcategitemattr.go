@@ -112,15 +112,15 @@ func (u *StoreParamCategItemAttrE) GetAll(token string, filter string) ([]*Store
 }
 
 // GetOne returns one user by id
-func (u *StoreParamCategItemAttrE) GetByUniqueid(token string, uniqueid int) (*StoreParamCategItemAttrE, error) {
+func (u *StoreParamCategItemAttrE) GetByUniqueid(token string, filter string) (*StoreParamCategItemAttrE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
 	query := queryLoadStoreParamCategItemAttr
 
 	var rowdata StoreParamCategItemAttrE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
-	row := db.QueryRowContext(ctx, query, token, jsonText)
+
+	row := db.QueryRowContext(ctx, query, token, filter)
 
 	err := row.Scan(
 		&rowdata.Uniqueid,
