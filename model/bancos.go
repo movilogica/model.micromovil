@@ -128,6 +128,8 @@ func (u *BancosE) GetAll(token string, filter string) ([]*BancosE, error) {
 			&rowdata.Checksum,
 			&rowdata.FCreated,
 			&rowdata.FUpdated,
+			&rowdata.UCreated,
+			&rowdata.UUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
