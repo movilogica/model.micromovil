@@ -45,7 +45,8 @@ func (e StoreInventoryStatusE) CreatedFormat() string {
 	return e.FCreated.Time.Format("Jan 2006")
 }
 
-const queryListStoreInventoryStatusE = `select * from store_inventory_status_list( $1, $2)`
+const queryListStoreInventoryStatusE = `select uniqueid, sede, flag1, flag2, secuencial, statusid, statusdetail, fcreated, activo, estadoreg, total_records from store_inventory_status_list( $1, $2)`
+const queryLoadStoreInventoryStatusE = `select * from store_inventory_status_list( $1, $2)`
 const querySaveStoreInventoryStatusE = `SELECT store_inventory_status_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -89,30 +90,19 @@ func (u *StoreInventoryStatusE) GetAll(token string, filter string) ([]*StoreInv
 
 	var lista []*StoreInventoryStatusE
 
+	/// `select uniqueid, sede, flag1, flag2, secuencial, statusid, statusdetail, fcreated, activo, estadoreg, total_records from store_inventory_status_list( $1, $2)`
+
 	for rows.Next() {
 		var rowdata StoreInventoryStatusE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
-			&rowdata.InventoryId,
 			&rowdata.Secuencial,
 			&rowdata.StatusId,
 			&rowdata.StatusDetail,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
 			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -129,14 +119,14 @@ func (u *StoreInventoryStatusE) GetAll(token string, filter string) ([]*StoreInv
 }
 
 // GetOne returns one user by id
-func (u *StoreInventoryStatusE) GetByUniqueid(token string, uniqueid int) (*StoreInventoryStatusE, error) {
+func (u *StoreInventoryStatusE) GetByUniqueid(token string, jsonText string) (*StoreInventoryStatusE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreInventoryStatusE
+	query := queryLoadStoreInventoryStatusE
 
 	var rowdata StoreInventoryStatusE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Println("Where = " + string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -161,6 +151,8 @@ func (u *StoreInventoryStatusE) GetByUniqueid(token string, uniqueid int) (*Stor
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,

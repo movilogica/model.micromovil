@@ -19,9 +19,11 @@ type StoreInventoryHistoryE struct {
 	PersonaId       NullInt64   `json:"personaid,omitempty"`
 	TokendataId     NullString  `json:"tokendataid,omitempty"`
 	WarehouseId     NullInt64   `json:"warehouseid,omitempty"`
+	Fecha           NullTime    `json:"fecha,omitempty"`
 	LocationSeqId   NullString  `json:"locationseqid,omitempty"`
 	InventoryTypeId NullString  `json:"inventorytypeid,omitempty"`
 	ProductId       NullInt64   `json:"productid,omitempty"`
+	ProductText     NullString  `json:"producttext,omitempty"`
 	Io              NullString  `json:"io,omitempty"`
 	TipoMov         NullString  `json:"tipomov,omitempty"`
 	ReasonEnumId    NullString  `json:"reasonenumid,omitempty"`
@@ -67,7 +69,8 @@ func (e StoreInventoryHistoryE) CreatedFormat() string {
 	return e.FCreated.Time.Format("Jan 2006")
 }
 
-const queryListStoreInventoryHistoryE = `select * from store_inventory_history_list( $1, $2)`
+const queryListStoreInventoryHistoryE = `select uniqueid, sede, flag1, flag2, fecha, locationseqid, inventorytypeid, productid, producttext, io, tipomov, udisplay, uom, quom, quantity, total, fcreated, activo, estadoreg, total_records  from store_inventory_history_list( $1, $2)`
+const queryLoadStoreInventoryHistoryE = `select * from store_inventory_history_list( $1, $2)`
 const querySaveStoreInventoryHistoryE = `SELECT store_inventory_history_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -111,52 +114,28 @@ func (u *StoreInventoryHistoryE) GetAll(token string, filter string) ([]*StoreIn
 
 	var lista []*StoreInventoryHistoryE
 
+	///`select uniqueid, sede, flag1, flag2, fecha, locationseqid, inventorytypeid, productid, producttext, io, tipomov,
+	///        udisplay, uom, quom, quantity, total, fcreated, activo, estadoreg, total_records  from store_inventory_history_list( $1, $2)`
 	for rows.Next() {
 		var rowdata StoreInventoryHistoryE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
-			&rowdata.WarehouseId,
+			&rowdata.Fecha,
 			&rowdata.LocationSeqId,
 			&rowdata.InventoryTypeId,
 			&rowdata.ProductId,
+			&rowdata.ProductText,
 			&rowdata.Io,
 			&rowdata.TipoMov,
-			&rowdata.ReasonEnumId,
 			&rowdata.UDisplay,
 			&rowdata.Uom,
 			&rowdata.Quom,
 			&rowdata.Quantity,
-			&rowdata.Xs,
-			&rowdata.S,
-			&rowdata.M,
-			&rowdata.L,
-			&rowdata.Xl,
-			&rowdata.Xxl,
-			&rowdata.Xxxl,
-			&rowdata.Os,
 			&rowdata.Total,
-			&rowdata.ReceiptId,
-			&rowdata.ReceiptText,
-			&rowdata.OrderId,
-			&rowdata.ShiptmentId,
-			&rowdata.DocumentText,
-			&rowdata.Notas,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
 			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -173,14 +152,14 @@ func (u *StoreInventoryHistoryE) GetAll(token string, filter string) ([]*StoreIn
 }
 
 // GetOne returns one user by id
-func (u *StoreInventoryHistoryE) GetByUniqueid(token string, uniqueid int) (*StoreInventoryHistoryE, error) {
+func (u *StoreInventoryHistoryE) GetByUniqueid(token string, jsonText string) (*StoreInventoryHistoryE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreInventoryHistoryE
+	query := queryLoadStoreInventoryHistoryE
 
 	var rowdata StoreInventoryHistoryE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Println("Where = " + string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -197,6 +176,7 @@ func (u *StoreInventoryHistoryE) GetByUniqueid(token string, uniqueid int) (*Sto
 		&rowdata.LocationSeqId,
 		&rowdata.InventoryTypeId,
 		&rowdata.ProductId,
+		&rowdata.ProductText,
 		&rowdata.Io,
 		&rowdata.TipoMov,
 		&rowdata.ReasonEnumId,
@@ -227,6 +207,8 @@ func (u *StoreInventoryHistoryE) GetByUniqueid(token string, uniqueid int) (*Sto
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,

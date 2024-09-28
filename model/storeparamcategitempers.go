@@ -20,6 +20,7 @@ type StoreParamCategItemPersE struct {
 	TokendataId   NullString `json:"tokendataid,omitempty"`
 	CategItemId   NullInt64  `json:"categitemid,omitempty"`
 	ToPersonaId   NullInt64  `json:"topersonaid,omitempty"`
+	ToPersonaText NullString `json:"topersonatext,omitempty"`
 	RoleTypeId    NullString `json:"roletypeid,omitempty"`
 	FromDate      NullTime   `json:"fromdate,omitempty"`
 	ThroughDate   NullTime   `json:"throughdate,omitempty"`
@@ -42,7 +43,8 @@ func (e StoreParamCategItemPersE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreParamCategItemPers = `select * from store_param_categ_items_pers_list( $1, $2)`
+const queryListStoreParamCategItemPers = `select uniqueid, sede, flag1, flag2, topersonaid, topersonatext, roletypeid, fromdate, activo, estadoreg, total_records from store_param_categ_items_pers_list( $1, $2)`
+const queryLoadStoreParamCategItemPers = `select * from store_param_categ_items_pers_list( $1, $2)`
 const querySaveStoreParamCategItemPers = `SELECT store_param_categ_items_pers_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -86,31 +88,18 @@ func (u *StoreParamCategItemPersE) GetAll(token string, filter string) ([]*Store
 
 	var lista []*StoreParamCategItemPersE
 
+	/// `select uniqueid, sede, flag1, flag2, topersonaid, topersonatext, roletypeid, fromdate, activo, estadoreg, total_records from store_param_categ_items_pers_list( $1, $2)`
 	for rows.Next() {
 		var rowdata StoreParamCategItemPersE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
-			&rowdata.CategItemId,
 			&rowdata.ToPersonaId,
+			&rowdata.ToPersonaText,
 			&rowdata.RoleTypeId,
 			&rowdata.FromDate,
-			&rowdata.ThroughDate,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -127,14 +116,14 @@ func (u *StoreParamCategItemPersE) GetAll(token string, filter string) ([]*Store
 }
 
 // GetOne returns one user by id
-func (u *StoreParamCategItemPersE) GetByUniqueid(token string, uniqueid int) (*StoreParamCategItemPersE, error) {
+func (u *StoreParamCategItemPersE) GetByUniqueid(token string, jsonText string) (*StoreParamCategItemPersE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreParamCategItemPers
+	query := queryLoadStoreParamCategItemPers
 
 	var rowdata StoreParamCategItemPersE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Println("Where = " + string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -149,6 +138,7 @@ func (u *StoreParamCategItemPersE) GetByUniqueid(token string, uniqueid int) (*S
 		&rowdata.TokendataId,
 		&rowdata.CategItemId,
 		&rowdata.ToPersonaId,
+		&rowdata.ToPersonaText,
 		&rowdata.RoleTypeId,
 		&rowdata.FromDate,
 		&rowdata.ThroughDate,
@@ -160,6 +150,8 @@ func (u *StoreParamCategItemPersE) GetByUniqueid(token string, uniqueid int) (*S
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,

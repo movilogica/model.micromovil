@@ -19,6 +19,7 @@ type StoreInventoryKardexE struct {
 	PersonaId     NullInt64   `json:"personaid,omitempty"`
 	TokendataId   NullString  `json:"tokendataid,omitempty"`
 	WarehouseId   NullInt64   `json:"warehouseid,omitempty"`
+	Fecha         NullTime    `json:"fecha,omitempty"`
 	ProductId     NullInt64   `json:"productid,omitempty"`
 	Io            NullString  `json:"io,omitempty"`
 	TipoMov       NullString  `json:"tipomov,omitempty"`
@@ -58,7 +59,8 @@ func (e StoreInventoryKardexE) CreatedFormat() string {
 	return e.FCreated.Time.Format("Jan 2006")
 }
 
-const queryListStoreInventoryKardexE = `select * from store_inventory_kardex_list( $1, $2)`
+const queryListStoreInventoryKardexE = `select uniqueid, sede, flag1, flag2, fecha, productid, io, tipomov, udisplay, quantity, uom, entrada, salida, balance, fcreated, activo, estadoreg, total_records from store_inventory_kardex_list( $1, $2)`
+const queryLoadStoreInventoryKardexE = `select * from store_inventory_kardex_list( $1, $2)`
 const querySaveStoreInventoryKardexE = `SELECT store_inventory_kardex_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -102,43 +104,27 @@ func (u *StoreInventoryKardexE) GetAll(token string, filter string) ([]*StoreInv
 
 	var lista []*StoreInventoryKardexE
 
+	///`select uniqueid, sede, flag1, flag2, fecha, productid, io, tipomov, udisplay, quantity, uom,
+	///        entrada, salida, balance, fcreated, activo, estadoreg, total_records from store_inventory_kardex_list( $1, $2)`
+
 	for rows.Next() {
 		var rowdata StoreInventoryKardexE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
-			&rowdata.WarehouseId,
+			&rowdata.Fecha,
 			&rowdata.ProductId,
 			&rowdata.Io,
 			&rowdata.TipoMov,
-			&rowdata.ReasonEnumId,
 			&rowdata.UDisplay,
 			&rowdata.Quantity,
 			&rowdata.Uom,
 			&rowdata.Entrada,
 			&rowdata.Salida,
 			&rowdata.Balance,
-			&rowdata.ReceiptId,
-			&rowdata.ReceiptText,
-			&rowdata.OrderId,
-			&rowdata.ShiptmentId,
-			&rowdata.DocumentText,
-			&rowdata.Notas,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
 			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -155,14 +141,14 @@ func (u *StoreInventoryKardexE) GetAll(token string, filter string) ([]*StoreInv
 }
 
 // GetOne returns one user by id
-func (u *StoreInventoryKardexE) GetByUniqueid(token string, uniqueid int) (*StoreInventoryKardexE, error) {
+func (u *StoreInventoryKardexE) GetByUniqueid(token string, jsonText string) (*StoreInventoryKardexE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreInventoryKardexE
+	query := queryLoadStoreInventoryKardexE
 
 	var rowdata StoreInventoryKardexE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Println("Where = " + string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -176,6 +162,7 @@ func (u *StoreInventoryKardexE) GetByUniqueid(token string, uniqueid int) (*Stor
 		&rowdata.PersonaId,
 		&rowdata.TokendataId,
 		&rowdata.WarehouseId,
+		&rowdata.Fecha,
 		&rowdata.ProductId,
 		&rowdata.Io,
 		&rowdata.TipoMov,
@@ -200,6 +187,8 @@ func (u *StoreInventoryKardexE) GetByUniqueid(token string, uniqueid int) (*Stor
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,

@@ -123,6 +123,7 @@ func (u *StoreParamCategItemE) GetByUniqueid(token string, jsonFilter string) (*
 	query := queryLoadStoreParamCategItem
 
 	var rowdata StoreParamCategItemE
+	log.Println("Where = " + string(jsonFilter))
 	row := db.QueryRowContext(ctx, query, token, jsonFilter)
 
 	err := row.Scan(

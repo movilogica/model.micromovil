@@ -21,6 +21,7 @@ type StoreCatalogPersonsE struct {
 	CatalogId     NullInt64  `json:"catalogid,omitempty"`
 	Secuencial    NullInt32  `json:"secuencial,omitempty"`
 	ToPersonaId   NullInt64  `json:"topersonaid,omitempty"`
+	ToPersonaText NullString `json:"topersonatext,omitempty"`
 	RoleTypeId    NullString `json:"roletypeid,omitempty"`
 	FromDate      NullTime   `json:"fromdate,omitempty"`
 	ThroughDate   NullTime   `json:"throughdate,omitempty"`
@@ -44,7 +45,8 @@ func (e StoreCatalogPersonsE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreCatalogPersonsE = `select * from store_catalog_persons_list( $1, $2)`
+const queryListStoreCatalogPersonsE = `select uniqueid, sede, flag1, flag2, secuencial, topersonaid, topersonatext, roletypeid, fromdate, throughdate, fcreated, activo, estadoreg, total_records from store_catalog_persons_list( $1, $2)`
+const queryLoadStoreCatalogPersonsE = `select * from store_catalog_persons_list( $1, $2)`
 const querySaveStoreCatalogPersonsE = `SELECT store_catalog_persons_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -88,33 +90,21 @@ func (u *StoreCatalogPersonsE) GetAll(token string, filter string) ([]*StoreCata
 
 	var lista []*StoreCatalogPersonsE
 
+	/// `select uniqueid, sede, flag1, flag2, secuencial, topersonaid, topersonatext, roletypeid, fromdate, throughdate, fcreated, activo, estadoreg, total_records from store_catalog_persons_list( $1, $2)`
 	for rows.Next() {
 		var rowdata StoreCatalogPersonsE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
-			&rowdata.CatalogId,
 			&rowdata.Secuencial,
 			&rowdata.ToPersonaId,
+			&rowdata.ToPersonaText,
 			&rowdata.RoleTypeId,
 			&rowdata.FromDate,
 			&rowdata.ThroughDate,
-			&rowdata.PrefixNum,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
 			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -131,14 +121,14 @@ func (u *StoreCatalogPersonsE) GetAll(token string, filter string) ([]*StoreCata
 }
 
 // GetOne returns one user by id
-func (u *StoreCatalogPersonsE) GetByUniqueid(token string, uniqueid int) (*StoreCatalogPersonsE, error) {
+func (u *StoreCatalogPersonsE) GetByUniqueid(token string, jsonText string) (*StoreCatalogPersonsE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreCatalogPersonsE
+	query := queryLoadStoreCatalogPersonsE
 
 	var rowdata StoreCatalogPersonsE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Println("Where = " + string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -154,6 +144,7 @@ func (u *StoreCatalogPersonsE) GetByUniqueid(token string, uniqueid int) (*Store
 		&rowdata.CatalogId,
 		&rowdata.Secuencial,
 		&rowdata.ToPersonaId,
+		&rowdata.ToPersonaText,
 		&rowdata.RoleTypeId,
 		&rowdata.FromDate,
 		&rowdata.ThroughDate,
@@ -166,6 +157,8 @@ func (u *StoreCatalogPersonsE) GetByUniqueid(token string, uniqueid int) (*Store
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,

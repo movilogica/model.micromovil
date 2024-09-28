@@ -19,9 +19,11 @@ type StoreInventoryE struct {
 	PersonaId           NullInt64   `json:"personaid,omitempty"`
 	TokendataId         NullString  `json:"tokendataid,omitempty"`
 	WarehouseId         NullInt64   `json:"warehouseid,omitempty"`
+	LocationId          NullInt64   `json:"locationid,omitempty"`
 	LocationSeqId       NullString  `json:"locationseqid,omitempty"`
 	InventoryTypeId     NullString  `json:"inventorytypeid,omitempty"`
 	ProductId           NullInt64   `json:"productid,omitempty"`
+	ProductText         NullString  `json:"producttext,omitempty"`
 	StatusItemId        NullString  `json:"statusitemid,omitempty"`
 	ReceivedDate        NullTime    `json:"receiveddate,omitempty"`
 	ManufaturedDate     NullTime    `json:"manufactureddate,omitempty"`
@@ -49,7 +51,10 @@ type StoreInventoryE struct {
 	Xxl                 NullInt64   `json:"xxl,omitempty"`
 	Xxxl                NullInt64   `json:"xxxl,omitempty"`
 	Os                  NullInt64   `json:"os,omitempty"`
-	Total               NullInt64   `json:"total,omitempty"`
+	StockTotal          NullFloat64 `json:"stocktotal,omitempty"`
+	StockDisp           NullFloat64 `json:"stockdisp,omitempty"`
+	StockTran           NullFloat64 `json:"stocktran,omitempty"`
+	StockBloq           NullFloat64 `json:"stockbloq,omitempty"`
 	Reactive            NullInt32   `json:"reactive,omitempty"`
 	Pigment             NullInt32   `json:"pigment,omitempty"`
 	Pfd                 NullInt32   `json:"pfd,omitempty"`
@@ -84,7 +89,8 @@ func (e StoreInventoryE) CreatedFormat() string {
 	return e.FCreated.Time.Format("Jan 2006")
 }
 
-const queryListStoreInventoryE = `select * from store_inventory_list( $1, $2)`
+const queryListStoreInventoryE = `select uniqueid, sede, flag1, flag2, locationid, locationseqid, inventorytypeid, productid, producttext, statusitemid, lotid, udisplay, uom, quom, quantity, stocktotal, stockdisp, fcreated, activo, estadoreg, total_records from store_inventory_list( $1, $2)`
+const queryLoadStoreInventoryE = `select * from store_inventory_list( $1, $2)`
 const querySaveStoreInventoryE = `SELECT store_inventory_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -128,69 +134,28 @@ func (u *StoreInventoryE) GetAll(token string, filter string) ([]*StoreInventory
 
 	var lista []*StoreInventoryE
 
+	// `select uniqueid, sede, flag1, flag2, locationid, locationseqid, inventorytypeid, productid, producttext, statusitemid, lotid, udisplay, uom, quom, quantity, stocktotal, stockdisp, fcreated, activo, estadoreg, total_records from store_inventory_list( $1, $2)`
 	for rows.Next() {
 		var rowdata StoreInventoryE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
-			&rowdata.WarehouseId,
+			&rowdata.LocationId,
 			&rowdata.LocationSeqId,
 			&rowdata.InventoryTypeId,
 			&rowdata.ProductId,
+			&rowdata.ProductText,
 			&rowdata.StatusItemId,
-			&rowdata.ReceivedDate,
-			&rowdata.ManufaturedDate,
-			&rowdata.ExpiredDate,
-			&rowdata.ContainerId,
 			&rowdata.LotId,
-			&rowdata.LotExpired,
-			&rowdata.SkuNumber,
-			&rowdata.BinNumber,
-			&rowdata.SerialNumber,
-			&rowdata.SoftIdentifier,
-			&rowdata.BarcodeBox,
-			&rowdata.BarcodeItem,
-			&rowdata.ActivationNumber,
-			&rowdata.ActivationValidThru,
 			&rowdata.UDisplay,
 			&rowdata.Uom,
 			&rowdata.Quom,
 			&rowdata.Quantity,
-			&rowdata.Xs,
-			&rowdata.S,
-			&rowdata.M,
-			&rowdata.L,
-			&rowdata.Xl,
-			&rowdata.Xxl,
-			&rowdata.Xxxl,
-			&rowdata.Os,
-			&rowdata.Total,
-			&rowdata.Reactive,
-			&rowdata.Pigment,
-			&rowdata.Pfd,
-			&rowdata.DivisaId,
-			&rowdata.DivisaText,
-			&rowdata.DivisaSimbolo,
-			&rowdata.DivisaDecimal,
-			&rowdata.CostUnit,
-			&rowdata.TasaVenta,
-			&rowdata.TasaCompra,
-			&rowdata.Notas,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
+			&rowdata.StockTotal,
+			&rowdata.StockDisp,
 			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -207,14 +172,14 @@ func (u *StoreInventoryE) GetAll(token string, filter string) ([]*StoreInventory
 }
 
 // GetOne returns one user by id
-func (u *StoreInventoryE) GetByUniqueid(token string, uniqueid int) (*StoreInventoryE, error) {
+func (u *StoreInventoryE) GetByUniqueid(token string, jsonText string) (*StoreInventoryE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreInventoryE
+	query := queryLoadStoreInventoryE
 
 	var rowdata StoreInventoryE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Println("Where = " + string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -228,9 +193,11 @@ func (u *StoreInventoryE) GetByUniqueid(token string, uniqueid int) (*StoreInven
 		&rowdata.PersonaId,
 		&rowdata.TokendataId,
 		&rowdata.WarehouseId,
+		&rowdata.LocationId,
 		&rowdata.LocationSeqId,
 		&rowdata.InventoryTypeId,
 		&rowdata.ProductId,
+		&rowdata.ProductText,
 		&rowdata.StatusItemId,
 		&rowdata.ReceivedDate,
 		&rowdata.ManufaturedDate,
@@ -258,7 +225,10 @@ func (u *StoreInventoryE) GetByUniqueid(token string, uniqueid int) (*StoreInven
 		&rowdata.Xxl,
 		&rowdata.Xxxl,
 		&rowdata.Os,
-		&rowdata.Total,
+		&rowdata.StockTotal,
+		&rowdata.StockDisp,
+		&rowdata.StockTran,
+		&rowdata.StockBloq,
 		&rowdata.Reactive,
 		&rowdata.Pigment,
 		&rowdata.Pfd,
@@ -278,6 +248,8 @@ func (u *StoreInventoryE) GetByUniqueid(token string, uniqueid int) (*StoreInven
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,
