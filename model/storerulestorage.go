@@ -40,7 +40,8 @@ func (e StoreRuleStorageE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreRuleStorageE = `select * from store_rules_storage_list( $1, $2)`
+const queryListStoreRuleStorageE = `select uniqueid, sede, flag1, flag2, parentid, code, descrip, activo, estadoreg, total_records  from store_rules_storage_list( $1, $2)`
+const queryLoadStoreRuleStorageE = `select * from store_rules_storage_list( $1, $2)`
 const querySaveStoreRuleStorageE = `SELECT store_rules_storage_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -88,25 +89,12 @@ func (u *StoreRuleStorageE) GetAll(token string, filter string) ([]*StoreRuleSto
 		var rowdata StoreRuleStorageE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
 			&rowdata.ParentId,
 			&rowdata.Code,
 			&rowdata.Descrip,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -123,14 +111,14 @@ func (u *StoreRuleStorageE) GetAll(token string, filter string) ([]*StoreRuleSto
 }
 
 // GetOne returns one user by id
-func (u *StoreRuleStorageE) GetByUniqueid(token string, uniqueid int) (*StoreRuleStorageE, error) {
+func (u *StoreRuleStorageE) GetByUniqueid(token string, jsonText string) (*StoreRuleStorageE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreRuleStorageE
+	query := queryLoadStoreRuleStorageE
 
 	var rowdata StoreRuleStorageE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -154,6 +142,8 @@ func (u *StoreRuleStorageE) GetByUniqueid(token string, uniqueid int) (*StoreRul
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,

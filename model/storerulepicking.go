@@ -40,7 +40,8 @@ func (e StoreRulePickingE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreRulePickingE = `select * from store_rules_pick_list( $1, $2)`
+const queryListStoreRulePickingE = `select uniqueid, sede, flag1, flag2, parentid, code, descrip, activo, estadoreg, total_records  from store_rules_pick_list( $1, $2)`
+const queryLoadStoreRulePickingE = `select * from store_rules_pick_list( $1, $2)`
 const querySaveStoreRulePickingE = `SELECT store_rules_pick_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -84,29 +85,17 @@ func (u *StoreRulePickingE) GetAll(token string, filter string) ([]*StoreRulePic
 
 	var lista []*StoreRulePickingE
 
+	///uniqueid, sede, flag1, flag2, parentid, code, descrip, activo, estadoreg, total_records
 	for rows.Next() {
 		var rowdata StoreRulePickingE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
 			&rowdata.ParentId,
 			&rowdata.Code,
 			&rowdata.Descrip,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -123,14 +112,14 @@ func (u *StoreRulePickingE) GetAll(token string, filter string) ([]*StoreRulePic
 }
 
 // GetOne returns one user by id
-func (u *StoreRulePickingE) GetByUniqueid(token string, uniqueid int) (*StoreRulePickingE, error) {
+func (u *StoreRulePickingE) GetByUniqueid(token string, jsonText string) (*StoreRulePickingE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreRulePickingE
+	query := queryLoadStoreRulePickingE
 
 	var rowdata StoreRulePickingE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -154,6 +143,8 @@ func (u *StoreRulePickingE) GetByUniqueid(token string, uniqueid int) (*StoreRul
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,

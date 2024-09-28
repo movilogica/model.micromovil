@@ -23,7 +23,8 @@ type StoreRuleRepoZonesE struct {
 	Orden         NullInt32  `json:"orden,omitempty"`
 	ZoneId        NullInt64  `json:"zoneid,omitempty"`
 	ZoneText      NullString `json:"zonetext,omitempty"`
-	CategUbicaId  NullInt64  `json:"categubicaid,omitempty"`
+	CategRepoId   NullInt64  `json:"categrepoid,omitempty"`
+	CategRepoText NullString `json:"categrepotext,omitempty"`
 	Ruf1          NullString `json:"ruf1,omitempty"`
 	Ruf2          NullString `json:"ruf2,omitempty"`
 	Ruf3          NullString `json:"ruf3,omitempty"`
@@ -43,7 +44,8 @@ func (e StoreRuleRepoZonesE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreRuleRepoZonesE = `select * from store_rules_repo_zones_list( $1, $2)`
+const queryListStoreRuleRepoZonesE = `select uniqueid, sede, flag1, flag2, orden, zoneid, zonetext, categrepotext, activo, estadoreg, total_records from store_rules_repo_zones_list( $1, $2)`
+const queryLoadStoreRuleRepoZonesE = `select * from store_rules_repo_zones_list( $1, $2)`
 const querySaveStoreRuleRepoZonesE = `SELECT store_rules_repo_zones_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -91,28 +93,13 @@ func (u *StoreRuleRepoZonesE) GetAll(token string, filter string) ([]*StoreRuleR
 		var rowdata StoreRuleRepoZonesE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
-			&rowdata.RuleRepoId,
-			&rowdata.Secuencial,
 			&rowdata.Orden,
 			&rowdata.ZoneId,
 			&rowdata.ZoneText,
-			&rowdata.CategUbicaId,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
+			&rowdata.CategRepoText,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -129,14 +116,14 @@ func (u *StoreRuleRepoZonesE) GetAll(token string, filter string) ([]*StoreRuleR
 }
 
 // GetOne returns one user by id
-func (u *StoreRuleRepoZonesE) GetByUniqueid(token string, uniqueid int) (*StoreRuleRepoZonesE, error) {
+func (u *StoreRuleRepoZonesE) GetByUniqueid(token string, jsonText string) (*StoreRuleRepoZonesE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreRuleRepoZonesE
+	query := queryLoadStoreRuleRepoZonesE
 
 	var rowdata StoreRuleRepoZonesE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -154,7 +141,8 @@ func (u *StoreRuleRepoZonesE) GetByUniqueid(token string, uniqueid int) (*StoreR
 		&rowdata.Orden,
 		&rowdata.ZoneId,
 		&rowdata.ZoneText,
-		&rowdata.CategUbicaId,
+		&rowdata.CategRepoId,
+		&rowdata.CategRepoText,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
@@ -163,6 +151,8 @@ func (u *StoreRuleRepoZonesE) GetByUniqueid(token string, uniqueid int) (*StoreR
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,

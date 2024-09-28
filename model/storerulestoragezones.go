@@ -9,41 +9,43 @@ import (
 
 // Reglas de Almacenaje - Zonas
 type StoreRuleStorageZonesE struct {
-	Uniqueid      int64      `json:"uniqueid,omitempty"`
-	Owner         NullInt32  `json:"owner,omitempty"`
-	Dispositivoid NullInt32  `json:"dispositivoid,omitempty"`
-	Id            int32      `json:"id,omitempty"`
-	Sede          int32      `json:"sede"`
-	Flag1         string     `json:"flag1,omitempty"`
-	Flag2         string     `json:"flag2,omitempty"`
-	PersonaId     NullInt64  `json:"personaid,omitempty"`
-	TokendataId   NullString `json:"tokendataid,omitempty"`
-	RuleStoraId   NullInt64  `json:"rulestoraid,omitempty"`
-	Secuencial    NullInt32  `json:"secuencial,omitempty"`
-	Orden         NullInt32  `json:"orden,omitempty"`
-	ZoneId        NullInt64  `json:"zoneid,omitempty"`
-	ZoneText      NullString `json:"zonetext,omitempty"`
-	CategUbicaId  NullInt64  `json:"categubicaid,omitempty"`
-	Ruf1          NullString `json:"ruf1,omitempty"`
-	Ruf2          NullString `json:"ruf2,omitempty"`
-	Ruf3          NullString `json:"ruf3,omitempty"`
-	Iv            NullString `json:"iv,omitempty"`
-	Salt          NullString `json:"salt,omitempty"`
-	Checksum      NullString `json:"checksum,omitempty"`
-	FCreated      NullTime   `json:"fcreated,omitempty"`
-	FUpdated      NullTime   `json:"fupdated,omitempty"`
-	UCreated      NullString `json:"ucreated,omitempty"`
-	UUpdated      NullString `json:"uupdated,omitempty"`
-	Activo        int32      `json:"activo,omitempty"`
-	Estadoreg     int32      `json:"estadoreg,omitempty"`
-	TotalRecords  int64      `json:"total_records,omitempty"`
+	Uniqueid       int64      `json:"uniqueid,omitempty"`
+	Owner          NullInt32  `json:"owner,omitempty"`
+	Dispositivoid  NullInt32  `json:"dispositivoid,omitempty"`
+	Id             int32      `json:"id,omitempty"`
+	Sede           int32      `json:"sede"`
+	Flag1          string     `json:"flag1,omitempty"`
+	Flag2          string     `json:"flag2,omitempty"`
+	PersonaId      NullInt64  `json:"personaid,omitempty"`
+	TokendataId    NullString `json:"tokendataid,omitempty"`
+	RuleStoraId    NullInt64  `json:"rulestoraid,omitempty"`
+	Secuencial     NullInt32  `json:"secuencial,omitempty"`
+	Orden          NullInt32  `json:"orden,omitempty"`
+	ZoneId         NullInt64  `json:"zoneid,omitempty"`
+	ZoneText       NullString `json:"zonetext,omitempty"`
+	CategUbicaId   NullInt64  `json:"categubicaid,omitempty"`
+	CategUbicaText NullString `json:"categubicatext,omitempty"`
+	Ruf1           NullString `json:"ruf1,omitempty"`
+	Ruf2           NullString `json:"ruf2,omitempty"`
+	Ruf3           NullString `json:"ruf3,omitempty"`
+	Iv             NullString `json:"iv,omitempty"`
+	Salt           NullString `json:"salt,omitempty"`
+	Checksum       NullString `json:"checksum,omitempty"`
+	FCreated       NullTime   `json:"fcreated,omitempty"`
+	FUpdated       NullTime   `json:"fupdated,omitempty"`
+	UCreated       NullString `json:"ucreated,omitempty"`
+	UUpdated       NullString `json:"uupdated,omitempty"`
+	Activo         int32      `json:"activo,omitempty"`
+	Estadoreg      int32      `json:"estadoreg,omitempty"`
+	TotalRecords   int64      `json:"total_records,omitempty"`
 }
 
 func (e StoreRuleStorageZonesE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreRuleStorageZonesE = `select * from store_rules_storage_zones_list( $1, $2)`
+const queryListStoreRuleStorageZonesE = `select uniqueid, sede, flag1, flag2, orden, zoneid, zonetext, categubicatext, activo, estadoreg, total_records from store_rules_storage_zones_list( $1, $2)`
+const queryLoadStoreRuleStorageZonesE = `select * from store_rules_storage_zones_list( $1, $2)`
 const querySaveStoreRuleStorageZonesE = `SELECT store_rules_storage_zones_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -91,28 +93,13 @@ func (u *StoreRuleStorageZonesE) GetAll(token string, filter string) ([]*StoreRu
 		var rowdata StoreRuleStorageZonesE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
-			&rowdata.RuleStoraId,
-			&rowdata.Secuencial,
 			&rowdata.Orden,
 			&rowdata.ZoneId,
 			&rowdata.ZoneText,
-			&rowdata.CategUbicaId,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
+			&rowdata.CategUbicaText,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -129,14 +116,14 @@ func (u *StoreRuleStorageZonesE) GetAll(token string, filter string) ([]*StoreRu
 }
 
 // GetOne returns one user by id
-func (u *StoreRuleStorageZonesE) GetByUniqueid(token string, uniqueid int) (*StoreRuleStorageZonesE, error) {
+func (u *StoreRuleStorageZonesE) GetByUniqueid(token string, jsonText string) (*StoreRuleStorageZonesE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreRuleStorageZonesE
+	query := queryLoadStoreRuleStorageZonesE
 
 	var rowdata StoreRuleStorageZonesE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -155,6 +142,7 @@ func (u *StoreRuleStorageZonesE) GetByUniqueid(token string, uniqueid int) (*Sto
 		&rowdata.ZoneId,
 		&rowdata.ZoneText,
 		&rowdata.CategUbicaId,
+		&rowdata.CategUbicaText,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
@@ -163,6 +151,8 @@ func (u *StoreRuleStorageZonesE) GetByUniqueid(token string, uniqueid int) (*Sto
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,

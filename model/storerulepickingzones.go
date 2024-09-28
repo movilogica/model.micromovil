@@ -24,6 +24,7 @@ type StoreRulePickingZonesE struct {
 	ZoneId        NullInt64  `json:"zoneid,omitempty"`
 	ZoneText      NullString `json:"zonetext,omitempty"`
 	CategPickId   NullInt64  `json:"categpickid,omitempty"`
+	CategPickText NullString `json:"categpicktext,omitempty"`
 	Ruf1          NullString `json:"ruf1,omitempty"`
 	Ruf2          NullString `json:"ruf2,omitempty"`
 	Ruf3          NullString `json:"ruf3,omitempty"`
@@ -43,7 +44,8 @@ func (e StoreRulePickingZonesE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreRulePickingZonesE = `select * from store_rules_pick_zones_list( $1, $2)`
+const queryListStoreRulePickingZonesE = `select uniqueid, sede, flag1, flag2, orden, zoneid, zonetext, categpicktext, activo, estadoreg, total_records from store_rules_pick_zones_list( $1, $2)`
+const queryLoadStoreRulePickingZonesE = `select * from store_rules_pick_zones_list( $1, $2)`
 const querySaveStoreRulePickingZonesE = `SELECT store_rules_pick_zones_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -87,32 +89,18 @@ func (u *StoreRulePickingZonesE) GetAll(token string, filter string) ([]*StoreRu
 
 	var lista []*StoreRulePickingZonesE
 
+	///uniqueid, sede, flag1, flag2, orden, zoneid, zonetext, categpicktext, activo, estadoreg, total_records
 	for rows.Next() {
 		var rowdata StoreRulePickingZonesE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
-			&rowdata.RulePickId,
-			&rowdata.Secuencial,
 			&rowdata.Orden,
 			&rowdata.ZoneId,
 			&rowdata.ZoneText,
-			&rowdata.CategPickId,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
+			&rowdata.CategPickText,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -129,14 +117,14 @@ func (u *StoreRulePickingZonesE) GetAll(token string, filter string) ([]*StoreRu
 }
 
 // GetOne returns one user by id
-func (u *StoreRulePickingZonesE) GetByUniqueid(token string, uniqueid int) (*StoreRulePickingZonesE, error) {
+func (u *StoreRulePickingZonesE) GetByUniqueid(token string, jsonText string) (*StoreRulePickingZonesE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreRulePickingZonesE
+	query := queryLoadStoreRulePickingZonesE
 
 	var rowdata StoreRulePickingZonesE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -155,6 +143,7 @@ func (u *StoreRulePickingZonesE) GetByUniqueid(token string, uniqueid int) (*Sto
 		&rowdata.ZoneId,
 		&rowdata.ZoneText,
 		&rowdata.CategPickId,
+		&rowdata.CategPickText,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
@@ -163,6 +152,8 @@ func (u *StoreRulePickingZonesE) GetByUniqueid(token string, uniqueid int) (*Sto
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,

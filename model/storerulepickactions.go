@@ -23,12 +23,15 @@ type StoreRulePickingActionsE struct {
 	Secuencial         NullInt32  `json:"secuencial,omitempty"`
 	Orden              NullInt32  `json:"orden,omitempty"`
 	WarehouseId        NullInt64  `json:"warehouseid,omitempty"`
+	WarehouseText      NullString `json:"warehousetext,omitempty"`
 	StorageTypeId      NullInt64  `json:"storagetypeid,omitempty"`
+	StorageTypeText    NullString `json:"storagetypetext,omitempty"`
 	LocationTypeEnumId NullString `json:"locationtypeenumid,omitempty"`
 	LocationStatusId   NullString `json:"locationstatusid,omitempty"`
 	Permanent          NullInt32  `json:"permanent,omitempty"`
 	ProductTypeId      NullString `json:"producttypeid,omitempty"`
 	CategItemId        NullInt64  `json:"categitemid,omitempty"`
+	CategItemText      NullString `json:"categitemtext,omitempty"`
 	InventoryTypeId    NullString `json:"inventorytypeid,omitempty"`
 	StatusItemId       NullString `json:"statusitemid,omitempty"`
 	UMedida            NullString `json:"umedida,omitempty"`
@@ -51,7 +54,8 @@ func (e StoreRulePickingActionsE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreRulePickingActionsE = `select * from store_rules_pick_actions_list( $1, $2)`
+const queryListStoreRulePickingActionsE = `select uniqueid, sede, flag1, flag2, rulepickzoneid, orden, warehousetext, storagetypetext, locationtypeenumid, locationstatusid, permanent, producttypeid, categitemtext, inventorytypeid, statusitemid, umedida, activo, estadoreg, total_records from store_rules_pick_actions_list( $1, $2)`
+const queryLoadStoreRulePickingActionsE = `select * from store_rules_pick_actions_list( $1, $2)`
 const querySaveStoreRulePickingActionsE = `SELECT store_rules_pick_actions_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -95,40 +99,28 @@ func (u *StoreRulePickingActionsE) GetAll(token string, filter string) ([]*Store
 
 	var lista []*StoreRulePickingActionsE
 
+	///uniqueid, sede, flag1, flag2, rulepickzoneid, orden, warehousetext, storagetypetext, locationtypeenumid,
+	///locationstatusid, permanent, producttypeid, categitemtext, inventorytypeid, statusitemid, umedida,
+	///activo, estadoreg, total_records
 	for rows.Next() {
 		var rowdata StoreRulePickingActionsE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
-			&rowdata.RulePickId,
 			&rowdata.RulePickZoneId,
-			&rowdata.Secuencial,
 			&rowdata.Orden,
-			&rowdata.WarehouseId,
-			&rowdata.StorageTypeId,
+			&rowdata.WarehouseText,
+			&rowdata.StorageTypeText,
 			&rowdata.LocationTypeEnumId,
 			&rowdata.LocationStatusId,
 			&rowdata.Permanent,
 			&rowdata.ProductTypeId,
-			&rowdata.CategItemId,
+			&rowdata.CategItemText,
 			&rowdata.InventoryTypeId,
 			&rowdata.StatusItemId,
 			&rowdata.UMedida,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -145,14 +137,14 @@ func (u *StoreRulePickingActionsE) GetAll(token string, filter string) ([]*Store
 }
 
 // GetOne returns one user by id
-func (u *StoreRulePickingActionsE) GetByUniqueid(token string, uniqueid int) (*StoreRulePickingActionsE, error) {
+func (u *StoreRulePickingActionsE) GetByUniqueid(token string, jsonText string) (*StoreRulePickingActionsE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreRulePickingActionsE
+	query := queryLoadStoreRulePickingActionsE
 
 	var rowdata StoreRulePickingActionsE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -170,12 +162,15 @@ func (u *StoreRulePickingActionsE) GetByUniqueid(token string, uniqueid int) (*S
 		&rowdata.Secuencial,
 		&rowdata.Orden,
 		&rowdata.WarehouseId,
+		&rowdata.WarehouseText,
 		&rowdata.StorageTypeId,
+		&rowdata.StorageTypeText,
 		&rowdata.LocationTypeEnumId,
 		&rowdata.LocationStatusId,
 		&rowdata.Permanent,
 		&rowdata.ProductTypeId,
 		&rowdata.CategItemId,
+		&rowdata.CategItemText,
 		&rowdata.InventoryTypeId,
 		&rowdata.StatusItemId,
 		&rowdata.UMedida,
@@ -187,6 +182,8 @@ func (u *StoreRulePickingActionsE) GetByUniqueid(token string, uniqueid int) (*S
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,

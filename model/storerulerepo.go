@@ -40,7 +40,8 @@ func (e StoreRuleRepoE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreRuleRepoE = `select * from store_rules_repo_list( $1, $2)`
+const queryListStoreRuleRepoE = `select uniqueid, sede, flag1, flag2, parentid, code, descrip, activo, estadoreg, total_records  from store_rules_repo_list( $1, $2)`
+const queryLoadStoreRuleRepoE = `select * from store_rules_repo_list( $1, $2)`
 const querySaveStoreRuleRepoE = `SELECT store_rules_repo_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -88,25 +89,12 @@ func (u *StoreRuleRepoE) GetAll(token string, filter string) ([]*StoreRuleRepoE,
 		var rowdata StoreRuleRepoE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
 			&rowdata.ParentId,
 			&rowdata.Code,
 			&rowdata.Descrip,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -123,14 +111,14 @@ func (u *StoreRuleRepoE) GetAll(token string, filter string) ([]*StoreRuleRepoE,
 }
 
 // GetOne returns one user by id
-func (u *StoreRuleRepoE) GetByUniqueid(token string, uniqueid int) (*StoreRuleRepoE, error) {
+func (u *StoreRuleRepoE) GetByUniqueid(token string, jsonText string) (*StoreRuleRepoE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreRuleRepoE
+	query := queryLoadStoreRuleRepoE
 
 	var rowdata StoreRuleRepoE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -154,6 +142,8 @@ func (u *StoreRuleRepoE) GetByUniqueid(token string, uniqueid int) (*StoreRuleRe
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,
