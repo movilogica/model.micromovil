@@ -77,8 +77,9 @@ func (e StoreRecountItemE) CreatedFormat() string {
 	return e.FCreated.Time.Format("Jan 2006")
 }
 
-const queryListStoreRecountItemE = `select * from store_recount_item_list( $1, $2)`
-const querySaveStoreRecountItemE = `SELECT store_recount_item_save($1, $2, $3)`
+const queryListStoreRecountItemE = `select uniqueid, sede, flag1, flag2, groupid, grouptext, personatext, barcodebox, barcodeitem, stylecode, colorcode, divisioncode, areaid, aisleid, sectionid, levelid, positionid,udisplay, uom, quom, quantity, total activo, estadoreg, total_records from store_recount_items_list( $1, $2)`
+const queryLoadStoreRecountItemE = `select * from store_recount_items_list( $1, $2)`
+const querySaveStoreRecountItemE = `SELECT store_recount_items_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -121,30 +122,21 @@ func (u *StoreRecountItemE) GetAll(token string, filter string) ([]*StoreRecount
 
 	var lista []*StoreRecountItemE
 
+	///uniqueid, sede, flag1, flag2, groupid, grouptext, personatext, barcodebox, barcodeitem, stylecode, colorcode, divisioncode,
+	///areaid, aisleid, sectionid, levelid, positionid,udisplay, uom, quom, quantity, total activo, estadoreg, total_records
 	for rows.Next() {
 		var rowdata StoreRecountItemE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
-			&rowdata.WarehouseId,
-			&rowdata.RecountId,
 			&rowdata.GroupId,
 			&rowdata.GroupText,
 			&rowdata.PersonaText,
-			&rowdata.Numero,
-			&rowdata.BoxId,
-			&rowdata.BoxIdentifyId,
 			&rowdata.BarcodeBox,
 			&rowdata.BarcodeItem,
 			&rowdata.StyleCode,
-			&rowdata.StyleText,
 			&rowdata.ColorCode,
 			&rowdata.DivisionCode,
 			&rowdata.AreaId,
@@ -156,27 +148,7 @@ func (u *StoreRecountItemE) GetAll(token string, filter string) ([]*StoreRecount
 			&rowdata.Uom,
 			&rowdata.Quom,
 			&rowdata.Quantity,
-			&rowdata.Xs,
-			&rowdata.S,
-			&rowdata.M,
-			&rowdata.L,
-			&rowdata.Xl,
-			&rowdata.Xxl,
-			&rowdata.Xxxl,
-			&rowdata.Os,
 			&rowdata.Total,
-			&rowdata.Reactive,
-			&rowdata.Pigment,
-			&rowdata.Pfd,
-			&rowdata.UrlphotoImage,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -193,14 +165,14 @@ func (u *StoreRecountItemE) GetAll(token string, filter string) ([]*StoreRecount
 }
 
 // GetOne returns one user by id
-func (u *StoreRecountItemE) GetByUniqueid(token string, uniqueid int) (*StoreRecountItemE, error) {
+func (u *StoreRecountItemE) GetByUniqueid(token string, jsonText string) (*StoreRecountItemE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreRecountItemE
+	query := queryLoadStoreRecountItemE
 
 	var rowdata StoreRecountItemE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -257,6 +229,8 @@ func (u *StoreRecountItemE) GetByUniqueid(token string, uniqueid int) (*StoreRec
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,

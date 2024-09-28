@@ -45,7 +45,8 @@ func (e StoreRecountGroupsE) CreatedFormat() string {
 	return e.FCreated.Time.Format("Jan 2006")
 }
 
-const queryListStoreRecountGroupsE = `select * from store_recount_groups_list( $1, $2)`
+const queryListStoreRecountGroupsE = `select uniqueid, sede, flag1, flag2, name, secuencial, activo, estadoreg, total_records from store_recount_groups_list( $1, $2)`
+const queryLoadStoreRecountGroupsE = `select * from store_recount_groups_list( $1, $2)`
 const querySaveStoreRecountGroupsE = `SELECT store_recount_groups_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -89,30 +90,16 @@ func (u *StoreRecountGroupsE) GetAll(token string, filter string) ([]*StoreRecou
 
 	var lista []*StoreRecountGroupsE
 
+	///uniqueid, sede, flag1, flag2, name, secuencial, activo, estadoreg, total_records
 	for rows.Next() {
 		var rowdata StoreRecountGroupsE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
-			&rowdata.WarehouseId,
-			&rowdata.RecountId,
 			&rowdata.Name,
 			&rowdata.Secuencial,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -129,14 +116,14 @@ func (u *StoreRecountGroupsE) GetAll(token string, filter string) ([]*StoreRecou
 }
 
 // GetOne returns one user by id
-func (u *StoreRecountGroupsE) GetByUniqueid(token string, uniqueid int) (*StoreRecountGroupsE, error) {
+func (u *StoreRecountGroupsE) GetByUniqueid(token string, jsonText string) (*StoreRecountGroupsE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreRecountGroupsE
+	query := queryLoadStoreRecountGroupsE
 
 	var rowdata StoreRecountGroupsE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -161,6 +148,8 @@ func (u *StoreRecountGroupsE) GetByUniqueid(token string, uniqueid int) (*StoreR
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,
