@@ -49,8 +49,9 @@ func (e StoreProductPricesE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreProductPricesE = `select * from store_product_prices_list( $1, $2)`
-const querySaveStoreProductPricesE = `SELECT store_product_prices_save($1, $2, $3)`
+const queryListStoreProductPricesE = `select uniqueid, sede, flag1, flag2, pricetypeid, pricepurposeid, divisasimbolo, divisadecimal, fromdate, throughdate, price, taxinprice, activo, estadoreg, total_records from store_products_prices_list( $1, $2)`
+const queryLoadStoreProductPricesE = `select * from store_products_prices_list( $1, $2)`
+const querySaveStoreProductPricesE = `SELECT store_products_prices_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -93,38 +94,23 @@ func (u *StoreProductPricesE) GetAll(token string, filter string) ([]*StoreProdu
 
 	var lista []*StoreProductPricesE
 
+	///uniqueid, sede, flag1, flag2, pricetypeid, pricepurposeid, divisasimbolo, divisadecimal, fromdate, throughdate,
+	///price, taxinprice, activo, estadoreg, total_records
 	for rows.Next() {
 		var rowdata StoreProductPricesE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
-			&rowdata.ProductId,
 			&rowdata.PriceTypeId,
 			&rowdata.PricePurposeId,
-			&rowdata.DivisaId,
-			&rowdata.DivisaText,
 			&rowdata.DivisaSimbolo,
 			&rowdata.DivisaDecimal,
 			&rowdata.FromDate,
 			&rowdata.ThroughDate,
 			&rowdata.Price,
-			&rowdata.TaxPercent,
 			&rowdata.TaxInPrice,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -141,14 +127,14 @@ func (u *StoreProductPricesE) GetAll(token string, filter string) ([]*StoreProdu
 }
 
 // GetOne returns one user by id
-func (u *StoreProductPricesE) GetByUniqueid(token string, uniqueid int) (*StoreProductPricesE, error) {
+func (u *StoreProductPricesE) GetByUniqueid(token string, jsonText string) (*StoreProductPricesE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
 	query := queryListStoreProductPricesE
 
 	var rowdata StoreProductPricesE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -181,6 +167,8 @@ func (u *StoreProductPricesE) GetByUniqueid(token string, uniqueid int) (*StoreP
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,

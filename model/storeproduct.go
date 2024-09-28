@@ -75,7 +75,7 @@ func (e StoreProductE) CreatedFormat() string {
 	return e.FCreated.Time.Format("Jan 2006")
 }
 
-const queryListStoreProductE = `select * from store_products_list( $1, $2)`
+const queryListStoreProductE = `select uniqueid, sede, flag1, flag2, parentid, code, barcode, productname, producttypeid, brandcode, stylecode, colorcode, divisioncode, udisplay, uomtypeid, uomdefault, quomdefault, price, purchase, activo, estadoreg, total_records from store_products_list( $1, $2)`
 const queryLoadStoreProductE = `select * from store_products_list( $1, $2)`
 const querySaveStoreProductE = `SELECT store_products_save($1, $2, $3)`
 
@@ -120,62 +120,30 @@ func (u *StoreProductE) GetAll(token string, filter string) ([]*StoreProductE, e
 
 	var lista []*StoreProductE
 
+	///uniqueid, sede, flag1, flag2, parentid, code, barcode, productname, producttypeid, brandcode, stylecode, colorcode,
+	///divisioncode, udisplay, uomtypeid, uomdefault, quomdefault, price, purchase, activo, estadoreg, total_records
 	for rows.Next() {
 		var rowdata StoreProductE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
 			&rowdata.ParentId,
 			&rowdata.Code,
 			&rowdata.BarCode,
 			&rowdata.ProductName,
-			&rowdata.InternalName,
-			&rowdata.DetailScreen,
 			&rowdata.ProductTypeId,
 			&rowdata.BrandCode,
 			&rowdata.StyleCode,
-			&rowdata.StyleText,
 			&rowdata.ColorCode,
 			&rowdata.DivisionCode,
 			&rowdata.UDisplay,
 			&rowdata.UomTypeId,
 			&rowdata.UomDefault,
 			&rowdata.QuomDefault,
-			&rowdata.CatUbicaId,
-			&rowdata.CatPickId,
-			&rowdata.CatRepoId,
-			&rowdata.VirtualInfo,
-			&rowdata.Fechas,
-			&rowdata.Inventario,
-			&rowdata.Rating,
-			&rowdata.Cantidad,
-			&rowdata.Medidas,
-			&rowdata.Shipping,
-			&rowdata.Compra,
-			&rowdata.Varios,
 			&rowdata.Price,
 			&rowdata.Purchase,
-			&rowdata.StockMinimo,
-			&rowdata.UrlSmallImage,
-			&rowdata.UrlMediumImage,
-			&rowdata.UrlLargeImage,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
-			&rowdata.UCreated,
-			&rowdata.UUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,

@@ -20,6 +20,7 @@ type StoreProductSuppliersE struct {
 	TokendataId       NullString  `json:"tokendataid,omitempty"`
 	ProductId         NullInt64   `json:"productid,omitempty"`
 	BizPersonaId      NullInt64   `json:"bizpersonaid,omitempty"`
+	BizPersonaText    NullString  `json:"bizpersonatext,omitempty"`
 	SupplierPref      NullString  `json:"supplierpref,omitempty"`
 	MinimalOrderq     NullInt32   `json:"minimalorderq,omitempty"`
 	DivisaId          NullInt64   `json:"divisaid,omitempty"`
@@ -52,8 +53,9 @@ func (e StoreProductSuppliersE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreProductSuppliersE = `select * from store_product_suppliers_list( $1, $2)`
-const querySaveStoreProductSuppliersE = `SELECT store_product_suppliers_save($1, $2, $3)`
+const queryListStoreProductSuppliersE = `select uniqueid, sede, flag1, flag2, bizpersonaid, bizpersonatext, supplierpref, minimalorderq, divisasimbolo, divisadecimal,lastprice, availablefrom, availablethrough, supplierdropship, activo, estadoreg, total_records from store_products_suppliers_list( $1, $2)`
+const queryLoadStoreProductSuppliersE = `select * from store_products_suppliers_list( $1, $2)`
+const querySaveStoreProductSuppliersE = `SELECT store_products_suppliers_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -96,41 +98,25 @@ func (u *StoreProductSuppliersE) GetAll(token string, filter string) ([]*StorePr
 
 	var lista []*StoreProductSuppliersE
 
+	///uniqueid, sede, flag1, flag2, bizpersonaid, bizpersonatext, supplierpref, minimalorderq, divisasimbolo, divisadecimal,
+	///availablefrom, availablethrough, lastprice, supplierdropship, activo, estadoreg, total_records
 	for rows.Next() {
 		var rowdata StoreProductSuppliersE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
-			&rowdata.ProductId,
 			&rowdata.BizPersonaId,
+			&rowdata.BizPersonaText,
 			&rowdata.SupplierPref,
 			&rowdata.MinimalOrderq,
-			&rowdata.DivisaId,
-			&rowdata.DivisaText,
 			&rowdata.DivisaSimbolo,
 			&rowdata.DivisaDecimal,
 			&rowdata.AvailableFrom,
 			&rowdata.AvailableThrough,
 			&rowdata.LastPrice,
-			&rowdata.ShippingPrice,
-			&rowdata.SupplierProductId,
 			&rowdata.SupplierDropShip,
-			&rowdata.Notes,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -147,14 +133,14 @@ func (u *StoreProductSuppliersE) GetAll(token string, filter string) ([]*StorePr
 }
 
 // GetOne returns one user by id
-func (u *StoreProductSuppliersE) GetByUniqueid(token string, uniqueid int) (*StoreProductSuppliersE, error) {
+func (u *StoreProductSuppliersE) GetByUniqueid(token string, jsonText string) (*StoreProductSuppliersE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreProductSuppliersE
+	query := queryLoadStoreProductSuppliersE
 
 	var rowdata StoreProductSuppliersE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -169,6 +155,7 @@ func (u *StoreProductSuppliersE) GetByUniqueid(token string, uniqueid int) (*Sto
 		&rowdata.TokendataId,
 		&rowdata.ProductId,
 		&rowdata.BizPersonaId,
+		&rowdata.BizPersonaText,
 		&rowdata.SupplierPref,
 		&rowdata.MinimalOrderq,
 		&rowdata.DivisaId,
@@ -190,6 +177,8 @@ func (u *StoreProductSuppliersE) GetByUniqueid(token string, uniqueid int) (*Sto
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,

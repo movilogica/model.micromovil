@@ -42,8 +42,9 @@ func (e StoreProductKeywordsE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreProductKeywordsE = `select * from store_product_keywords_list( $1, $2)`
-const querySaveStoreProductKeywordsE = `SELECT store_product_keywords_save($1, $2, $3)`
+const queryListStoreProductKeywordsE = `select uniqueid, sede, flag1, flag2, keyword, keywordtype, weight, activo, estadoreg, total_records from store_products_keywords_list( $1, $2)`
+const queryLoadStoreProductKeywordsE = `select * from store_products_keywords_list( $1, $2)`
+const querySaveStoreProductKeywordsE = `SELECT store_products_keywords_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -86,30 +87,17 @@ func (u *StoreProductKeywordsE) GetAll(token string, filter string) ([]*StorePro
 
 	var lista []*StoreProductKeywordsE
 
+	///uniqueid, sede, flag1, flag2, keyword, keywordtype, weight, activo, estadoreg, total_records
 	for rows.Next() {
 		var rowdata StoreProductKeywordsE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
-			&rowdata.ProductId,
 			&rowdata.Keyword,
 			&rowdata.KeywordType,
 			&rowdata.Weight,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -126,14 +114,14 @@ func (u *StoreProductKeywordsE) GetAll(token string, filter string) ([]*StorePro
 }
 
 // GetOne returns one user by id
-func (u *StoreProductKeywordsE) GetByUniqueid(token string, uniqueid int) (*StoreProductKeywordsE, error) {
+func (u *StoreProductKeywordsE) GetByUniqueid(token string, jsonText string) (*StoreProductKeywordsE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
 	query := queryListStoreProductKeywordsE
 
 	var rowdata StoreProductKeywordsE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -158,6 +146,8 @@ func (u *StoreProductKeywordsE) GetByUniqueid(token string, uniqueid int) (*Stor
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,

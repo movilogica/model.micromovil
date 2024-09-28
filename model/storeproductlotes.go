@@ -41,8 +41,9 @@ func (e StoreProductLotesE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreProductLotesE = `select * from store_product_lotes_list( $1, $2)`
-const querySaveStoreProductLotesE = `SELECT store_product_lotes_save($1, $2, $3)`
+const queryListStoreProductLotesE = `select uniqueid, sede, flag1, flag2, secuencial, lotid, lotexpired, activo, estadoreg, total_records from store_products_lotes_list( $1, $2)`
+const queryLoadStoreProductLotesE = `select * from store_products_lotes_list( $1, $2)`
+const querySaveStoreProductLotesE = `SELECT store_products_lotes_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -85,30 +86,17 @@ func (u *StoreProductLotesE) GetAll(token string, filter string) ([]*StoreProduc
 
 	var lista []*StoreProductLotesE
 
+	///uniqueid, sede, flag1, flag2, secuencial, lotid, lotexpired, activo, estadoreg, total_records
 	for rows.Next() {
 		var rowdata StoreProductLotesE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
 			&rowdata.Secuencial,
-			&rowdata.ProductId,
 			&rowdata.LotId,
 			&rowdata.LotExpired,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -125,14 +113,14 @@ func (u *StoreProductLotesE) GetAll(token string, filter string) ([]*StoreProduc
 }
 
 // GetOne returns one user by id
-func (u *StoreProductLotesE) GetByUniqueid(token string, uniqueid int) (*StoreProductLotesE, error) {
+func (u *StoreProductLotesE) GetByUniqueid(token string, jsonText string) (*StoreProductLotesE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreProductLotesE
+	query := queryLoadStoreProductLotesE
 
 	var rowdata StoreProductLotesE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -145,8 +133,8 @@ func (u *StoreProductLotesE) GetByUniqueid(token string, uniqueid int) (*StorePr
 		&rowdata.Flag2,
 		&rowdata.PersonaId,
 		&rowdata.TokendataId,
-		&rowdata.Secuencial,
 		&rowdata.ProductId,
+		&rowdata.Secuencial,
 		&rowdata.LotId,
 		&rowdata.LotExpired,
 		&rowdata.Ruf1,
@@ -157,6 +145,8 @@ func (u *StoreProductLotesE) GetByUniqueid(token string, uniqueid int) (*StorePr
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,

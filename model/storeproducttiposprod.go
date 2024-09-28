@@ -21,6 +21,7 @@ type StoreProductTiposProdE struct {
 	Secuencial    NullInt32  `json:"secuencial,omitempty"`
 	ProductId     NullInt64  `json:"productid,omitempty"`
 	TipoProdId    NullInt64  `json:"tipoprodid,omitempty"`
+	TipoProdText  NullString `json:"tipoprodtext,omitempty"`
 	Ruf1          NullString `json:"ruf1,omitempty"`
 	Ruf2          NullString `json:"ruf2,omitempty"`
 	Ruf3          NullString `json:"ruf3,omitempty"`
@@ -40,8 +41,9 @@ func (e StoreProductTiposProdE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreProductTiposProdE = `select * from store_product_tiposprod_list( $1, $2)`
-const querySaveStoreProductTiposProdE = `SELECT store_product_tiposprod_save($1, $2, $3)`
+const queryListStoreProductTiposProdE = `select uniqueid, sede, flag1, flag2, secuencial, tipoprodid, tipoprodtext, activo, estadoreg, total_records from store_products_tiposprod_list( $1, $2)`
+const queryLoadStoreProductTiposProdE = `select * from store_products_tiposprod_list( $1, $2)`
+const querySaveStoreProductTiposProdE = `SELECT store_products_tiposprod_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -84,29 +86,17 @@ func (u *StoreProductTiposProdE) GetAll(token string, filter string) ([]*StorePr
 
 	var lista []*StoreProductTiposProdE
 
+	///uniqueid, sede, flag1, flag2, secuencial, tipoprodid, tipoprodtext, activo, estadoreg, total_records
 	for rows.Next() {
 		var rowdata StoreProductTiposProdE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
 			&rowdata.Secuencial,
-			&rowdata.ProductId,
 			&rowdata.TipoProdId,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
+			&rowdata.TipoProdText,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -123,14 +113,14 @@ func (u *StoreProductTiposProdE) GetAll(token string, filter string) ([]*StorePr
 }
 
 // GetOne returns one user by id
-func (u *StoreProductTiposProdE) GetByUniqueid(token string, uniqueid int) (*StoreProductTiposProdE, error) {
+func (u *StoreProductTiposProdE) GetByUniqueid(token string, jsonText string) (*StoreProductTiposProdE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreProductTiposProdE
+	query := queryLoadStoreProductTiposProdE
 
 	var rowdata StoreProductTiposProdE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -146,6 +136,7 @@ func (u *StoreProductTiposProdE) GetByUniqueid(token string, uniqueid int) (*Sto
 		&rowdata.Secuencial,
 		&rowdata.ProductId,
 		&rowdata.TipoProdId,
+		&rowdata.TipoProdText,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
@@ -154,6 +145,8 @@ func (u *StoreProductTiposProdE) GetByUniqueid(token string, uniqueid int) (*Sto
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,
