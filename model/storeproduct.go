@@ -76,6 +76,7 @@ func (e StoreProductE) CreatedFormat() string {
 }
 
 const queryListStoreProductE = `select * from store_products_list( $1, $2)`
+const queryLoadStoreProductE = `select * from store_products_list( $1, $2)`
 const querySaveStoreProductE = `SELECT store_products_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -173,6 +174,8 @@ func (u *StoreProductE) GetAll(token string, filter string) ([]*StoreProductE, e
 			&rowdata.Checksum,
 			&rowdata.FCreated,
 			&rowdata.FUpdated,
+			&rowdata.UCreated,
+			&rowdata.UUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -189,14 +192,14 @@ func (u *StoreProductE) GetAll(token string, filter string) ([]*StoreProductE, e
 }
 
 // GetOne returns one user by id
-func (u *StoreProductE) GetByUniqueid(token string, uniqueid int) (*StoreProductE, error) {
+func (u *StoreProductE) GetByUniqueid(token string, jsonText string) (*StoreProductE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreProductE
+	query := queryLoadStoreProductE
 
 	var rowdata StoreProductE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -251,6 +254,8 @@ func (u *StoreProductE) GetByUniqueid(token string, uniqueid int) (*StoreProduct
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,
