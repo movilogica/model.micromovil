@@ -43,7 +43,8 @@ func (e StoreStoresE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreStoresE = `select * from store_stores_list( $1, $2)`
+const queryListStoreStoresE = `select uniqueid, sede, flag1, flag2, code, descrip, title, location, urlimage, activo, estadoreg, total_records from store_stores_list( $1, $2)`
+const queryLoadStoreStoresE = `select * from store_stores_list( $1, $2)`
 const querySaveStoreStoresE = `SELECT store_stores_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -87,32 +88,19 @@ func (u *StoreStoresE) GetAll(token string, filter string) ([]*StoreStoresE, err
 
 	var lista []*StoreStoresE
 
+	///uniqueid, sede, flag1, flag2, code, descrip, title, location, urlimage, activo, estadoreg, total_records
 	for rows.Next() {
 		var rowdata StoreStoresE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
 			&rowdata.Code,
 			&rowdata.Descrip,
 			&rowdata.Title,
-			&rowdata.SubTitle,
 			&rowdata.Location,
 			&rowdata.UrlImage,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -129,14 +117,14 @@ func (u *StoreStoresE) GetAll(token string, filter string) ([]*StoreStoresE, err
 }
 
 // GetOne returns one user by id
-func (u *StoreStoresE) GetByUniqueid(token string, uniqueid int) (*StoreStoresE, error) {
+func (u *StoreStoresE) GetByUniqueid(token string, jsonText string) (*StoreStoresE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreStoresE
+	query := queryLoadStoreStoresE
 
 	var rowdata StoreStoresE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -163,6 +151,8 @@ func (u *StoreStoresE) GetByUniqueid(token string, uniqueid int) (*StoreStoresE,
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,

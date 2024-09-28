@@ -19,8 +19,9 @@ type StoreWarehouseStagesE struct {
 	PersonaId     NullInt64  `json:"personaid,omitempty"`
 	TokendataId   NullString `json:"tokendataid,omitempty"`
 	WarehouseId   NullInt64  `json:"warehouseid,omitempty"`
-	StageId       NullString `json:"stageid,omitempty"`
 	Secuencial    NullInt32  `json:"secuencial,omitempty"`
+	StageId       NullString `json:"stageid,omitempty"`
+	Descrip       NullString `json:"descrip,omitempty"`
 	Ruf1          NullString `json:"ruf1,omitempty"`
 	Ruf2          NullString `json:"ruf2,omitempty"`
 	Ruf3          NullString `json:"ruf3,omitempty"`
@@ -40,7 +41,8 @@ func (e StoreWarehouseStagesE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreWarehouseStagesE = `select * from store_warehouse_stages_list( $1, $2)`
+const queryListStoreWarehouseStagesE = `select uniqueid, sede, flag1, flag2, secuencial, stageid, descrip, activo, estadoreg, total_records from store_warehouse_stages_list( $1, $2)`
+const queryLoadStoreWarehouseStagesE = `select * from store_warehouse_stages_list( $1, $2)`
 const querySaveStoreWarehouseStagesE = `SELECT store_warehouse_stages_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -84,29 +86,17 @@ func (u *StoreWarehouseStagesE) GetAll(token string, filter string) ([]*StoreWar
 
 	var lista []*StoreWarehouseStagesE
 
+	///uniqueid, sede, flag1, flag2, secuencial, stageid, descrip, activo, estadoreg, total_records
 	for rows.Next() {
 		var rowdata StoreWarehouseStagesE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
-			&rowdata.WarehouseId,
-			&rowdata.StageId,
 			&rowdata.Secuencial,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
+			&rowdata.StageId,
+			&rowdata.Descrip,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -123,14 +113,14 @@ func (u *StoreWarehouseStagesE) GetAll(token string, filter string) ([]*StoreWar
 }
 
 // GetOne returns one user by id
-func (u *StoreWarehouseStagesE) GetByUniqueid(token string, uniqueid int) (*StoreWarehouseStagesE, error) {
+func (u *StoreWarehouseStagesE) GetByUniqueid(token string, jsonText string) (*StoreWarehouseStagesE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreWarehouseStagesE
+	query := queryLoadStoreWarehouseStagesE
 
 	var rowdata StoreWarehouseStagesE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -144,8 +134,9 @@ func (u *StoreWarehouseStagesE) GetByUniqueid(token string, uniqueid int) (*Stor
 		&rowdata.PersonaId,
 		&rowdata.TokendataId,
 		&rowdata.WarehouseId,
-		&rowdata.StageId,
 		&rowdata.Secuencial,
+		&rowdata.StageId,
+		&rowdata.Descrip,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
@@ -154,6 +145,8 @@ func (u *StoreWarehouseStagesE) GetByUniqueid(token string, uniqueid int) (*Stor
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,

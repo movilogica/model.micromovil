@@ -23,7 +23,8 @@ type StoreWarehouseLocationsE struct {
 	LocationTypeEnumId NullString `json:"locationtypeenumid,omitempty"`
 	LocationStatusId   NullString `json:"locationstatusid,omitempty"`
 	StageId            NullString `json:"stageid,omitempty"`
-	StorageTypeId      NullString `json:"storagetypeid,omitempty"`
+	StorageTypeId      NullInt64  `json:"storagetypeid,omitempty"`
+	StorageTypeText    NullString `json:"storagetypetext,omitempty"`
 	AreaId             NullString `json:"areaid,omitempty"`
 	AisleId            NullString `json:"aisleid,omitempty"`
 	SectionId          NullString `json:"sectionid,omitempty"`
@@ -49,7 +50,8 @@ func (e StoreWarehouseLocationsE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreWarehouseLocationsE = `select * from store_warehouse_locations_list( $1, $2)`
+const queryListStoreWarehouseLocationsE = `select uniqueid, sede, flag1, flag2, locationseqid, locationtypeenumid, locationstatusid, stageid, storagetypetext, permanent, activo, estadoreg, total_records from store_warehouse_locations_list( $1, $2)`
+const queryLoadStoreWarehouseLocationsE = `select * from store_warehouse_locations_list( $1, $2)`
 const querySaveStoreWarehouseLocationsE = `SELECT store_warehouse_locations_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -93,38 +95,21 @@ func (u *StoreWarehouseLocationsE) GetAll(token string, filter string) ([]*Store
 
 	var lista []*StoreWarehouseLocationsE
 
+	///uniqueid, sede, flag1, flag2, locationseqid, locationtypeenumid, locationstatusid, stageid, storagetypetext,
+	///permanent, activo, estadoreg, total_records
 	for rows.Next() {
 		var rowdata StoreWarehouseLocationsE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
-			&rowdata.WarehouseId,
 			&rowdata.LocationSeqId,
 			&rowdata.LocationTypeEnumId,
 			&rowdata.LocationStatusId,
 			&rowdata.StageId,
-			&rowdata.StorageTypeId,
-			&rowdata.AreaId,
-			&rowdata.AisleId,
-			&rowdata.SectionId,
-			&rowdata.LevelId,
-			&rowdata.PositionId,
+			&rowdata.StorageTypeText,
 			&rowdata.Permanent,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -141,14 +126,14 @@ func (u *StoreWarehouseLocationsE) GetAll(token string, filter string) ([]*Store
 }
 
 // GetOne returns one user by id
-func (u *StoreWarehouseLocationsE) GetByUniqueid(token string, uniqueid int) (*StoreWarehouseLocationsE, error) {
+func (u *StoreWarehouseLocationsE) GetByUniqueid(token string, jsonText string) (*StoreWarehouseLocationsE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreWarehouseLocationsE
+	query := queryLoadStoreWarehouseLocationsE
 
 	var rowdata StoreWarehouseLocationsE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -167,6 +152,7 @@ func (u *StoreWarehouseLocationsE) GetByUniqueid(token string, uniqueid int) (*S
 		&rowdata.LocationStatusId,
 		&rowdata.StageId,
 		&rowdata.StorageTypeId,
+		&rowdata.StorageTypeText,
 		&rowdata.AreaId,
 		&rowdata.AisleId,
 		&rowdata.SectionId,
@@ -181,6 +167,8 @@ func (u *StoreWarehouseLocationsE) GetByUniqueid(token string, uniqueid int) (*S
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,
