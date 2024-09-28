@@ -40,7 +40,8 @@ func (e StoreParamCategRepoE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreParamCategRepoE = `select * from store_param_categ_repo_list( $1, $2)`
+const queryListStoreParamCategRepoE = `select uniqueid, sede, flag1, flag2, parentid, code, descrip, activo, estadoreg, total_records from store_param_categ_repo_list( $1, $2)`
+const queryLoadStoreParamCategRepoE = `select * from store_param_categ_repo_list( $1, $2)`
 const querySaveStoreParamCategRepoE = `SELECT store_param_categ_repo_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -84,29 +85,18 @@ func (u *StoreParamCategRepoE) GetAll(token string, filter string) ([]*StorePara
 
 	var lista []*StoreParamCategRepoE
 
+	//`select uniqueid, sede, flag1, flag2, parentid, code, descrip, activo, estadoreg, total_records from store_param_categ_repo_list( $1, $2)`
+
 	for rows.Next() {
 		var rowdata StoreParamCategRepoE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
 			&rowdata.ParentId,
 			&rowdata.Code,
 			&rowdata.Descrip,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -123,14 +113,14 @@ func (u *StoreParamCategRepoE) GetAll(token string, filter string) ([]*StorePara
 }
 
 // GetOne returns one user by id
-func (u *StoreParamCategRepoE) GetByUniqueid(token string, uniqueid int) (*StoreParamCategRepoE, error) {
+func (u *StoreParamCategRepoE) GetByUniqueid(token string, jsonText string) (*StoreParamCategRepoE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreParamCategRepoE
+	query := queryLoadStoreParamCategRepoE
 
 	var rowdata StoreParamCategRepoE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Println("Where = " + string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -154,6 +144,8 @@ func (u *StoreParamCategRepoE) GetByUniqueid(token string, uniqueid int) (*Store
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,

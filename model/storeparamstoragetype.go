@@ -45,7 +45,8 @@ func (e StoreParamStorageTypeE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreParamStorageTypeE = `select * from store_param_storage_type_list( $1, $2)`
+const queryListStoreParamStorageTypeE = `select uniqueid, sede, flag1, flag2, parentid, code, descrip, storagemodeid, activo, estadoreg, total_records from store_param_storage_type_list( $1, $2)`
+const queryLoadStoreParamStorageTypeE = `select * from store_param_storage_type_list( $1, $2)`
 const querySaveStoreParamStorageTypeE = `SELECT store_param_storage_type_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
@@ -89,34 +90,18 @@ func (u *StoreParamStorageTypeE) GetAll(token string, filter string) ([]*StorePa
 
 	var lista []*StoreParamStorageTypeE
 
+	/// `select uniqueid, sede, flag1, flag2, parentid, code, descrip, storagemodeid, activo, estadoreg, total_records from store_param_storage_type_list( $1, $2)`
 	for rows.Next() {
 		var rowdata StoreParamStorageTypeE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.TokendataId,
 			&rowdata.ParentId,
 			&rowdata.Code,
 			&rowdata.Descrip,
 			&rowdata.StorageModeId,
-			&rowdata.MaxWeight,
-			&rowdata.MaxHeight,
-			&rowdata.MaxDepth,
-			&rowdata.MaxWidth,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -133,14 +118,14 @@ func (u *StoreParamStorageTypeE) GetAll(token string, filter string) ([]*StorePa
 }
 
 // GetOne returns one user by id
-func (u *StoreParamStorageTypeE) GetByUniqueid(token string, uniqueid int) (*StoreParamStorageTypeE, error) {
+func (u *StoreParamStorageTypeE) GetByUniqueid(token string, jsonText string) (*StoreParamStorageTypeE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreParamStorageTypeE
+	query := queryLoadStoreParamStorageTypeE
 
 	var rowdata StoreParamStorageTypeE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -169,6 +154,8 @@ func (u *StoreParamStorageTypeE) GetByUniqueid(token string, uniqueid int) (*Sto
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,
