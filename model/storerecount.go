@@ -38,6 +38,9 @@ type StoreRecountE struct {
 	Activo        int32      `json:"activo,omitempty"`
 	Estadoreg     int32      `json:"estadoreg,omitempty"`
 	TotalRecords  int64      `json:"total_records,omitempty"`
+	Boxes         []StoreRecountBoxesE
+	Groups        []StoreRecountGroupsE
+	Items         []StoreRecountItemE
 }
 
 func (e StoreRecountE) MarshalJSON() ([]byte, error) {

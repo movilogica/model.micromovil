@@ -65,6 +65,16 @@ type StoreProductE struct {
 	Activo         int32       `json:"activo,omitempty"`
 	Estadoreg      int32       `json:"estadoreg,omitempty"`
 	TotalRecords   int64       `json:"total_records,omitempty"`
+	Keywords       []StoreProductKeywordsE
+	Idens          []StoreProductIdenE
+	Prices         []StoreProductPricesE
+	Suppliers      []StoreProductSuppliersE
+	CatItems       []StoreProductCategItemsE
+	Attrs          []StoreProductAttrE
+	Assos          []StoreProductAssoE
+	Persons        []StoreProductPersE
+	TiposProds     []StoreProductTiposProdE
+	Lotes          []StoreProductLotesE
 }
 
 func (e StoreProductE) MarshalJSON() ([]byte, error) {
