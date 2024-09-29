@@ -9,36 +9,36 @@ import (
 
 // Reglas de Picking - Zonas
 type StoreRulePickingZonesE struct {
-	Uniqueid      int64                      `json:"uniqueid,omitempty"`
-	Owner         NullInt32                  `json:"owner,omitempty"`
-	Dispositivoid NullInt32                  `json:"dispositivoid,omitempty"`
-	Id            int32                      `json:"id,omitempty"`
-	Sede          int32                      `json:"sede"`
-	Flag1         string                     `json:"flag1,omitempty"`
-	Flag2         string                     `json:"flag2,omitempty"`
-	PersonaId     NullInt64                  `json:"personaid,omitempty"`
-	TokendataId   NullString                 `json:"tokendataid,omitempty"`
-	RulePickId    NullInt64                  `json:"rulepickid,omitempty"`
-	Secuencial    NullInt32                  `json:"secuencial,omitempty"`
-	Orden         NullInt32                  `json:"orden,omitempty"`
-	ZoneId        NullInt64                  `json:"zoneid,omitempty"`
-	ZoneText      NullString                 `json:"zonetext,omitempty"`
-	CategPickId   NullInt64                  `json:"categpickid,omitempty"`
-	CategPickText NullString                 `json:"categpicktext,omitempty"`
-	Ruf1          NullString                 `json:"ruf1,omitempty"`
-	Ruf2          NullString                 `json:"ruf2,omitempty"`
-	Ruf3          NullString                 `json:"ruf3,omitempty"`
-	Iv            NullString                 `json:"iv,omitempty"`
-	Salt          NullString                 `json:"salt,omitempty"`
-	Checksum      NullString                 `json:"checksum,omitempty"`
-	FCreated      NullTime                   `json:"fcreated,omitempty"`
-	FUpdated      NullTime                   `json:"fupdated,omitempty"`
-	UCreated      NullString                 `json:"ucreated,omitempty"`
-	UUpdated      NullString                 `json:"uupdated,omitempty"`
-	Activo        int32                      `json:"activo,omitempty"`
-	Estadoreg     int32                      `json:"estadoreg,omitempty"`
-	TotalRecords  int64                      `json:"total_records,omitempty"`
-	Actions       []StoreRulePickingActionsE `json:"actions:omitempty"`
+	Uniqueid      int64                       `json:"uniqueid,omitempty"`
+	Owner         NullInt32                   `json:"owner,omitempty"`
+	Dispositivoid NullInt32                   `json:"dispositivoid,omitempty"`
+	Id            int32                       `json:"id,omitempty"`
+	Sede          int32                       `json:"sede"`
+	Flag1         string                      `json:"flag1,omitempty"`
+	Flag2         string                      `json:"flag2,omitempty"`
+	PersonaId     NullInt64                   `json:"personaid,omitempty"`
+	TokendataId   NullString                  `json:"tokendataid,omitempty"`
+	RulePickId    NullInt64                   `json:"rulepickid,omitempty"`
+	Secuencial    NullInt32                   `json:"secuencial,omitempty"`
+	Orden         NullInt32                   `json:"orden,omitempty"`
+	ZoneId        NullInt64                   `json:"zoneid,omitempty"`
+	ZoneText      NullString                  `json:"zonetext,omitempty"`
+	CategPickId   NullInt64                   `json:"categpickid,omitempty"`
+	CategPickText NullString                  `json:"categpicktext,omitempty"`
+	Ruf1          NullString                  `json:"ruf1,omitempty"`
+	Ruf2          NullString                  `json:"ruf2,omitempty"`
+	Ruf3          NullString                  `json:"ruf3,omitempty"`
+	Iv            NullString                  `json:"iv,omitempty"`
+	Salt          NullString                  `json:"salt,omitempty"`
+	Checksum      NullString                  `json:"checksum,omitempty"`
+	FCreated      NullTime                    `json:"fcreated,omitempty"`
+	FUpdated      NullTime                    `json:"fupdated,omitempty"`
+	UCreated      NullString                  `json:"ucreated,omitempty"`
+	UUpdated      NullString                  `json:"uupdated,omitempty"`
+	Activo        int32                       `json:"activo,omitempty"`
+	Estadoreg     int32                       `json:"estadoreg,omitempty"`
+	TotalRecords  int64                       `json:"total_records,omitempty"`
+	Actions       []*StoreRulePickingActionsE `json:"actions:omitempty"`
 }
 
 func (e StoreRulePickingZonesE) MarshalJSON() ([]byte, error) {

@@ -63,12 +63,12 @@ type DataPersonasE struct {
 	Activo         int32       `json:"activo,omitempty"`
 	Estadoreg      int32       `json:"estadoreg,omitempty"`
 	TotalRecords   int64       `json:"total_records,omitempty"`
-	Detail         DataPersonaDetailE
-	Addrs          []DataPersonaAddressE
-	Ids            []DataPersonasIdE
-	Medios         []DataPersonasMedioE
-	Roles          []DataPersonasRolE
-	Trusteds       []DataPersonaTrustedE
+	Detail         *DataPersonaDetailE
+	Addrs          []*DataPersonaAddressE
+	Ids            []*DataPersonasIdE
+	Medios         []*DataPersonasMedioE
+	Roles          []*DataPersonasRolE
+	Trusteds       []*DataPersonaTrustedE
 }
 
 func (e DataPersonasE) MarshalJSON() ([]byte, error) {
