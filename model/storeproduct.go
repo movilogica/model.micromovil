@@ -9,72 +9,72 @@ import (
 
 // Items
 type StoreProductE struct {
-	Uniqueid       int64       `json:"uniqueid,omitempty"`
-	Owner          NullInt32   `json:"owner,omitempty"`
-	Dispositivoid  NullInt32   `json:"dispositivoid,omitempty"`
-	Id             int32       `json:"id,omitempty"`
-	Sede           int32       `json:"sede"`
-	Flag1          string      `json:"flag1,omitempty"`
-	Flag2          string      `json:"flag2,omitempty"`
-	PersonaId      NullInt64   `json:"personaid,omitempty"`
-	TokendataId    NullString  `json:"tokendataid,omitempty"`
-	ParentId       NullInt64   `json:"parentid,omitempty"`
-	Code           NullString  `json:"code,omitempty"`
-	BarCode        NullString  `json:"barcode,omitempty"`
-	ProductName    NullString  `json:"productname,omitempty"`
-	InternalName   NullString  `json:"internalname,omitempty"`
-	DetailScreen   NullString  `json:"detailscreen,omitempty"`
-	ProductTypeId  NullString  `json:"producttypeid,omitempty"`
-	BrandCode      NullString  `json:"brandcode,omitempty"`
-	StyleCode      NullString  `json:"stylecode,omitempty"`
-	StyleText      NullString  `json:"styletext,omitempty"`
-	ColorCode      NullString  `json:"colorcode,omitempty"`
-	DivisionCode   NullString  `json:"divisioncode,omitempty"`
-	UDisplay       NullString  `json:"udisplay,omitempty"`
-	UomTypeId      NullString  `json:"uomtypeid,omitempty"`
-	UomDefault     NullString  `json:"uomdefault,omitempty"`
-	QuomDefault    NullFloat64 `json:"quomdefault,omitempty"`
-	CatUbicaId     NullInt64   `json:"catubicaid,omitempty"`
-	CatPickId      NullInt64   `json:"catpickid,omitempty"`
-	CatRepoId      NullInt64   `json:"catrepoid,omitempty"`
-	VirtualInfo    NullString  `json:"virtualinfo,omitempty"`
-	Fechas         NullString  `json:"fechas,omitempty"`
-	Inventario     NullString  `json:"inventario,omitempty"`
-	Rating         NullString  `json:"rating,omitempty"`
-	Cantidad       NullString  `json:"cantidad,omitempty"`
-	Medidas        NullString  `json:"medidas,omitempty"`
-	Shipping       NullString  `json:"shipping,omitempty"`
-	Compra         NullString  `json:"compra,omitempty"`
-	Varios         NullString  `json:"varios,omitempty"`
-	Price          NullFloat64 `json:"price,omitempty"`
-	Purchase       NullFloat64 `json:"purchase,omitempty"`
-	StockMinimo    NullInt32   `json:"stockminimo,omitempty"`
-	UrlSmallImage  NullString  `json:"urlsmallimage,omitempty"`
-	UrlMediumImage NullString  `json:"urlmediumimage,omitempty"`
-	UrlLargeImage  NullString  `json:"urllargeimage,omitempty"`
-	Ruf1           NullString  `json:"ruf1,omitempty"`
-	Ruf2           NullString  `json:"ruf2,omitempty"`
-	Ruf3           NullString  `json:"ruf3,omitempty"`
-	Iv             NullString  `json:"iv,omitempty"`
-	Salt           NullString  `json:"salt,omitempty"`
-	Checksum       NullString  `json:"checksum,omitempty"`
-	FCreated       NullTime    `json:"fcreated,omitempty"`
-	FUpdated       NullTime    `json:"fupdated,omitempty"`
-	UCreated       NullString  `json:"ucreated,omitempty"`
-	UUpdated       NullString  `json:"uupdated,omitempty"`
-	Activo         int32       `json:"activo,omitempty"`
-	Estadoreg      int32       `json:"estadoreg,omitempty"`
-	TotalRecords   int64       `json:"total_records,omitempty"`
-	Keywords       []StoreProductKeywordsE
-	Idens          []StoreProductIdenE
-	Prices         []StoreProductPricesE
-	Suppliers      []StoreProductSuppliersE
-	CatItems       []StoreProductCategItemsE
-	Attrs          []StoreProductAttrE
-	Assos          []StoreProductAssoE
-	Persons        []StoreProductPersE
-	TiposProds     []StoreProductTiposProdE
-	Lotes          []StoreProductLotesE
+	Uniqueid       int64                     `json:"uniqueid,omitempty"`
+	Owner          NullInt32                 `json:"owner,omitempty"`
+	Dispositivoid  NullInt32                 `json:"dispositivoid,omitempty"`
+	Id             int32                     `json:"id,omitempty"`
+	Sede           int32                     `json:"sede"`
+	Flag1          string                    `json:"flag1,omitempty"`
+	Flag2          string                    `json:"flag2,omitempty"`
+	PersonaId      NullInt64                 `json:"personaid,omitempty"`
+	TokendataId    NullString                `json:"tokendataid,omitempty"`
+	ParentId       NullInt64                 `json:"parentid,omitempty"`
+	Code           NullString                `json:"code,omitempty"`
+	BarCode        NullString                `json:"barcode,omitempty"`
+	ProductName    NullString                `json:"productname,omitempty"`
+	InternalName   NullString                `json:"internalname,omitempty"`
+	DetailScreen   NullString                `json:"detailscreen,omitempty"`
+	ProductTypeId  NullString                `json:"producttypeid,omitempty"`
+	BrandCode      NullString                `json:"brandcode,omitempty"`
+	StyleCode      NullString                `json:"stylecode,omitempty"`
+	StyleText      NullString                `json:"styletext,omitempty"`
+	ColorCode      NullString                `json:"colorcode,omitempty"`
+	DivisionCode   NullString                `json:"divisioncode,omitempty"`
+	UDisplay       NullString                `json:"udisplay,omitempty"`
+	UomTypeId      NullString                `json:"uomtypeid,omitempty"`
+	UomDefault     NullString                `json:"uomdefault,omitempty"`
+	QuomDefault    NullFloat64               `json:"quomdefault,omitempty"`
+	CatUbicaId     NullInt64                 `json:"catubicaid,omitempty"`
+	CatPickId      NullInt64                 `json:"catpickid,omitempty"`
+	CatRepoId      NullInt64                 `json:"catrepoid,omitempty"`
+	VirtualInfo    NullString                `json:"virtualinfo,omitempty"`
+	Fechas         NullString                `json:"fechas,omitempty"`
+	Inventario     NullString                `json:"inventario,omitempty"`
+	Rating         NullString                `json:"rating,omitempty"`
+	Cantidad       NullString                `json:"cantidad,omitempty"`
+	Medidas        NullString                `json:"medidas,omitempty"`
+	Shipping       NullString                `json:"shipping,omitempty"`
+	Compra         NullString                `json:"compra,omitempty"`
+	Varios         NullString                `json:"varios,omitempty"`
+	Price          NullFloat64               `json:"price,omitempty"`
+	Purchase       NullFloat64               `json:"purchase,omitempty"`
+	StockMinimo    NullInt32                 `json:"stockminimo,omitempty"`
+	UrlSmallImage  NullString                `json:"urlsmallimage,omitempty"`
+	UrlMediumImage NullString                `json:"urlmediumimage,omitempty"`
+	UrlLargeImage  NullString                `json:"urllargeimage,omitempty"`
+	Ruf1           NullString                `json:"ruf1,omitempty"`
+	Ruf2           NullString                `json:"ruf2,omitempty"`
+	Ruf3           NullString                `json:"ruf3,omitempty"`
+	Iv             NullString                `json:"iv,omitempty"`
+	Salt           NullString                `json:"salt,omitempty"`
+	Checksum       NullString                `json:"checksum,omitempty"`
+	FCreated       NullTime                  `json:"fcreated,omitempty"`
+	FUpdated       NullTime                  `json:"fupdated,omitempty"`
+	UCreated       NullString                `json:"ucreated,omitempty"`
+	UUpdated       NullString                `json:"uupdated,omitempty"`
+	Activo         int32                     `json:"activo,omitempty"`
+	Estadoreg      int32                     `json:"estadoreg,omitempty"`
+	TotalRecords   int64                     `json:"total_records,omitempty"`
+	Keywords       []StoreProductKeywordsE   `json:"keywords:omitempty"`
+	Idens          []StoreProductIdenE       `json:"idens:omitempty"`
+	Prices         []StoreProductPricesE     `json:"prices:omitempty"`
+	Suppliers      []StoreProductSuppliersE  `json:"suppliers:omitempty"`
+	CatItems       []StoreProductCategItemsE `json:"catitems:omitempty"`
+	Attrs          []StoreProductAttrE       `json:"attrs:omitempty"`
+	Assos          []StoreProductAssoE       `json:"assos:omitempty"`
+	Persons        []StoreProductPersE       `json:"persons:omitempty"`
+	Tipos          []StoreProductTiposProdE  `json:"tipos:omitempty"`
+	Lotes          []StoreProductLotesE      `json:"lotes:omitempty"`
 }
 
 func (e StoreProductE) MarshalJSON() ([]byte, error) {

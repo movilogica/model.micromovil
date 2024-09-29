@@ -66,6 +66,10 @@ type BizPersonasE struct {
 	Activo          int32       `json:"activo,omitempty"`
 	Estadoreg       int32       `json:"estadoreg,omitempty"`
 	TotalRecords    int64       `json:"total_records,omitempty"`
+	Addrs           []BizPersonasAddressE
+	Bitacora        []BizPersonasBitacoraE
+	Medios          []BizPersonasMedioE
+	Vehicles        []BizPersonasVehiclesE
 }
 
 func (e BizPersonasE) MarshalJSON() ([]byte, error) {

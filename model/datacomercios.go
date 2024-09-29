@@ -66,6 +66,9 @@ type DataComercioE struct {
 	Activo          int32       `json:"activo,omitempty"`
 	Estadoreg       int32       `json:"estadoreg,omitempty"`
 	TotalRecords    int64       `json:"total_records,omitempty"`
+	Params          []DataComercioParamE
+	Persons         []DataComercioPersonalE
+	Roles           []DataComercioRoleE
 }
 
 type DataComercioMinimalE struct {
