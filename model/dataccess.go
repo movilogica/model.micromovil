@@ -18,6 +18,7 @@ func NewDataAccess(dbPool *sql.DB) DataAccess {
 		Parametros:              ParametersE{},
 		Sede:                    SedeE{},
 		Usuario:                 UsuarioE{},
+		Constantes:              ConstantesE{},
 		Credencial:              CredencialE{},
 		Opciones:                OpcionesE{},
 		Roles:                   RolesE{},
@@ -142,6 +143,7 @@ func NewDataAccess(dbPool *sql.DB) DataAccess {
 type DataAccess struct {
 	Parametros              ParametersE
 	Sede                    SedeE
+	Constantes              ConstantesE
 	Usuario                 UsuarioE
 	Credencial              CredencialE
 	Opciones                OpcionesE
