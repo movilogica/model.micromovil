@@ -115,7 +115,7 @@ func (u *StoreParamCategUbicaE) GetByUniqueid(token string, jsonText string) (*S
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreParamCategUbica
+	query := queryLoadStoreParamCategUbica
 
 	var rowdata StoreParamCategUbicaE
 	log.Printf("[%s] Where = %s\n", query, string(jsonText))
