@@ -44,7 +44,8 @@ func (e ZipCodeE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const querySelectZipcode = `select * from tbl_zipcodes_list( $1, $2)`
+const queryListZipcode = `select uniqueid, sede, flag1, flag2, countrycode, ubgcodreg, ubgcoddep, ubgcodpro, ubgcoddis, code, descrip, latitud, longitud, activo, estadoreg, total_records from tbl_zipcodes_list( $1, $2)`
+const queryLoadZipcode = `select * from tbl_zipcodes_list( $1, $2)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -58,7 +59,7 @@ func (u *ZipCodeE) GetAll(token string, filter string) ([]*ZipCodeE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectZipcode
+	query := queryListZipcode
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -87,13 +88,11 @@ func (u *ZipCodeE) GetAll(token string, filter string) ([]*ZipCodeE, error) {
 
 	var lista []*ZipCodeE
 
+	/// `select uniqueid, sede, flag1, flag2, countrycode, ubgcodreg, ubgcoddep, ubgcodpro, ubgcoddis, code, descrip, latitud, longitud, activo, estadoreg, total_records from tbl_zipcodes_list( $1, $2)`
 	for rows.Next() {
 		var rowdata ZipCodeE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
@@ -106,14 +105,6 @@ func (u *ZipCodeE) GetAll(token string, filter string) ([]*ZipCodeE, error) {
 			&rowdata.Descrip,
 			&rowdata.Latitud,
 			&rowdata.Longitud,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -134,7 +125,7 @@ func (u *ZipCodeE) GetByUniqueid(token string, uniqueid int) (*ZipCodeE, error) 
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectZipcode
+	query := queryLoadZipcode
 
 	var rowdata ZipCodeE
 	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
@@ -165,6 +156,8 @@ func (u *ZipCodeE) GetByUniqueid(token string, uniqueid int) (*ZipCodeE, error) 
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,
