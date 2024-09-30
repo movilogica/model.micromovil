@@ -204,6 +204,148 @@ func (obj *ConstantesE) InitValues() {
 		KeyPair{Key: "MULTIPLE", Value: "MULTIPLES"},
 		KeyPair{Key: "RETAIL", Value: "RETAIL"},
 	}
+	obj.ProveedPref = []KeyPair{
+		KeyPair{Key: "MAIN", Value: "PRINCIPAL"},
+		KeyPair{Key: "ALTERNAL", Value: "ALTERNO"},
+	}
+	obj.PropositoPrecio = []KeyPair{
+		KeyPair{Key: "PURCHASE", Value: "COMPRA"},
+		KeyPair{Key: "DEPOSIT", Value: "DEPOSITO"},
+		KeyPair{Key: "COMPONENT_PRICE", Value: "PRECIO COMPONENTE"},
+	}
+	obj.ReasonMov = []KeyPair{ ///VAR_FOUND, VAR_LOST, VAR_DAMAGED, VAR_STOLEN, VAR_INTEGR, VAR_SAMPLE
+		KeyPair{Key: "VAR_FOUND", Value: "ENCONTRADO"},
+		KeyPair{Key: "VAR_LOST", Value: "PERDIDA"},
+		KeyPair{Key: "VAR_DAMAGED", Value: "DAÑADO"},
+		KeyPair{Key: "VAR_STOLEN", Value: "ROBO"},
+		KeyPair{Key: "VAR_INTEGR", Value: "INTEGRIDAD"},
+		KeyPair{Key: "VAR_SAMPLE", Value: "MUESTRA"},
+	}
+	obj.StatusInventario = []KeyPair{ /// INV_AVAILABLE, INV_ON_HOLD, INV_DEFECTIVE, INV_RETURNED
+		KeyPair{Key: "INV_AVAILABLE", Value: "DISPONIBLE"},
+		KeyPair{Key: "INV_ON_HOLD", Value: "EN ESPERA"},
+		KeyPair{Key: "INV_DEFECTIVE", Value: "DEFECTUOSA"},
+		KeyPair{Key: "INV_RETURNED", Value: "RETORNADO"},
+	}
+	obj.StatusUbicacion = []KeyPair{ /// AVAILABLE, OCUPPIED, NOT_AVAILABLE, RESERVED
+		KeyPair{Key: "AVAILABLE", Value: "DISPONIBLE"},
+		KeyPair{Key: "OCUPPIED", Value: "OCUPADO"},
+		KeyPair{Key: "NOT_AVAILABLE", Value: "NO DISPONIBLE"},
+		KeyPair{Key: "RESERVED", Value: "RESERVADO"},
+	}
+	obj.TipoCategoria = []KeyPair{ /// BEST_SELLING, CATALOG, CROSS_SELL, GIFT_CARDS, GOOGLE_BASE, INDUSTRY, INTERNAL, MATERIALS, MIX_AND_MATCH, QUICK_ADD, SEARCH, TAX, USAGE
+		KeyPair{Key: "BEST_SELLING", Value: "LA MAS VENDIDA"},
+		KeyPair{Key: "CATALOG", Value: "CATALOGO"},
+		KeyPair{Key: "CROSS_SELL", Value: "VENTA CRUZADA"},
+		KeyPair{Key: "GIFT_CARDS", Value: "TARJETA DE REGALO"},
+		KeyPair{Key: "GOOGLE_BASE", Value: "GOOGLE BASE"},
+		KeyPair{Key: "INDUSTRY", Value: "INDUSTRIAL"},
+		KeyPair{Key: "INTERNAL", Value: "USO INTERNO"},
+		KeyPair{Key: "MATERIALS", Value: "MATERIALES"},
+		KeyPair{Key: "MIX_AND_MATCH", Value: "MEZCLAR Y COMBINAR"},
+		KeyPair{Key: "QUICK_ADD", Value: "REGISTRO RAPIDO"},
+		KeyPair{Key: "SEARCH", Value: "BUSQUEDA"},
+		KeyPair{Key: "TAX", Value: "IMPUESTO"},
+		KeyPair{Key: "USAGE", Value: "DE USO"},
+	}
+	obj.TipoIden = []KeyPair{ /// SKU, EAN, HS CODE, ISBN, LIBRARY, MANUFACTURE MODEL, MODEL YEAR, UPCA, UPCE, OTHER
+		KeyPair{Key: "SKU", Value: "SKU"},
+		KeyPair{Key: "EAN", Value: "EAN"},
+		KeyPair{Key: "HS_CODE", Value: "HS CODE"},
+		KeyPair{Key: "ISBN", Value: "ISBN"},
+		KeyPair{Key: "LIBRARY", Value: "BIBLIOTECA"},
+		KeyPair{Key: "MANUFACTURE_MODEL", Value: "MODELO DE FABRICACION"},
+		KeyPair{Key: "MODEL", Value: "MODELO"},
+		KeyPair{Key: "YEAR", Value: "AÑO"},
+		KeyPair{Key: "UPCA", Value: "UPCA"},
+		KeyPair{Key: "UPCE", Value: "UPCE"},
+		KeyPair{Key: "OTHER", Value: "OTRO"},
+	}
+	obj.TipoInventario = []KeyPair{ /// NON_SERIAL_INV_ITEM, SERIALIZED_INV_ITEM
+		KeyPair{Key: "NON_SERIAL_INV_ITEM", Value: "SIN SERIE"},
+		KeyPair{Key: "SERIALIZED_INV_ITEM", Value: "CON SERIE"},
+	}
+	obj.TipoKeyword = []KeyPair{ /// KEYWORD, TAG
+		KeyPair{Key: "KEYWORD", Value: "KEYWORD"},
+		KeyPair{Key: "TAG", Value: "TAG"},
+	}
+	obj.TipoMov = []KeyPair{ /// VENTAS, COMPRAS, AJUSTE, TRANSFERENCIA, DEVOLUCION
+		KeyPair{Key: "VENTAS", Value: "VENTAS"},
+		KeyPair{Key: "COMPRAS", Value: "COMPRAS"},
+		KeyPair{Key: "AJUSTE", Value: "AJUSTE"},
+		KeyPair{Key: "TRANSFERENCIA", Value: "TRANSFERENCIA"},
+		KeyPair{Key: "DEVOLUCION", Value: "DEVOLUCION"},
+	}
+	obj.TipoPrecio = []KeyPair{ /// DEFAULT_PRICE, BOX_PRICE, AVERAGE_COST, LIST_PRICE, PROMO_PRICE, SPECIAL_PROMO_PRICE, MINIMUM_PRICE, MAXIMUM_PRICE, COMPETITIVE_PRICE, MINIMUM_ORDER_PRICE, WHOLESALE_PRICE
+		KeyPair{Key: "DEFAULT_PRICE", Value: "PRECIO POR DEFECTO"},
+		KeyPair{Key: "BOX_PRICE", Value: "PRECIO DE CAJA"},
+		KeyPair{Key: "AVERAGE_COST", Value: "COSTO PROMEDIO"},
+		KeyPair{Key: "LIST_PRICE", Value: "PRECIO DE LISTA"},
+		KeyPair{Key: "PROMO_PRICE", Value: "PRECIO DE PROMOCION"},
+		KeyPair{Key: "SPECIAL_PROMO_PRICE", Value: "PROMOCION ESPECIAL"},
+		KeyPair{Key: "MINIMUM_PRICE", Value: "PRECIO MINIMO"},
+		KeyPair{Key: "MAXIMUM_PRICE", Value: "PRECIO MAXIMO"},
+		KeyPair{Key: "COMPETITIVE_PRICE", Value: "PRECIO COMPETITIVO"},
+		KeyPair{Key: "MINIMUM_ORDER_PRICE", Value: "PRECIO MINIMO DE PEDIDO"},
+		KeyPair{Key: "WHOLESALE_PRICE", Value: "PRECIO AL POR MAYOR"},
+	}
+	obj.TipoProducto = []KeyPair{ /// FINISHED_GOOD, SERVICE_PRODUCT, DIGITAL_GOOD, ASSET_USAGE, RAW_MATERIAL
+		KeyPair{Key: "FINISHED_GOOD", Value: "PRODUCTO FINAL"},
+		KeyPair{Key: "SERVICE_PRODUCT", Value: "SERVICIO/PRODUCTO"},
+		KeyPair{Key: "DIGITAL_GOOD", Value: "BIEN DIGITAL"},
+		KeyPair{Key: "ASSET_USAGE", Value: "USADO COMO ACTIVO"},
+		KeyPair{Key: "RAW_MATERIAL", Value: "INSUMO"},
+	}
+	obj.TipoRol = []KeyPair{ /// ACCOUNT, ADDRESSEE, ADMINISTRATOR, AFFILLIATE, AGENT, APPROVER, ASSOCIATION, BILL_FROM_VENDOR, BILL_FROM_CUSTOMER, BUYER, CALENDAR, CARBON COPY, CARRIER, CASHIER, CLIENT, COMPETITOR, CONSUMER, CONTACT, CONTRACT, CUSTOMER, DISTRIBUTOR, EMPLOYEE, IMAGE_APPROVER, MANAGER, MANUFACTURER, OWNER, PARTNER, PERSON, PICKER, RECEIVER, REQUEST_MANAGER, REQUEST_ROLE, SALES_FORCE, SALES_REPRESENTATIVE, SHIP_FROM_VENDOR, SHIP_TO_CUSTOMER, SHIPMENT_CLERK, SHARE_HOLDER, SPONSOR, SPOUSE, STOCKER, SUPPLIER, VENDOR, WORKER
+		KeyPair{Key: "SUPPLIER", Value: "ABASTECEDOR"},
+		KeyPair{Key: "SHARE_HOLDER", Value: "ACCIONISTA"},
+		KeyPair{Key: "ADMINISTRATOR", Value: "ADMINISTRADOR"},
+		KeyPair{Key: "AFFILLIATE", Value: "AFILIADO"},
+		KeyPair{Key: "AGENT", Value: "AGENTE"},
+		KeyPair{Key: "APPROVER", Value: "APROBADOR"},
+		KeyPair{Key: "IMAGE_APPROVER", Value: "APROBADOR DE IMAGEN"},
+		KeyPair{Key: "ASSOCIATION", Value: "ASOCIACION"},
+		KeyPair{Key: "CASHIER", Value: "CAJERO"},
+		KeyPair{Key: "CALENDAR", Value: "CALENDARIO"},
+		KeyPair{Key: "CUSTOMER", Value: "CLIENTE BIENES/SERV"},
+		KeyPair{Key: "CLIENT", Value: "CLIENTE SERV"},
+		KeyPair{Key: "COMPETITOR", Value: "COMPETIDOR"},
+		KeyPair{Key: "BUYER", Value: "COMPRADOR"},
+		KeyPair{Key: "CONSUMER", Value: "CONSUMIDOR"},
+		KeyPair{Key: "CONTACT", Value: "CONTACTO"},
+		KeyPair{Key: "ACCOUNT", Value: "CONTADOR"},
+		KeyPair{Key: "CONTRACT", Value: "CONTRATO"},
+		KeyPair{Key: "SPOUSE", Value: "CONYUGE"},
+		KeyPair{Key: "CARBON_COPY", Value: "COPIA DE CARBON"},
+		KeyPair{Key: "ADDRESSEE", Value: "DESTINATARIO"},
+		KeyPair{Key: "DISTRIBUTOR", Value: "DISTRIBUIDOR"},
+		KeyPair{Key: "EMPLOYE", Value: "EMPLEADO"},
+		KeyPair{Key: "SHIPMENT_CLERK", Value: "EMPLEADO DE ENVIO"},
+		KeyPair{Key: "SHIP_TO_CUSTOMER", Value: "ENVIO AL CLIENTE"},
+		KeyPair{Key: "SHIP_FROM_VENDOR", Value: "ENVIO DESDE PROVEEDOR"},
+		KeyPair{Key: "MANUFACTURER", Value: "FABRICANTE"},
+		KeyPair{Key: "BILL_FROM_CUSTOMER", Value: "FACTURA DEL CLIENTE"},
+		KeyPair{Key: "BILL_FROM_VENDOR", Value: "FACTURA DEL PROVEEDOR"},
+		KeyPair{Key: "SALES_FORCE", Value: "FUERZA DE VENTAS"},
+		KeyPair{Key: "MANAGER", Value: "GERENTE"},
+		KeyPair{Key: "STOCKER", Value: "GESTOR ALMACEN"},
+		KeyPair{Key: "WORKER", Value: "OBRERO"},
+		KeyPair{Key: "REQUEST_MANAGER", Value: "PEDIDOS MANAGER"},
+		KeyPair{Key: "REQUEST_ROLE", Value: "PEDIDOS USUARIO"},
+		KeyPair{Key: "PERSON", Value: "PERSONA"},
+		KeyPair{Key: "PICKER", Value: "PICKEADOR"},
+		KeyPair{Key: "OWNER", Value: "PROPIETARIO"},
+		KeyPair{Key: "VENDOR", Value: "PROVEEDOR"},
+		KeyPair{Key: "RECEIVER", Value: "RECEPTOR"},
+		KeyPair{Key: "SALES_REPRESENTATIVE", Value: "REPRESENTANTE VENTAS"},
+		KeyPair{Key: "PARTNER", Value: "SOCIO"},
+		KeyPair{Key: "SPONSOR", Value: "SPONSOR"},
+		KeyPair{Key: "CARRIER", Value: "TRANSPORTISTA"},
+	}
+	obj.TipoUbicacion = []KeyPair{ /// FLT_BULK, FLT_PICKLOC
+		KeyPair{Key: "FLT_BULK", Value: "VENTA A GRANEL"},
+		KeyPair{Key: "FLT_PICKLOC", Value: "PICKING/RECOGIDA"},
+	}
 	obj.TipoUom = []KeyPair{
 		KeyPair{Key: "UNIT", Value: "UNIDAD"},
 		KeyPair{Key: "WEIGHT", Value: "PESO"},
@@ -217,5 +359,10 @@ func (obj *ConstantesE) InitValues() {
 		KeyPair{Key: "LIQUID_VOLUME", Value: "LIQUID VOLUME"},
 		KeyPair{Key: "TEMPERATURE", Value: "TEMPERATURE"},
 		KeyPair{Key: "TIME_FREQUENCY", Value: "TIME/FREQUENCY"},
+	}
+	obj.TipoZona = []KeyPair{ /// STORAGE, PICKING, REPOSITION
+		KeyPair{Key: "STORAGE", Value: "ALMACENAJE"},
+		KeyPair{Key: "PICKING", Value: "PICKING"},
+		KeyPair{Key: "REPOSITION", Value: "REPOSICION"},
 	}
 }
