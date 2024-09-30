@@ -38,7 +38,7 @@ func (e ParametersE) MarshalJSON() ([]byte, error) {
 }
 
 const querySelectParam = `select uniqueid, sede, flag1, flag2, 
-tipo, countrycode, secuencial, code,descrip,
+tipo, countrycode, secuencial, code,descrip, ruf1,
 fcreated, fupdated, activo, estadoreg, total_records
 from param_variables_list( $1, $2)`
 
@@ -95,6 +95,7 @@ func (u *ParametersE) GetAll(token string, filter string) ([]*ParametersE, error
 			&rowdata.Secuencial,
 			&rowdata.Code,
 			&rowdata.Descrip,
+			&rowdata.Ruf1,
 			&rowdata.FCreated,
 			&rowdata.FUpdated,
 			&rowdata.Activo,
@@ -139,6 +140,7 @@ func (u *ParametersE) GetByField(token string, fieldname string, value string) (
 			&rowdata.Secuencial,
 			&rowdata.Code,
 			&rowdata.Descrip,
+			&rowdata.Ruf1,
 			&rowdata.FCreated,
 			&rowdata.FUpdated,
 			&rowdata.Activo,
@@ -177,6 +179,7 @@ func (u *ParametersE) GetByUniqueid(token string, uniqueid int) (*ParametersE, e
 		&rowdata.Secuencial,
 		&rowdata.Code,
 		&rowdata.Descrip,
+		&rowdata.Ruf1,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
 		&rowdata.Activo,
