@@ -214,7 +214,7 @@ func (u *ParametersE) Update(token string, tabla string, data string, metricas s
 		log.Println("Error convirtiendo el Dato")
 		return nil, err
 	}
-	log.Println("Data = " + string(jsonData))
+	log.Println("Data info = " + string(jsonData))
 
 	query := `SELECT * FROM param_variables_save($1, $2, $3)`
 	stmt, err := db.Prepare(query)
