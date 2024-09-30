@@ -39,7 +39,8 @@ func (e UsuariosSedesE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const querySelectUsuariosSedes = `select * from security_usuarios_sedes_list( $1, $2)`
+const queryListtUsuariosSedes = `select * from security_usuarios_sedes_list( $1, $2)`
+const queryLoadUsuariosSedes = `select * from security_usuarios_sedes_list( $1, $2)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -53,7 +54,7 @@ func (u *UsuariosSedesE) GetAll(token string, filter string) ([]*UsuariosSedesE,
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectUsuariosSedes
+	query := queryListtUsuariosSedes
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -124,7 +125,7 @@ func (u *UsuariosSedesE) GetByUniqueid(token string, uniqueid int) (*UsuariosSed
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectUsuariosSedes
+	query := queryLoadUsuariosSedes
 
 	var rowdata UsuariosSedesE
 	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
