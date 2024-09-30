@@ -82,6 +82,7 @@ func NewDataAccess(dbPool *sql.DB) DataAccess {
 		StoreParamStorageType:   StoreParamStorageTypeE{},
 		StoreParamZones:         StoreParamZonesE{},
 		StoreStores:             StoreStoresE{},
+		StoreCatalog:            StoreCatalogE{},
 		StoreCatalogStores:      StoreCatalogStoresE{},
 		StoreCatalogCategItems:  StoreCatalogCategItemsE{},
 		StoreCatalogPersons:     StoreCatalogPersonsE{},
@@ -209,6 +210,7 @@ type DataAccess struct {
 	StoreParamStorageType   StoreParamStorageTypeE
 	StoreParamZones         StoreParamZonesE
 	StoreStores             StoreStoresE
+	StoreCatalog            StoreCatalogE
 	StoreCatalogStores      StoreCatalogStoresE
 	StoreCatalogCategItems  StoreCatalogCategItemsE
 	StoreCatalogPersons     StoreCatalogPersonsE
