@@ -202,7 +202,7 @@ type ConstantesE struct {
 func (obj *ConstantesE) InitValues() {
 	obj.ModoAlmacenaje = []KeyPair{
 		KeyPair{Key: "ONE_PALLET", Value: "UN PALLET"},
-		KeyPair{Key: "MULTIPLE", Value: "MULTIPLES"},
+		KeyPair{Key: "MULTIPLE_PALLETS", Value: "MULTIPLES PALLETS"},
 		KeyPair{Key: "RETAIL", Value: "RETAIL"},
 	}
 	obj.MultiAlmacenaje = []KeyPair{

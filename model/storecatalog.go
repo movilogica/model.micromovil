@@ -44,9 +44,9 @@ func (e StoreCatalogE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreCatalogE = `select uniqueid, sede, flag1, flag2, code, descrip, fcreated, activo, estadoreg, total_records from store_catalog_list( $1, $2)`
-const queryLoadStoreCatalogE = `select * from store_catalog_list( $1, $2)`
-const querySaveStoreCatalogE = `SELECT store_catalog_save($1, $2, $3)`
+const queryListStoreCatalogE = `select uniqueid, sede, flag1, flag2, code, descrip, fcreated, activo, estadoreg, total_records from store_catalogs_list( $1, $2)`
+const queryLoadStoreCatalogE = `select * from store_catalogs_list( $1, $2)`
+const querySaveStoreCatalogE = `SELECT store_catalogs_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
