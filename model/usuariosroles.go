@@ -51,6 +51,7 @@ func (e UsuariosRolesE) MarshalJSON() ([]byte, error) {
 }
 
 const querySelectUsuariosRoles = `select * from security_usuarios_roles_list( $1, $2)`
+const queryLoadUsuariosRoles = `select * from security_usuarios_roles_list( $1, $2)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
