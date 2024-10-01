@@ -20,7 +20,8 @@ type StoreCatalogE struct {
 	TokendataId   NullString                 `json:"tokendataid,omitempty"`
 	Code          NullString                 `json:"code,omitempty"`
 	Descrip       NullString                 `json:"descrip,omitempty"`
-	QuickAdd      NullInt32                  `json:"quickadd,omitempty"`
+	FromDate      NullTime                   `json:"fromdate,omitempty"`
+	ThroughDate   NullTime                   `json:"throughdate,omitempty"`
 	UrlImage      NullString                 `json:"urlimage,omitempty"`
 	Ruf1          NullString                 `json:"ruf1,omitempty"`
 	Ruf2          NullString                 `json:"ruf2,omitempty"`
@@ -44,7 +45,7 @@ func (e StoreCatalogE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreCatalogE = `select uniqueid, sede, flag1, flag2, code, descrip, quickadd, fcreated, activo, estadoreg, total_records from store_catalogs_list( $1, $2)`
+const queryListStoreCatalogE = `select uniqueid, sede, flag1, flag2, code, descrip, fromdate, throughdate, fcreated, activo, estadoreg, total_records from store_catalogs_list( $1, $2)`
 const queryLoadStoreCatalogE = `select * from store_catalogs_list( $1, $2)`
 const querySaveStoreCatalogE = `SELECT store_catalogs_save($1, $2, $3)`
 
@@ -99,7 +100,8 @@ func (u *StoreCatalogE) GetAll(token string, filter string) ([]*StoreCatalogE, e
 			&rowdata.Flag2,
 			&rowdata.Code,
 			&rowdata.Descrip,
-			&rowdata.QuickAdd,
+			&rowdata.FromDate,
+			&rowdata.ThroughDate,
 			&rowdata.FCreated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
@@ -139,7 +141,8 @@ func (u *StoreCatalogE) GetByUniqueid(token string, jsonText string) (*StoreCata
 		&rowdata.TokendataId,
 		&rowdata.Code,
 		&rowdata.Descrip,
-		&rowdata.QuickAdd,
+		&rowdata.FromDate,
+		&rowdata.ThroughDate,
 		&rowdata.UrlImage,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
