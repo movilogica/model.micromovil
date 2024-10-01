@@ -9,43 +9,44 @@ import (
 
 // Tipo de Almacenaje
 type StoreParamStorageTypeE struct {
-	Uniqueid      int64       `json:"uniqueid,omitempty"`
-	Owner         NullInt32   `json:"owner,omitempty"`
-	Dispositivoid NullInt32   `json:"dispositivoid,omitempty"`
-	Id            int32       `json:"id,omitempty"`
-	Sede          int32       `json:"sede"`
-	Flag1         string      `json:"flag1,omitempty"`
-	Flag2         string      `json:"flag2,omitempty"`
-	PersonaId     NullInt64   `json:"personaid,omitempty"`
-	TokendataId   NullString  `json:"tokendataid,omitempty"`
-	ParentId      NullInt64   `json:"parentid,omitempty"`
-	Code          NullString  `json:"code,omitempty"`
-	Descrip       NullString  `json:"descrip,omitempty"`
-	StorageModeId NullString  `json:"storagemodeid,omitempty"`
-	MaxWeight     NullFloat64 `json:"maxweight,omitempty"`
-	MaxHeight     NullFloat64 `json:"maxheight,omitempty"`
-	MaxDepth      NullFloat64 `json:"maxdepth,omitempty"`
-	MaxWidth      NullFloat64 `json:"maxwidth,omitempty"`
-	Ruf1          NullString  `json:"ruf1,omitempty"`
-	Ruf2          NullString  `json:"ruf2,omitempty"`
-	Ruf3          NullString  `json:"ruf3,omitempty"`
-	Iv            NullString  `json:"iv,omitempty"`
-	Salt          NullString  `json:"salt,omitempty"`
-	Checksum      NullString  `json:"checksum,omitempty"`
-	FCreated      NullTime    `json:"fcreated,omitempty"`
-	FUpdated      NullTime    `json:"fupdated,omitempty"`
-	UCreated      NullString  `json:"ucreated,omitempty"`
-	UUpdated      NullString  `json:"uupdated,omitempty"`
-	Activo        int32       `json:"activo,omitempty"`
-	Estadoreg     int32       `json:"estadoreg,omitempty"`
-	TotalRecords  int64       `json:"total_records,omitempty"`
+	Uniqueid       int64       `json:"uniqueid,omitempty"`
+	Owner          NullInt32   `json:"owner,omitempty"`
+	Dispositivoid  NullInt32   `json:"dispositivoid,omitempty"`
+	Id             int32       `json:"id,omitempty"`
+	Sede           int32       `json:"sede"`
+	Flag1          string      `json:"flag1,omitempty"`
+	Flag2          string      `json:"flag2,omitempty"`
+	PersonaId      NullInt64   `json:"personaid,omitempty"`
+	TokendataId    NullString  `json:"tokendataid,omitempty"`
+	ParentId       NullInt64   `json:"parentid,omitempty"`
+	Code           NullString  `json:"code,omitempty"`
+	Descrip        NullString  `json:"descrip,omitempty"`
+	StorageModeId  NullString  `json:"storagemodeid,omitempty"`
+	MultiProductId NullString  `json:"multiproductid,omitempty"`
+	MaxWeight      NullFloat64 `json:"maxweight,omitempty"`
+	MaxHeight      NullFloat64 `json:"maxheight,omitempty"`
+	MaxDepth       NullFloat64 `json:"maxdepth,omitempty"`
+	MaxWidth       NullFloat64 `json:"maxwidth,omitempty"`
+	Ruf1           NullString  `json:"ruf1,omitempty"`
+	Ruf2           NullString  `json:"ruf2,omitempty"`
+	Ruf3           NullString  `json:"ruf3,omitempty"`
+	Iv             NullString  `json:"iv,omitempty"`
+	Salt           NullString  `json:"salt,omitempty"`
+	Checksum       NullString  `json:"checksum,omitempty"`
+	FCreated       NullTime    `json:"fcreated,omitempty"`
+	FUpdated       NullTime    `json:"fupdated,omitempty"`
+	UCreated       NullString  `json:"ucreated,omitempty"`
+	UUpdated       NullString  `json:"uupdated,omitempty"`
+	Activo         int32       `json:"activo,omitempty"`
+	Estadoreg      int32       `json:"estadoreg,omitempty"`
+	TotalRecords   int64       `json:"total_records,omitempty"`
 }
 
 func (e StoreParamStorageTypeE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreParamStorageTypeE = `select uniqueid, sede, flag1, flag2, parentid, code, descrip, storagemodeid, activo, estadoreg, total_records from store_param_storage_type_list( $1, $2)`
+const queryListStoreParamStorageTypeE = `select uniqueid, sede, flag1, flag2, parentid, code, descrip, storagemodeid, multiproductid, activo, estadoreg, total_records from store_param_storage_type_list( $1, $2)`
 const queryLoadStoreParamStorageTypeE = `select * from store_param_storage_type_list( $1, $2)`
 const querySaveStoreParamStorageTypeE = `SELECT store_param_storage_type_save($1, $2, $3)`
 
@@ -102,6 +103,7 @@ func (u *StoreParamStorageTypeE) GetAll(token string, filter string) ([]*StorePa
 			&rowdata.Code,
 			&rowdata.Descrip,
 			&rowdata.StorageModeId,
+			&rowdata.MultiProductId,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -142,6 +144,7 @@ func (u *StoreParamStorageTypeE) GetByUniqueid(token string, jsonText string) (*
 		&rowdata.Code,
 		&rowdata.Descrip,
 		&rowdata.StorageModeId,
+		&rowdata.MultiProductId,
 		&rowdata.MaxWeight,
 		&rowdata.MaxHeight,
 		&rowdata.MaxDepth,

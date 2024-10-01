@@ -179,7 +179,8 @@ type KeyPair struct {
 	Group string
 }
 type ConstantesE struct {
-	ModoAlmacenaje   []KeyPair /// ONE_PALLET, MULTIPLE, RETAIL
+	ModoAlmacenaje   []KeyPair /// ONE_PALLET, MULTI_PALLET, RETAIL
+	MultiAlmacenaje  []KeyPair /// ONE_PRODUCT, MULTI_PRODUCTS, NON_PRODUCTS
 	ProveedPref      []KeyPair /// MAIN, ALTERNAL
 	PropositoPrecio  []KeyPair /// PURCHASE, DEPOSIT, COMPONENT_PRICE
 	ReasonMov        []KeyPair /// VAR_FOUND, VAR_LOST, VAR_DAMAGED, VAR_STOLEN, VAR_INTEGR, VAR_SAMPLE
@@ -203,6 +204,11 @@ func (obj *ConstantesE) InitValues() {
 		KeyPair{Key: "ONE_PALLET", Value: "UN PALLET"},
 		KeyPair{Key: "MULTIPLE", Value: "MULTIPLES"},
 		KeyPair{Key: "RETAIL", Value: "RETAIL"},
+	}
+	obj.MultiAlmacenaje = []KeyPair{
+		KeyPair{Key: "ONE_PRODUCT", Value: "UN PRODUCTO"},
+		KeyPair{Key: "MULTI_PRODUCTS", Value: "MULTI PRODUCTOS"},
+		KeyPair{Key: "NON_PRODUCTS", Value: "SIN PRODUCTOS"},
 	}
 	obj.ProveedPref = []KeyPair{
 		KeyPair{Key: "MAIN", Value: "PRINCIPAL"},
