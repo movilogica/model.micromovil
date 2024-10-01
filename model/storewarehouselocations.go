@@ -31,6 +31,7 @@ type StoreWarehouseLocationsE struct {
 	LevelId            NullString `json:"levelid,omitempty"`
 	PositionId         NullString `json:"positionid,omitempty"`
 	Permanent          NullInt32  `json:"permanent,omitempty"`
+	Notes              NullString `json:"notes,omitempty"`
 	Ruf1               NullString `json:"ruf1,omitempty"`
 	Ruf2               NullString `json:"ruf2,omitempty"`
 	Ruf3               NullString `json:"ruf3,omitempty"`
@@ -159,6 +160,7 @@ func (u *StoreWarehouseLocationsE) GetByUniqueid(token string, jsonText string) 
 		&rowdata.LevelId,
 		&rowdata.PositionId,
 		&rowdata.Permanent,
+		&rowdata.Notes,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
