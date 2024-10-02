@@ -65,6 +65,7 @@ const TBL_DATA_COMERCIOS_MINIMAL = "datacomerminimal"
 const TBL_DATA_COMERCIOS_PARAM = "datacomerparam"
 const TBL_DATA_COMERCIOS_PERSO = "datacomerperso"
 const TBL_DATA_COMERCIOS_ROLES = "datacomerroles"
+const TBL_DATA_COMERCIOS_BITACORA = "datacomerbitacora"
 
 // --- TERMINALES
 const TBL_DATA_TERMINALES = "dataterminal"
