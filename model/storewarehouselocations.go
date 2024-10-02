@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"strconv"
 )
 
 // Almacenes Locaciones
@@ -55,6 +56,7 @@ func (e StoreWarehouseLocationsE) MarshalJSON() ([]byte, error) {
 const queryListStoreWarehouseLocationsE = `select uniqueid, sede, flag1, flag2, locationseqid, locationtypeenumid, locationstatusid, stageid, storagetypetext, permanent, activo, estadoreg, total_records from store_warehouse_locations_list( $1, $2)`
 const queryLoadStoreWarehouseLocationsE = `select * from store_warehouse_locations_list( $1, $2)`
 const querySaveStoreWarehouseLocationsE = `SELECT store_warehouse_locations_save($1, $2, $3)`
+const procedureSaveStoreWarehouseLocationsE = `CALL warehouse_ubicaciones($1, $2, $3)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -191,14 +193,16 @@ func (u *StoreWarehouseLocationsE) Update(token string, data string, metricas st
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
+	var uniqueid int64
+
 	// Se deseenvuelve el JSON del Data para adicionar filtros
 	var mapData map[string]interface{}
 	json.Unmarshal([]byte(data), &mapData)
 	if mapData == nil {
 		mapData = make(map[string]interface{})
 	}
-	// --- Adicion de filtro de tipos de carros
-	// mapData["tipo"] = tabla
+	// --- Validacion de informacion
+	uniqueid, _ = strconv.ParseInt(fmt.Sprintf("%s", mapData["uniqueid"]), 10, 64)
 
 	// Se empaqueta el JSON del Data
 	jsonData, err := json.Marshal(mapData)
@@ -207,8 +211,10 @@ func (u *StoreWarehouseLocationsE) Update(token string, data string, metricas st
 		return nil, err
 	}
 	log.Println("Data = " + string(jsonData))
-
 	query := querySaveStoreWarehouseLocationsE
+	if uniqueid == 0 {
+		query = procedureSaveStoreWarehouseLocationsE
+	}
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -219,8 +225,6 @@ func (u *StoreWarehouseLocationsE) Update(token string, data string, metricas st
 		return nil, err
 	}
 	defer result.Close()
-
-	var uniqueid int64
 
 	if result.Next() {
 		err := result.Scan(&uniqueid)
