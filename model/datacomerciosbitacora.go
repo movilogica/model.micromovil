@@ -19,6 +19,7 @@ type DataComercioBitacoraE struct {
 	ComercioId    NullInt64  `json:"comercioid,omitempty"`
 	PersonaId     NullInt64  `json:"personaid,omitempty"`
 	TokenDataId   NullString `json:"tokendataid,omitempty"`
+	Nroperacion   NullString `json:"nroperacion,omitempty"`
 	Fecha         NullTime   `json:"fecha"`
 	TipoMov       NullString `json:"tipomov,omitempty"`
 	Subject       NullString `json:"subject,omitempty"`
@@ -96,6 +97,7 @@ func (u *DataComercioBitacoraE) GetAll(token string, filter string) ([]*DataCome
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
+			&rowdata.Nroperacion,
 			&rowdata.Fecha,
 			&rowdata.TipoMov,
 			&rowdata.Subject,
@@ -116,13 +118,13 @@ func (u *DataComercioBitacoraE) GetAll(token string, filter string) ([]*DataCome
 }
 
 // GetOne returns one user by id
-func (u *DataComercioPersonalE) GetByUniqueid(token string, uniqueid int) (*DataComercioPersonalE, error) {
+func (u *DataComercioBitacoraE) GetByUniqueid(token string, uniqueid int) (*DataComercioBitacoraE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
 	query := queryLoadDataComercioBitacora
 
-	var rowdata DataComercioPersonalE
+	var rowdata DataComercioBitacoraE
 	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
@@ -137,29 +139,12 @@ func (u *DataComercioPersonalE) GetByUniqueid(token string, uniqueid int) (*Data
 		&rowdata.ComercioId,
 		&rowdata.PersonaId,
 		&rowdata.TokenDataId,
-		&rowdata.Secuencial,
-		&rowdata.Orden,
-		&rowdata.ChannelId,
-		&rowdata.Descrip,
-		&rowdata.PersonalId,
-		&rowdata.RoleTypeId,
-		&rowdata.IssuedAt,
-		&rowdata.ExpiredAt,
-		&rowdata.LeavedAt,
-		&rowdata.Validated,
-		&rowdata.FvalidatedAt,
-		&rowdata.ValidatedBy,
-		&rowdata.MaximumAmount,
-		&rowdata.DivisaId,
-		&rowdata.DivisaText,
-		&rowdata.DivisaSimbolo,
-		&rowdata.DivisaDecimal,
-		&rowdata.Frecuencia,
-		&rowdata.Vigente,
-		&rowdata.StatusPersonal,
-		&rowdata.StatusDetail,
-		&rowdata.StatusDateAt,
-		&rowdata.Notes,
+		&rowdata.Nroperacion,
+		&rowdata.Fecha,
+		&rowdata.TipoMov,
+		&rowdata.Subject,
+		&rowdata.Contenido,
+		&rowdata.Username,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
@@ -168,6 +153,8 @@ func (u *DataComercioPersonalE) GetByUniqueid(token string, uniqueid int) (*Data
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,
@@ -182,7 +169,7 @@ func (u *DataComercioPersonalE) GetByUniqueid(token string, uniqueid int) (*Data
 
 // Update updates one user in the database, using the information
 // stored in the receiver u
-func (u *DataComercioPersonalE) Update(token string, data string, metricas string) (map[string]any, error) {
+func (u *DataComercioBitacoraE) Update(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -232,7 +219,7 @@ func (u *DataComercioPersonalE) Update(token string, data string, metricas strin
 }
 
 // Delete deletes one user from the database, by User.ID
-func (u *DataComercioPersonalE) Delete(token string, data string, metricas string) (map[string]any, error) {
+func (u *DataComercioBitacoraE) Delete(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -282,7 +269,7 @@ func (u *DataComercioPersonalE) Delete(token string, data string, metricas strin
 }
 
 // DeleteByID deletes one user from the database, by ID
-func (u *DataComercioPersonalE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
+func (u *DataComercioBitacoraE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
