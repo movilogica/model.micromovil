@@ -19,6 +19,7 @@ type StoreWarehouseLocationsE struct {
 	PersonaId          NullInt64  `json:"personaid,omitempty"`
 	TokendataId        NullString `json:"tokendataid,omitempty"`
 	WarehouseId        NullInt64  `json:"warehouseid,omitempty"`
+	WarehouseText      NullString `json:"warehousetext,omitempty"`
 	LocationSeqId      NullString `json:"locationseqid,omitempty"`
 	LocationTypeEnumId NullString `json:"locationtypeenumid,omitempty"`
 	LocationStatusId   NullString `json:"locationstatusid,omitempty"`
@@ -148,6 +149,7 @@ func (u *StoreWarehouseLocationsE) GetByUniqueid(token string, jsonText string) 
 		&rowdata.PersonaId,
 		&rowdata.TokendataId,
 		&rowdata.WarehouseId,
+		&rowdata.WarehouseText,
 		&rowdata.LocationSeqId,
 		&rowdata.LocationTypeEnumId,
 		&rowdata.LocationStatusId,
