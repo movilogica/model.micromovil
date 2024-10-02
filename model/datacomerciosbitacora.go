@@ -179,8 +179,6 @@ func (u *DataComercioBitacoraE) Update(token string, data string, metricas strin
 	if mapData == nil {
 		mapData = make(map[string]interface{})
 	}
-	// --- Adicion de filtro de tipos de carros
-	// mapData["tipo"] = tabla
 
 	// Se empaqueta el JSON del Data
 	jsonData, err := json.Marshal(mapData)
@@ -188,7 +186,7 @@ func (u *DataComercioBitacoraE) Update(token string, data string, metricas strin
 		log.Println("Error convirtiendo el Dato")
 		return nil, err
 	}
-	log.Println("Data = " + string(jsonData))
+	log.Println("Data json = " + string(jsonData))
 
 	query := querySaveDataComercioBitacora
 	stmt, err := db.Prepare(query)
