@@ -201,11 +201,6 @@ type ConstantesE struct {
 }
 
 func (obj *ConstantesE) InitValues() {
-	obj.ModoAlmacenaje = []KeyPair{
-		KeyPair{Key: "ONE_PALLET", Value: "UN PALLET"},
-		KeyPair{Key: "MULTIPLE_PALLETS", Value: "MULTIPLES PALLETS"},
-		KeyPair{Key: "RETAIL", Value: "RETAIL"},
-	}
 	obj.MultiAlmacenaje = []KeyPair{
 		KeyPair{Key: "ONE_PRODUCT", Value: "UN PRODUCTO"},
 		KeyPair{Key: "MULTI_PRODUCTS", Value: "MULTI PRODUCTOS"},
@@ -372,4 +367,98 @@ func (obj *ConstantesE) InitValues() {
 		KeyPair{Key: "PICKING", Value: "PICKING"},
 		KeyPair{Key: "REPOSITION", Value: "REPOSICION"},
 	}
+}
+
+func (obj *ConstantesE) Text(key string) string {
+	for _, e := range obj.ModoAlmacenaje {
+		if e.Key == key {
+			return e.Value
+		}
+	}
+	for _, e := range obj.MultiAlmacenaje {
+		if e.Key == key {
+			return e.Value
+		}
+	}
+	for _, e := range obj.ProveedPref {
+		if e.Key == key {
+			return e.Value
+		}
+	}
+	for _, e := range obj.PropositoPrecio {
+		if e.Key == key {
+			return e.Value
+		}
+	}
+	for _, e := range obj.ReasonMov {
+		if e.Key == key {
+			return e.Value
+		}
+	}
+	for _, e := range obj.StatusInventario {
+		if e.Key == key {
+			return e.Value
+		}
+	}
+	for _, e := range obj.StatusUbicacion {
+		if e.Key == key {
+			return e.Value
+		}
+	}
+	for _, e := range obj.TipoCategoria {
+		if e.Key == key {
+			return e.Value
+		}
+	}
+	for _, e := range obj.TipoIden {
+		if e.Key == key {
+			return e.Value
+		}
+	}
+	for _, e := range obj.TipoInventario {
+		if e.Key == key {
+			return e.Value
+		}
+	}
+	for _, e := range obj.TipoKeyword {
+		if e.Key == key {
+			return e.Value
+		}
+	}
+	for _, e := range obj.TipoMov {
+		if e.Key == key {
+			return e.Value
+		}
+	}
+	for _, e := range obj.TipoPrecio {
+		if e.Key == key {
+			return e.Value
+		}
+	}
+	for _, e := range obj.TipoProducto {
+		if e.Key == key {
+			return e.Value
+		}
+	}
+	for _, e := range obj.TipoRol {
+		if e.Key == key {
+			return e.Value
+		}
+	}
+	for _, e := range obj.TipoUbicacion {
+		if e.Key == key {
+			return e.Value
+		}
+	}
+	for _, e := range obj.TipoUom {
+		if e.Key == key {
+			return e.Value
+		}
+	}
+	for _, e := range obj.TipoZona {
+		if e.Key == key {
+			return e.Value
+		}
+	}
+	return key
 }
