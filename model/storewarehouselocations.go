@@ -204,14 +204,15 @@ func (u *StoreWarehouseLocationsE) Update(token string, data string, metricas st
 	}
 	// --- Validacion de informacion
 	x_uniqueid, _ := mapData["uniqueid"]
-	v_uniqueid, _ := strconv.Atoi(fmt.Sprintf("%d", x_uniqueid))
+	p_uniqueid := fmt.Sprintf("%d", x_uniqueid)
+	v_uniqueid, _ := strconv.Atoi(p_uniqueid)
 	// Se empaqueta el JSON del Data
 	jsonData, err := json.Marshal(mapData)
 	if err != nil {
 		log.Println("Error convirtiendo el Dato")
 		return nil, err
 	}
-	log.Printf("Data json = %s ++++ v_uniqueid =%d ", string(jsonData), v_uniqueid)
+	log.Printf("Data json = %s x_uniqueid=%s p_uniqueid=%s v_uniqueid =%d ", string(jsonData), x_uniqueid, p_uniqueid, v_uniqueid)
 	if v_uniqueid == 0 {
 		log.Println("procedimiento = " + procedureStoreWarehouseLocationsE)
 		_, err = db.Exec(procedureStoreWarehouseLocationsE, token, string(jsonData), metricas, sql.Named("p_uniqueid", &v_uniqueid))
