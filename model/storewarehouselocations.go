@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"strconv"
 )
 
 // Almacenes Locaciones
@@ -202,8 +203,8 @@ func (u *StoreWarehouseLocationsE) Update(token string, data string, metricas st
 		mapData = make(map[string]interface{})
 	}
 	// --- Validacion de informacion
-	v_uniqueid, _ := mapData["uniqueid"]
-
+	x_uniqueid, _ := mapData["uniqueid"]
+	v_uniqueid, _ := strconv.Atoi(fmt.Sprintf("%d", x_uniqueid))
 	// Se empaqueta el JSON del Data
 	jsonData, err := json.Marshal(mapData)
 	if err != nil {
