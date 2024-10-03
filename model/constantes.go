@@ -1,5 +1,7 @@
 package model
 
+import "encoding/json"
+
 const Language_English = "en"
 const Language_Spanish = "es"
 const Language_Portuges = "po"
@@ -367,6 +369,15 @@ func (obj *ConstantesE) InitValues() {
 		KeyPair{Key: "PICKING", Value: "PICKING"},
 		KeyPair{Key: "REPOSITION", Value: "REPOSICION"},
 	}
+}
+
+func (obj *ConstantesE) JsonText(keyvalue []KeyPair) string {
+	mapData := make(map[string]string)
+	for _, e := range keyvalue {
+		mapData[e.Key] = e.Value
+	}
+	jsonBinary, _ := json.Marshal(mapData)
+	return string(jsonBinary)
 }
 
 func (obj *ConstantesE) Text(key string) string {
