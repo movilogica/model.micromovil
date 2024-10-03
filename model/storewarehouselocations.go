@@ -211,13 +211,15 @@ func (u *StoreWarehouseLocationsE) Update(token string, data string, metricas st
 		log.Println("Error convirtiendo el Dato")
 		return nil, err
 	}
-	log.Println("Data json = " + string(jsonData))
+	log.Printf("Data json = %s uniqueid = %d ", string(jsonData), uniqueid)
 	if uniqueid == 0 {
+		log.Println("procedimiento = " + procedureStoreWarehouseLocationsE)
 		_, err = db.Exec(procedureStoreWarehouseLocationsE, token, string(jsonData), metricas, sql.Named("p_uniqueid", &uniqueid))
 		if err != nil {
 			return nil, err
 		}
 	} else {
+		log.Println("function = " + querySaveStoreWarehouseLocationsE)
 		query := querySaveStoreWarehouseLocationsE
 		stmt, err := db.Prepare(query)
 		if err != nil {
