@@ -203,7 +203,8 @@ func (u *StoreWarehouseLocationsE) Update(token string, data string, metricas st
 		mapData = make(map[string]interface{})
 	}
 	// --- Validacion de informacion
-	uniqueid, _ = strconv.ParseInt(fmt.Sprintf("%s", mapData["uniqueid"]), 10, 64)
+	v_uniqueid, _ := mapData["uniqueid"]
+	uniqueid, _ = strconv.ParseInt(fmt.Sprintf("%s", v_uniqueid), 10, 64)
 
 	// Se empaqueta el JSON del Data
 	jsonData, err := json.Marshal(mapData)
@@ -211,7 +212,7 @@ func (u *StoreWarehouseLocationsE) Update(token string, data string, metricas st
 		log.Println("Error convirtiendo el Dato")
 		return nil, err
 	}
-	log.Printf("Data json = %s uniqueid = %d ", string(jsonData), uniqueid)
+	log.Printf("Data json = %s v_uniqueid =%s uniqueid = %d ", string(jsonData), v_uniqueid, uniqueid)
 	if uniqueid == 0 {
 		log.Println("procedimiento = " + procedureStoreWarehouseLocationsE)
 		_, err = db.Exec(procedureStoreWarehouseLocationsE, token, string(jsonData), metricas, sql.Named("p_uniqueid", &uniqueid))
