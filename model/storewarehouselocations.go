@@ -57,7 +57,7 @@ func (e StoreWarehouseLocationsE) MarshalJSON() ([]byte, error) {
 const queryListStoreWarehouseLocationsE = `select uniqueid, sede, flag1, flag2, locationseqid, locationtypeenumid, locationstatusid, stageid, storagetypetext, permanent, activo, estadoreg, total_records from store_warehouse_locations_list( $1, $2)`
 const queryLoadStoreWarehouseLocationsE = `select * from store_warehouse_locations_list( $1, $2)`
 const querySaveStoreWarehouseLocationsE = `SELECT store_warehouse_locations_save($1, $2, $3)`
-const procedureSaveStoreWarehouseLocationsE = `CALL warehouse_ubicaciones($1, $2, $3, $4)`
+const procedureStoreWarehouseLocationsE = `CALL warehouse_ubicaciones($1, $2, $3, $4)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -213,7 +213,7 @@ func (u *StoreWarehouseLocationsE) Update(token string, data string, metricas st
 	}
 	log.Println("Data = " + string(jsonData))
 	if uniqueid == 0 {
-		_, err = db.Exec(procedureSaveStoreWarehouseLocationsE, token, string(jsonData), metricas, sql.Named("p_uniqueid", &uniqueid))
+		_, err = db.Exec(procedureStoreWarehouseLocationsE, token, string(jsonData), metricas, sql.Named("p_uniqueid", &uniqueid))
 		if err != nil {
 			return nil, err
 		}
