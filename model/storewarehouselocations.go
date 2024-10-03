@@ -203,7 +203,7 @@ func (u *StoreWarehouseLocationsE) Update(token string, data string, metricas st
 	}
 	// --- Validacion de informacion
 	i_uniqueid, _ := mapData["uniqueid"]
-	v_uniqueid, _ := i_uniqueid.(int64)
+	v_uniqueid, _ := i_uniqueid.(float64)
 	// Se empaqueta el JSON del Data
 	jsonData, err := json.Marshal(mapData)
 	if err != nil {
