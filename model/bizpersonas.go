@@ -46,6 +46,7 @@ type BizPersonasE struct {
 	FLastAccess     NullTime    `json:"flastaccess,omitempty" time_format:"sql_datetime"`
 	FLastMovement   NullTime    `json:"flastmovement,omitempty" time_format:"sql_datetime"`
 	FLastTransact   NullTime    `json:"flasttransact,omitempty" time_format:"sql_datetime"`
+	FLastOrder      NullTime    `json:"flastorder,omitempty" time_format:"sql_datetime"`
 	FSubscription   NullTime    `json:"fsubscription,omitempty" time_format:"sql_datetime"`
 	FUnsubscription NullTime    `json:"funsubscription,omitempty" time_format:"sql_datetime"`
 	Suscribed       NullInt32   `json:"suscribed,omitempty"`
@@ -178,6 +179,7 @@ func (u *BizPersonasE) GetAll(token string, filter string) ([]*BizPersonasE, err
 			&rowdata.FLastAccess,
 			&rowdata.FLastMovement,
 			&rowdata.FLastTransact,
+			&rowdata.FLastOrder,
 			&rowdata.FSubscription,
 			&rowdata.FUnsubscription,
 			&rowdata.Suscribed,
@@ -327,6 +329,7 @@ func (u *BizPersonasE) GetByUniqueid(token string, uniqueid int) (*BizPersonasE,
 		&rowdata.FLastAccess,
 		&rowdata.FLastMovement,
 		&rowdata.FLastTransact,
+		&rowdata.FLastOrder,
 		&rowdata.FSubscription,
 		&rowdata.FUnsubscription,
 		&rowdata.Suscribed,
