@@ -179,7 +179,7 @@ const VIEW_RESUMEN_GLOBAL = "resumenglobal"
 type KeyPair struct {
 	Key   string
 	Value string
-	Group string
+	//Group string
 }
 type ConstantesE struct {
 	ModoAlmacenaje   []KeyPair /// ONE_PALLET, MULTI_PALLET, RETAIL
