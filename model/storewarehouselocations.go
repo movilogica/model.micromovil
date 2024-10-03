@@ -211,7 +211,7 @@ func (u *StoreWarehouseLocationsE) Update(token string, data string, metricas st
 		log.Println("Error convirtiendo el Dato")
 		return nil, err
 	}
-	log.Println("Data = " + string(jsonData))
+	log.Println("Data json = " + string(jsonData))
 	if uniqueid == 0 {
 		_, err = db.Exec(procedureStoreWarehouseLocationsE, token, string(jsonData), metricas, sql.Named("p_uniqueid", &uniqueid))
 		if err != nil {
