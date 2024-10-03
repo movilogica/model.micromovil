@@ -46,6 +46,7 @@ func (e ZipCodeE) MarshalJSON() ([]byte, error) {
 
 const queryListZipcode = `select uniqueid, sede, flag1, flag2, countrycode, ubgcodreg, ubgcoddep, ubgcodpro, ubgcoddis, code, descrip, latitud, longitud, activo, estadoreg, total_records from tbl_zipcodes_list( $1, $2)`
 const queryLoadZipcode = `select * from tbl_zipcodes_list( $1, $2)`
+const querySaveZipcode = `SELECT tbl_zipcodes_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -193,7 +194,7 @@ func (u *ZipCodeE) Update(token string, data string, metricas string) (map[strin
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := `SELECT tbl_zipcodes_save($1, $2, $3)`
+	query := querySaveZipcode
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -243,7 +244,7 @@ func (u *ZipCodeE) Delete(token string, data string, metricas string) (map[strin
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := `SELECT tbl_zipcodes_save($1, $2, $3)`
+	query := querySaveZipcode
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -281,7 +282,7 @@ func (u *ZipCodeE) DeleteByID(token string, id int, metricas string) (map[string
 							  }`,
 		id, 300)
 
-	query := `SELECT tbl_zipcodes_save($1, $2, $3)`
+	query := querySaveZipcode
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
