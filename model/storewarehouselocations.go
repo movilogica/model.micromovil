@@ -122,7 +122,6 @@ func (u *StoreWarehouseLocationsE) GetAll(token string, filter string) ([]*Store
 			log.Println("Error scanning", err)
 			return nil, err
 		}
-
 		lista = append(lista, &rowdata)
 	}
 
