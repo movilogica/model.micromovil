@@ -95,8 +95,11 @@ func (e CustomerInfoE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const querySelectBizPer = `select * from biz_personas_list( $1, $2)`
-const querySelectBizPerMinimal = `select uniqueid, sede, flag1, flag2, personaid, nroperacion, maskoperacion, nombres, apaterno, movil, email, phone, role_type_id, privado, suscribed, balance, activo, estadoreg, total_records from biz_personas_list( $1, $2)`
+const queryLoadBizPer = `select * from biz_personas_list( $1, $2)`
+const queryListBizPer = `select uniqueid, sede, flag1, flag2, personaid, nroperacion, maskoperacion, nickname, movil, email, phone, roletypeid, privado, subscribed, flastorder, status_persona, balance, activo, estadoreg, total_records from biz_personas_list( $1, $2)`
+const queryOkBizPer = `SELECT * FROM biz_personas_ok ($1, $2)`
+const queryStatusBizPer = `SELECT * FROM biz_personas_status ($1, $2)`
+const querySaveBizPer = `SELECT biz_personas_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -110,7 +113,7 @@ func (u *BizPersonasE) GetAll(token string, filter string) ([]*BizPersonasE, err
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectBizPer
+	query := queryListBizPer
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -139,13 +142,12 @@ func (u *BizPersonasE) GetAll(token string, filter string) ([]*BizPersonasE, err
 
 	var lista []*BizPersonasE
 
+	/// uniqueid, sede, flag1, flag2, personaid, nroperacion, maskoperacion, nickname, movil, email, phone,
+	/// roletypeid, privado, subscribed, flastorder, status_persona, balance, activo, estadoreg, total_records
 	for rows.Next() {
 		var rowdata BizPersonasE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
@@ -153,117 +155,14 @@ func (u *BizPersonasE) GetAll(token string, filter string) ([]*BizPersonasE, err
 			&rowdata.Nroperacion,
 			&rowdata.Maskoperacion,
 			&rowdata.Nickname,
-			&rowdata.Nombres,
-			&rowdata.Midlename,
-			&rowdata.Apaterno,
-			&rowdata.Amaterno,
 			&rowdata.Movil,
 			&rowdata.Email,
 			&rowdata.Phone,
-			&rowdata.Avatar,
-			&rowdata.TipodocId,
-			&rowdata.TipodocCode,
-			&rowdata.TipodocText,
-			&rowdata.Numerodoc,
-			&rowdata.Documento,
 			&rowdata.RoleTypeId,
-			&rowdata.Clasificacion,
 			&rowdata.Privado,
-			&rowdata.HourValue,
-			&rowdata.Mailing,
-			&rowdata.Notifier,
-			&rowdata.FMailing,
-			&rowdata.FNotifier,
-			&rowdata.FMembership,
-			&rowdata.FResignation,
-			&rowdata.FLastAccess,
-			&rowdata.FLastMovement,
-			&rowdata.FLastTransact,
+			&rowdata.Suscribed,
 			&rowdata.FLastOrder,
-			&rowdata.FSubscription,
-			&rowdata.FUnsubscription,
-			&rowdata.Suscribed,
-			&rowdata.Balance,
 			&rowdata.StatusPersona,
-			&rowdata.StatusDetail,
-			&rowdata.StatusDateAt,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
-			&rowdata.UCreated,
-			&rowdata.UUpdated,
-			&rowdata.Activo,
-			&rowdata.Estadoreg,
-			&rowdata.TotalRecords,
-		)
-		if err != nil {
-			log.Println("Error scanning", err)
-			return nil, err
-		}
-
-		lista = append(lista, &rowdata)
-	}
-
-	return lista, nil
-}
-
-// GetAll: uniqueid, sede, flag1, flag2, personaid, tokendataid, nroperacion, maskoperacion, nickname, role_type_id, suscribed, balance, activo, estadoreg
-func (u *BizPersonasE) LookingFor(token string, filter string) ([]*BizPersonasE, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
-	defer cancel()
-
-	query := querySelectBizPerMinimal
-
-	// Se deseenvuelve el JSON del Filter para adicionar filtros
-	var mapFilter map[string]interface{}
-	json.Unmarshal([]byte(filter), &mapFilter)
-	if mapFilter == nil {
-		mapFilter = make(map[string]interface{})
-	}
-	// --- Adicion de filtros
-	// mapFilter["tipo"] = tabla
-	// Se empaqueta el JSON del Filter
-	jsonFilter, err := json.Marshal(mapFilter)
-	if err != nil {
-		log.Println("Error convirtiendo el Filter")
-	}
-	log.Println("Where = " + string(jsonFilter))
-
-	stmt, err := db.Prepare(query)
-	if err != nil {
-		return nil, err
-	}
-	rows, err := stmt.QueryContext(ctx, token, string(jsonFilter))
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var lista []*BizPersonasE
-
-	for rows.Next() {
-		var rowdata BizPersonasE
-		err := rows.Scan(
-			&rowdata.Uniqueid,
-			&rowdata.Sede,
-			&rowdata.Flag1,
-			&rowdata.Flag2,
-			&rowdata.PersonaId,
-			&rowdata.Nroperacion,
-			&rowdata.Maskoperacion,
-			&rowdata.Nombres,
-			&rowdata.Apaterno,
-			&rowdata.Movil,
-			&rowdata.Email,
-			&rowdata.Phone,
-			&rowdata.RoleTypeId,
-			&rowdata.Privado,
-			&rowdata.Suscribed,
 			&rowdata.Balance,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
@@ -281,14 +180,13 @@ func (u *BizPersonasE) LookingFor(token string, filter string) ([]*BizPersonasE,
 }
 
 // GetOne returns one user by id
-func (u *BizPersonasE) GetByUniqueid(token string, uniqueid int) (*BizPersonasE, error) {
+func (u *BizPersonasE) GetByUniqueid(token string, jsonText string) (*BizPersonasE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectBizPer
+	query := queryLoadBizPer
 
 	var rowdata BizPersonasE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -333,10 +231,10 @@ func (u *BizPersonasE) GetByUniqueid(token string, uniqueid int) (*BizPersonasE,
 		&rowdata.FSubscription,
 		&rowdata.FUnsubscription,
 		&rowdata.Suscribed,
-		&rowdata.Balance,
 		&rowdata.StatusPersona,
 		&rowdata.StatusDetail,
 		&rowdata.StatusDateAt,
+		&rowdata.Balance,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
@@ -364,7 +262,7 @@ func (u *BizPersonasE) GetCustomerOkById(token string, customerid int) (map[stri
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `SELECT * FROM biz_personas_ok ($1, $2)`
+	query := queryOkBizPer
 
 	row := db.QueryRowContext(ctx, query, token, customerid)
 
@@ -387,7 +285,7 @@ func (u *BizPersonasE) GetCustomerStatusById(token string, customerid int) (map[
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `SELECT * FROM biz_personas_status ($1, $2)`
+	query := queryStatusBizPer
 
 	row := db.QueryRowContext(ctx, query, token, customerid)
 
@@ -435,7 +333,7 @@ func (u *BizPersonasE) Update(token string, data string, metricas string) (map[s
 		return nil, err
 	}
 
-	query := `SELECT biz_personas_save($1, $2, $3)`
+	query := querySaveBizPer
 
 	log.Printf("%s [Data = %s]", query, string(jsonData))
 
@@ -488,7 +386,7 @@ func (u *BizPersonasE) Delete(token string, data string, metricas string) (map[s
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := `SELECT biz_personas_save($1, $2, $3)`
+	query := querySaveBizPer
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -526,7 +424,7 @@ func (u *BizPersonasE) DeleteByID(token string, id int, metricas string) (map[st
 							  }`,
 		id, 300)
 
-	query := `SELECT biz_personas_save($1, $2, $3)`
+	query := querySaveBizPer
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
