@@ -191,6 +191,7 @@ type ConstantesE struct {
 	StatusUbicacion  []KeyPair /// AVAILABLE, OCUPPIED, NOT_AVAILABLE, RESERVED
 	TipoCategoria    []KeyPair /// BEST_SELLING, CATALOG, CROSS_SELL, GIFT_CARDS, GOOGLE_BASE, INDUSTRY, INTERNAL, MATERIALS, MIX_AND_MATCH, QUICK_ADD, SEARCH, TAX, USAGE
 	TipoCanal        []KeyPair /// MOBILE, PHONE, EMAIL, WEBSITE, FACEBOOK, INSTAGRAM, TWITTER, FAX
+	TipoDomicilio    []KeyPair /// HOME, OFFICE, MAILING, DELIVERY, CONTACT
 	TipoIden         []KeyPair /// SKU, EAN, HS CODE, ISBN, LIBRARY, MANUFACTURE MODEL, MODEL YEAR, UPCA, UPCE, OTHER
 	TipoInventario   []KeyPair /// NON_SERIAL_INV_ITEM, SERIALIZED_INV_ITEM
 	TipoKeyword      []KeyPair /// KEYWORD, TAG
@@ -268,6 +269,13 @@ func (obj *ConstantesE) InitValues() {
 		KeyPair{Key: "SEARCH", Value: "BUSQUEDA"},
 		KeyPair{Key: "TAX", Value: "IMPUESTO"},
 		KeyPair{Key: "USAGE", Value: "DE USO"},
+	}
+	obj.TipoDomicilio = []KeyPair{ /// HOME, OFFICE, MAILING, DELIVERY, CONTACT
+		KeyPair{Key: "HOME", Value: "DOMICILIO"},
+		KeyPair{Key: "OFFICE", Value: "TRABAJO"},
+		KeyPair{Key: "MAILING", Value: "CORREO POSTAL"},
+		KeyPair{Key: "DELIVERY", Value: "DELIVERY"},
+		KeyPair{Key: "CONTACT", Value: "CONTACTO"},
 	}
 	obj.TipoIden = []KeyPair{ /// SKU, EAN, HS CODE, ISBN, LIBRARY, MANUFACTURE MODEL, MODEL YEAR, UPCA, UPCE, OTHER
 		KeyPair{Key: "SKU", Value: "SKU"},
@@ -439,6 +447,11 @@ func (obj *ConstantesE) Text(key string) string {
 		}
 	}
 	for _, e := range obj.TipoCategoria {
+		if e.Key == key {
+			return e.Value
+		}
+	}
+	for _, e := range obj.TipoDomicilio {
 		if e.Key == key {
 			return e.Value
 		}
