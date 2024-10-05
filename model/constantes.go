@@ -190,6 +190,7 @@ type ConstantesE struct {
 	StatusInventario []KeyPair /// INV_AVAILABLE, INV_ON_HOLD, INV_DEFECTIVE, INV_RETURNED
 	StatusUbicacion  []KeyPair /// AVAILABLE, OCUPPIED, NOT_AVAILABLE, RESERVED
 	TipoCategoria    []KeyPair /// BEST_SELLING, CATALOG, CROSS_SELL, GIFT_CARDS, GOOGLE_BASE, INDUSTRY, INTERNAL, MATERIALS, MIX_AND_MATCH, QUICK_ADD, SEARCH, TAX, USAGE
+	TipoCanal        []KeyPair /// MOBILE, PHONE, EMAIL, WEBSITE, FACEBOOK, INSTAGRAM, TWITTER, FAX
 	TipoIden         []KeyPair /// SKU, EAN, HS CODE, ISBN, LIBRARY, MANUFACTURE MODEL, MODEL YEAR, UPCA, UPCE, OTHER
 	TipoInventario   []KeyPair /// NON_SERIAL_INV_ITEM, SERIALIZED_INV_ITEM
 	TipoKeyword      []KeyPair /// KEYWORD, TAG
@@ -242,6 +243,17 @@ func (obj *ConstantesE) InitValues() {
 		KeyPair{Key: "NOT_AVAILABLE", Value: "NO DISPONIBLE"},
 		KeyPair{Key: "RESERVED", Value: "RESERVADO"},
 	}
+	obj.TipoCanal = []KeyPair{ /// MOBILE, PHONE, EMAIL, WEBSITE, FACEBOOK, INSTAGRAM, TWITTER, FAX
+		KeyPair{Key: "MOBILE", Value: "TELEFONO MOVIL"},
+		KeyPair{Key: "PHONE", Value: "TELEFONO FIJO"},
+		KeyPair{Key: "EMAIL", Value: "EMAIL"},
+		KeyPair{Key: "WEBSITE", Value: "WEBSITE"},
+		KeyPair{Key: "FACEBOOK", Value: "FACEBOOK"},
+		KeyPair{Key: "INSTAGRAM", Value: "INSTAGRAM"},
+		KeyPair{Key: "TWITTER", Value: "TWITTER"},
+		KeyPair{Key: "FAX", Value: "FAX"},
+	}
+
 	obj.TipoCategoria = []KeyPair{ /// BEST_SELLING, CATALOG, CROSS_SELL, GIFT_CARDS, GOOGLE_BASE, INDUSTRY, INTERNAL, MATERIALS, MIX_AND_MATCH, QUICK_ADD, SEARCH, TAX, USAGE
 		KeyPair{Key: "BEST_SELLING", Value: "LA MAS VENDIDA"},
 		KeyPair{Key: "CATALOG", Value: "CATALOGO"},
@@ -417,6 +429,11 @@ func (obj *ConstantesE) Text(key string) string {
 		}
 	}
 	for _, e := range obj.StatusUbicacion {
+		if e.Key == key {
+			return e.Value
+		}
+	}
+	for _, e := range obj.TipoCanal {
 		if e.Key == key {
 			return e.Value
 		}
