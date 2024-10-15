@@ -81,12 +81,17 @@ func NewDataAccess(dbPool *sql.DB) DataAccess {
 		StoreParamCategPick:     StoreParamCategPickE{},
 		StoreParamCategRepo:     StoreParamCategRepoE{},
 		StoreParamStorageType:   StoreParamStorageTypeE{},
+		StoreParamOrderType:     StoreParamOrderTypeE{},
+		StoreParamTransacType:   StoreParamTransacTypeE{},
 		StoreParamZones:         StoreParamZonesE{},
 		StoreStores:             StoreStoresE{},
 		StoreCatalog:            StoreCatalogE{},
 		StoreCatalogStores:      StoreCatalogStoresE{},
 		StoreCatalogCategItems:  StoreCatalogCategItemsE{},
 		StoreCatalogPersons:     StoreCatalogPersonsE{},
+		StoreOrders:             StoreOrdersE{},
+		StoreOrdersItems:        StoreOrdersItemsE{},
+		StoreOrdersStatus:       StoreOrdersStatusE{},
 		StoreProduct:            StoreProductE{},
 		StoreProductKeywords:    StoreProductKeywordsE{},
 		StoreProductIden:        StoreProductIdenE{},
@@ -209,13 +214,18 @@ type DataAccess struct {
 	StoreParamCategUbica    StoreParamCategUbicaE
 	StoreParamCategPick     StoreParamCategPickE
 	StoreParamCategRepo     StoreParamCategRepoE
+	StoreParamOrderType     StoreParamOrderTypeE
 	StoreParamStorageType   StoreParamStorageTypeE
+	StoreParamTransacType   StoreParamTransacTypeE
 	StoreParamZones         StoreParamZonesE
 	StoreStores             StoreStoresE
 	StoreCatalog            StoreCatalogE
 	StoreCatalogStores      StoreCatalogStoresE
 	StoreCatalogCategItems  StoreCatalogCategItemsE
 	StoreCatalogPersons     StoreCatalogPersonsE
+	StoreOrders             StoreOrdersE
+	StoreOrdersItems        StoreOrdersItemsE
+	StoreOrdersStatus       StoreOrdersStatusE
 	StoreProduct            StoreProductE
 	StoreProductKeywords    StoreProductKeywordsE
 	StoreProductIden        StoreProductIdenE
