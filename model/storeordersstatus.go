@@ -7,8 +7,8 @@ import (
 	"log"
 )
 
-// Tipo Producto
-type TipoProductoE struct {
+// Ordenes de Warehouse - Status
+type StoreOrdersStatusE struct {
 	Uniqueid      int64      `json:"uniqueid,omitempty"`
 	Owner         NullInt32  `json:"owner,omitempty"`
 	Dispositivoid NullInt32  `json:"dispositivoid,omitempty"`
@@ -16,9 +16,13 @@ type TipoProductoE struct {
 	Sede          int32      `json:"sede"`
 	Flag1         string     `json:"flag1,omitempty"`
 	Flag2         string     `json:"flag2,omitempty"`
-	CountryCode   NullString `json:"countrycode,omitempty"`
-	Code          NullString `json:"code,omitempty"`
-	Descrip       NullString `json:"descrip,omitempty"`
+	PersonaId     NullInt64  `json:"personaid,omitempty"`
+	TokendataId   NullString `json:"tokendataid,omitempty"`
+	BizPersonaId  NullInt64  `json:"bizpersonaid,omitempty"`
+	OrderId       NullInt64  `json:"orderid,omitempty"`
+	Fecha         NullTime   `json:"fecha,omitempty"`
+	StatusId      NullString `json:"statusid,omitempty"`
+	StatusDetail  NullString `json:"statusdetail,omitempty"`
 	Ruf1          NullString `json:"ruf1,omitempty"`
 	Ruf2          NullString `json:"ruf2,omitempty"`
 	Ruf3          NullString `json:"ruf3,omitempty"`
@@ -34,30 +38,27 @@ type TipoProductoE struct {
 	TotalRecords  int64      `json:"total_records,omitempty"`
 }
 
-func (e TipoProductoE) MarshalJSON() ([]byte, error) {
+func (e StoreOrdersStatusE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListTipoProd = `select uniqueid, sede, flag1, flag2, countrycode, code, descrip, activo, estadoreg, total_records from param_tipos_productos_list( $1, $2)`
-const queryLoadTipoProd = `select * from param_tipos_productos_list( $1, $2)`
-const querySaveTipoProd = `select * from param_tipos_productos_save( $1, $2, $3)`
+const queryListStoreOrdersStatusE = `select uniqueid, sede, flag1, flag2, fecha, statusid, statusdetail, ucreated, activo, estadoreg, total_records from store_orders_status_list( $1, $2)`
+const queryLoadStoreOrdersStatusE = `select * from store_orders_status_list( $1, $2)`
+const querySaveStoreOrdersStatusE = `SELECT store_orders_status_save($1, $2, $3)`
 
-// ---------------------------------------------------------------------
-// MySQL               PostgreSQL            Oracle
-// =====               ==========            ======
-// WHERE col = ?       WHERE col = $1        WHERE col = :col
-// VALUES(?, ?, ?)     VALUES($1, $2, $3)    VALUES(:val1, :val2, :val3)
-// ---------------------------------------------------------------------
-func (u *TipoProductoE) Test() {
-
-}
+//---------------------------------------------------------------------
+//MySQL               PostgreSQL            Oracle
+//=====               ==========            ======
+//WHERE col = ?       WHERE col = $1        WHERE col = :col
+//VALUES(?, ?, ?)     VALUES($1, $2, $3)    VALUES(:val1, :val2, :val3)
+//---------------------------------------------------------------------
 
 // GetAll returns a slice of all users, sorted by last name
-func (u *TipoProductoE) GetAll(token string, filter string) ([]*TipoProductoE, error) {
+func (u *StoreOrdersStatusE) GetAll(token string, filter string) ([]*StoreOrdersStatusE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListTipoProd
+	query := queryListStoreOrdersStatusE
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -65,6 +66,8 @@ func (u *TipoProductoE) GetAll(token string, filter string) ([]*TipoProductoE, e
 	if mapFilter == nil {
 		mapFilter = make(map[string]interface{})
 	}
+	// --- Adicion de filtros
+	// mapFilter["tipo"] = tabla
 	// Se empaqueta el JSON del Filter
 	jsonFilter, err := json.Marshal(mapFilter)
 	if err != nil {
@@ -82,19 +85,20 @@ func (u *TipoProductoE) GetAll(token string, filter string) ([]*TipoProductoE, e
 	}
 	defer rows.Close()
 
-	var lista []*TipoProductoE
+	var lista []*StoreOrdersStatusE
 
-	/// uniqueid, sede, flag1, flag2, countrycode, code, descrip, activo, estadoreg, total_records
+	/// `select uniqueid, sede, flag1, flag2, fecha, statusid, statusdetail, ucreated, activo, estadoreg, total_records
 	for rows.Next() {
-		var rowdata TipoProductoE
+		var rowdata StoreOrdersStatusE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.CountryCode,
-			&rowdata.Code,
-			&rowdata.Descrip,
+			&rowdata.Fecha,
+			&rowdata.StatusId,
+			&rowdata.StatusDetail,
+			&rowdata.UCreated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -111,14 +115,14 @@ func (u *TipoProductoE) GetAll(token string, filter string) ([]*TipoProductoE, e
 }
 
 // GetOne returns one user by id
-func (u *TipoProductoE) GetByUniqueid(token string, uniqueid int) (*TipoProductoE, error) {
+func (u *StoreOrdersStatusE) GetByUniqueid(token string, jsonText string) (*StoreOrdersStatusE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryLoadTipoProd
+	query := queryLoadStoreOrdersStatusE
 
-	var rowdata TipoProductoE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	var rowdata StoreOrdersStatusE
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -129,9 +133,13 @@ func (u *TipoProductoE) GetByUniqueid(token string, uniqueid int) (*TipoProducto
 		&rowdata.Sede,
 		&rowdata.Flag1,
 		&rowdata.Flag2,
-		&rowdata.CountryCode,
-		&rowdata.Code,
-		&rowdata.Descrip,
+		&rowdata.PersonaId,
+		&rowdata.TokendataId,
+		&rowdata.BizPersonaId,
+		&rowdata.OrderId,
+		&rowdata.Fecha,
+		&rowdata.StatusId,
+		&rowdata.StatusDetail,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
@@ -156,7 +164,7 @@ func (u *TipoProductoE) GetByUniqueid(token string, uniqueid int) (*TipoProducto
 
 // Update updates one user in the database, using the information
 // stored in the receiver u
-func (u *TipoProductoE) Update(token string, data string, metricas string) (map[string]any, error) {
+func (u *StoreOrdersStatusE) Update(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -166,6 +174,9 @@ func (u *TipoProductoE) Update(token string, data string, metricas string) (map[
 	if mapData == nil {
 		mapData = make(map[string]interface{})
 	}
+	// --- Adicion de filtro de tipos de carros
+	// mapData["tipo"] = tabla
+
 	// Se empaqueta el JSON del Data
 	jsonData, err := json.Marshal(mapData)
 	if err != nil {
@@ -174,7 +185,7 @@ func (u *TipoProductoE) Update(token string, data string, metricas string) (map[
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := querySaveTipoProd
+	query := querySaveStoreOrdersStatusE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -203,7 +214,7 @@ func (u *TipoProductoE) Update(token string, data string, metricas string) (map[
 }
 
 // Delete deletes one user from the database, by User.ID
-func (u *TipoProductoE) Delete(token string, data string, metricas string) (map[string]any, error) {
+func (u *StoreOrdersStatusE) Delete(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -224,7 +235,7 @@ func (u *TipoProductoE) Delete(token string, data string, metricas string) (map[
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := querySaveTipoProd
+	query := querySaveStoreOrdersStatusE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -253,7 +264,7 @@ func (u *TipoProductoE) Delete(token string, data string, metricas string) (map[
 }
 
 // DeleteByID deletes one user from the database, by ID
-func (u *TipoProductoE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
+func (u *StoreOrdersStatusE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -262,7 +273,7 @@ func (u *TipoProductoE) DeleteByID(token string, id int, metricas string) (map[s
 							  }`,
 		id, 300)
 
-	query := querySaveTipoProd
+	query := querySaveStoreOrdersStatusE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err

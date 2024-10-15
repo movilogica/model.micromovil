@@ -7,57 +7,59 @@ import (
 	"log"
 )
 
-// Tipo Producto
-type TipoProductoE struct {
-	Uniqueid      int64      `json:"uniqueid,omitempty"`
-	Owner         NullInt32  `json:"owner,omitempty"`
-	Dispositivoid NullInt32  `json:"dispositivoid,omitempty"`
-	Id            int32      `json:"id,omitempty"`
-	Sede          int32      `json:"sede"`
-	Flag1         string     `json:"flag1,omitempty"`
-	Flag2         string     `json:"flag2,omitempty"`
-	CountryCode   NullString `json:"countrycode,omitempty"`
-	Code          NullString `json:"code,omitempty"`
-	Descrip       NullString `json:"descrip,omitempty"`
-	Ruf1          NullString `json:"ruf1,omitempty"`
-	Ruf2          NullString `json:"ruf2,omitempty"`
-	Ruf3          NullString `json:"ruf3,omitempty"`
-	Iv            NullString `json:"iv,omitempty"`
-	Salt          NullString `json:"salt,omitempty"`
-	Checksum      NullString `json:"checksum,omitempty"`
-	FCreated      NullTime   `json:"fcreated,omitempty"`
-	FUpdated      NullTime   `json:"fupdated,omitempty"`
-	UCreated      NullString `json:"ucreated,omitempty"`
-	UUpdated      NullString `json:"uupdated,omitempty"`
-	Activo        int32      `json:"activo,omitempty"`
-	Estadoreg     int32      `json:"estadoreg,omitempty"`
-	TotalRecords  int64      `json:"total_records,omitempty"`
+// Tipo de Transaccion - Entrada y Salida
+type StoreParamTransacTypeE struct {
+	Uniqueid       int64      `json:"uniqueid,omitempty"`
+	Owner          NullInt32  `json:"owner,omitempty"`
+	Dispositivoid  NullInt32  `json:"dispositivoid,omitempty"`
+	Id             int32      `json:"id,omitempty"`
+	Sede           int32      `json:"sede"`
+	Flag1          string     `json:"flag1,omitempty"`
+	Flag2          string     `json:"flag2,omitempty"`
+	PersonaId      NullInt64  `json:"personaid,omitempty"`
+	TokendataId    NullString `json:"tokendataid,omitempty"`
+	ParentId       NullInt64  `json:"parentid,omitempty"`
+	Code           NullString `json:"code,omitempty"`
+	Descrip        NullString `json:"descrip,omitempty"`
+	TransactTypeId NullString `json:"transactypeid,omitempty"`
+	Positivo       NullInt32  `json:"positivo,omitempty"`
+	Permission     NullInt32  `json:"permission,omitempty"`
+	Ruf1           NullString `json:"ruf1,omitempty"`
+	Ruf2           NullString `json:"ruf2,omitempty"`
+	Ruf3           NullString `json:"ruf3,omitempty"`
+	Iv             NullString `json:"iv,omitempty"`
+	Salt           NullString `json:"salt,omitempty"`
+	Checksum       NullString `json:"checksum,omitempty"`
+	FCreated       NullTime   `json:"fcreated,omitempty"`
+	FUpdated       NullTime   `json:"fupdated,omitempty"`
+	UCreated       NullString `json:"ucreated,omitempty"`
+	UUpdated       NullString `json:"uupdated,omitempty"`
+	Activo         int32      `json:"activo,omitempty"`
+	Estadoreg      int32      `json:"estadoreg,omitempty"`
+	TotalRecords   int64      `json:"total_records,omitempty"`
 }
 
-func (e TipoProductoE) MarshalJSON() ([]byte, error) {
+func (e StoreParamTransacTypeE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListTipoProd = `select uniqueid, sede, flag1, flag2, countrycode, code, descrip, activo, estadoreg, total_records from param_tipos_productos_list( $1, $2)`
-const queryLoadTipoProd = `select * from param_tipos_productos_list( $1, $2)`
-const querySaveTipoProd = `select * from param_tipos_productos_save( $1, $2, $3)`
+const queryListStoreParamTransacTypeE = `select uniqueid, sede, flag1, flag2, parentid, code, descrip, transactypeid, activo, estadoreg, total_records from store_param_transact_type_list( $1, $2)`
+const queryLoadStoreParamTransacTypeE = `select * from store_param_transact_type_list( $1, $2)`
+const querySaveStoreParamTransacTypeE = `SELECT store_param_transact_type_save($1, $2, $3)`
 
-// ---------------------------------------------------------------------
-// MySQL               PostgreSQL            Oracle
-// =====               ==========            ======
-// WHERE col = ?       WHERE col = $1        WHERE col = :col
-// VALUES(?, ?, ?)     VALUES($1, $2, $3)    VALUES(:val1, :val2, :val3)
-// ---------------------------------------------------------------------
-func (u *TipoProductoE) Test() {
-
-}
+//---------------------------------------------------------------------
+//MySQL               PostgreSQL            Oracle
+//=====               ==========            ======
+//WHERE col = ?       WHERE col = $1        WHERE col = :col
+//VALUES(?, ?, ?)     VALUES($1, $2, $3)    VALUES(:val1, :val2, :val3)
+//---------------------------------------------------------------------
 
 // GetAll returns a slice of all users, sorted by last name
-func (u *TipoProductoE) GetAll(token string, filter string) ([]*TipoProductoE, error) {
+func (u *StoreParamTransacTypeE) GetAll(token string, filter string) ([]*StoreParamTransacTypeE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListTipoProd
+	query := queryListStoreParamTransacTypeE
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -65,6 +67,8 @@ func (u *TipoProductoE) GetAll(token string, filter string) ([]*TipoProductoE, e
 	if mapFilter == nil {
 		mapFilter = make(map[string]interface{})
 	}
+	// --- Adicion de filtros
+	// mapFilter["tipo"] = tabla
 	// Se empaqueta el JSON del Filter
 	jsonFilter, err := json.Marshal(mapFilter)
 	if err != nil {
@@ -82,19 +86,20 @@ func (u *TipoProductoE) GetAll(token string, filter string) ([]*TipoProductoE, e
 	}
 	defer rows.Close()
 
-	var lista []*TipoProductoE
+	var lista []*StoreParamTransacTypeE
 
-	/// uniqueid, sede, flag1, flag2, countrycode, code, descrip, activo, estadoreg, total_records
+	/// `select uniqueid, sede, flag1, flag2, parentid, code, descrip, storagemodeid, activo, estadoreg, total_records from store_param_storage_type_list( $1, $2)`
 	for rows.Next() {
-		var rowdata TipoProductoE
+		var rowdata StoreParamTransacTypeE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.CountryCode,
+			&rowdata.ParentId,
 			&rowdata.Code,
 			&rowdata.Descrip,
+			&rowdata.TransactTypeId,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -111,14 +116,14 @@ func (u *TipoProductoE) GetAll(token string, filter string) ([]*TipoProductoE, e
 }
 
 // GetOne returns one user by id
-func (u *TipoProductoE) GetByUniqueid(token string, uniqueid int) (*TipoProductoE, error) {
+func (u *StoreParamTransacTypeE) GetByUniqueid(token string, jsonText string) (*StoreParamTransacTypeE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryLoadTipoProd
+	query := queryLoadStoreParamTransacTypeE
 
-	var rowdata TipoProductoE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	var rowdata StoreParamTransacTypeE
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -129,9 +134,14 @@ func (u *TipoProductoE) GetByUniqueid(token string, uniqueid int) (*TipoProducto
 		&rowdata.Sede,
 		&rowdata.Flag1,
 		&rowdata.Flag2,
-		&rowdata.CountryCode,
+		&rowdata.PersonaId,
+		&rowdata.TokendataId,
+		&rowdata.ParentId,
 		&rowdata.Code,
 		&rowdata.Descrip,
+		&rowdata.TransactTypeId,
+		&rowdata.Positivo,
+		&rowdata.Permission,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
@@ -156,7 +166,7 @@ func (u *TipoProductoE) GetByUniqueid(token string, uniqueid int) (*TipoProducto
 
 // Update updates one user in the database, using the information
 // stored in the receiver u
-func (u *TipoProductoE) Update(token string, data string, metricas string) (map[string]any, error) {
+func (u *StoreParamTransacTypeE) Update(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -166,6 +176,9 @@ func (u *TipoProductoE) Update(token string, data string, metricas string) (map[
 	if mapData == nil {
 		mapData = make(map[string]interface{})
 	}
+	// --- Adicion de filtro de tipos de carros
+	// mapData["tipo"] = tabla
+
 	// Se empaqueta el JSON del Data
 	jsonData, err := json.Marshal(mapData)
 	if err != nil {
@@ -174,7 +187,7 @@ func (u *TipoProductoE) Update(token string, data string, metricas string) (map[
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := querySaveTipoProd
+	query := querySaveStoreParamTransacTypeE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -203,7 +216,7 @@ func (u *TipoProductoE) Update(token string, data string, metricas string) (map[
 }
 
 // Delete deletes one user from the database, by User.ID
-func (u *TipoProductoE) Delete(token string, data string, metricas string) (map[string]any, error) {
+func (u *StoreParamTransacTypeE) Delete(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -224,7 +237,7 @@ func (u *TipoProductoE) Delete(token string, data string, metricas string) (map[
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := querySaveTipoProd
+	query := querySaveStoreParamTransacTypeE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -253,7 +266,7 @@ func (u *TipoProductoE) Delete(token string, data string, metricas string) (map[
 }
 
 // DeleteByID deletes one user from the database, by ID
-func (u *TipoProductoE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
+func (u *StoreParamTransacTypeE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -262,7 +275,7 @@ func (u *TipoProductoE) DeleteByID(token string, id int, metricas string) (map[s
 							  }`,
 		id, 300)
 
-	query := querySaveTipoProd
+	query := querySaveStoreParamTransacTypeE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
