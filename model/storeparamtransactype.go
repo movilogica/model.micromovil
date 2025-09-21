@@ -24,6 +24,7 @@ type StoreParamTransacTypeE struct {
 	TransactTypeId NullString `json:"transactypeid,omitempty"`
 	Positivo       NullInt32  `json:"positivo,omitempty"`
 	Permission     NullInt32  `json:"permission,omitempty"`
+	Autosecuencial NullInt64  `json:"autosecuencial,omitempty"`
 	Ruf1           NullString `json:"ruf1,omitempty"`
 	Ruf2           NullString `json:"ruf2,omitempty"`
 	Ruf3           NullString `json:"ruf3,omitempty"`
@@ -43,7 +44,15 @@ func (e StoreParamTransacTypeE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreParamTransacTypeE = `select uniqueid, sede, flag1, flag2, parentid, code, descrip, transactypeid, activo, estadoreg, total_records from store_param_transact_type_list( $1, $2)`
+func (e StoreParamTransacTypeE) IsAjuste() bool {
+	return e.TransactTypeId.String == "ADJUSTMENT"
+}
+
+func (e StoreParamTransacTypeE) IsTransfer() bool {
+	return e.TransactTypeId.String == "TRANSFER"
+}
+
+const queryListStoreParamTransacTypeE = `select uniqueid, sede, flag1, flag2, parentid, code, descrip, transactypeid, positivo, permission, autosecuencial, activo, estadoreg, total_records from store_param_transact_type_list( $1, $2)`
 const queryLoadStoreParamTransacTypeE = `select * from store_param_transact_type_list( $1, $2)`
 const querySaveStoreParamTransacTypeE = `SELECT store_param_transact_type_save($1, $2, $3)`
 
@@ -88,7 +97,7 @@ func (u *StoreParamTransacTypeE) GetAll(token string, filter string) ([]*StorePa
 
 	var lista []*StoreParamTransacTypeE
 
-	/// `select uniqueid, sede, flag1, flag2, parentid, code, descrip, storagemodeid, activo, estadoreg, total_records from store_param_storage_type_list( $1, $2)`
+	/// `select uniqueid, sede, flag1, flag2, parentid, code, descrip, storagemodeid, activo, estadoreg, total_records from store_param_storage_type_list( $1, $2)`+
 	for rows.Next() {
 		var rowdata StoreParamTransacTypeE
 		err := rows.Scan(
@@ -100,6 +109,9 @@ func (u *StoreParamTransacTypeE) GetAll(token string, filter string) ([]*StorePa
 			&rowdata.Code,
 			&rowdata.Descrip,
 			&rowdata.TransactTypeId,
+			&rowdata.Positivo,
+			&rowdata.Permission,
+			&rowdata.Autosecuencial,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -142,6 +154,7 @@ func (u *StoreParamTransacTypeE) GetByUniqueid(token string, jsonText string) (*
 		&rowdata.TransactTypeId,
 		&rowdata.Positivo,
 		&rowdata.Permission,
+		&rowdata.Autosecuencial,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,

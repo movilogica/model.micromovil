@@ -7,8 +7,8 @@ import (
 	"log"
 )
 
-// Tipo de Orden - Entrada y Salida
-type StoreParamOrderTypeE struct {
+// Ordenes de Dye House - Status
+type StoreOrdersDyeStatusE struct {
 	Uniqueid      int64      `json:"uniqueid,omitempty"`
 	Owner         NullInt32  `json:"owner,omitempty"`
 	Dispositivoid NullInt32  `json:"dispositivoid,omitempty"`
@@ -18,38 +18,33 @@ type StoreParamOrderTypeE struct {
 	Flag2         string     `json:"flag2,omitempty"`
 	PersonaId     NullInt64  `json:"personaid,omitempty"`
 	TokendataId   NullString `json:"tokendataid,omitempty"`
-	ParentId      NullInt64  `json:"parentid,omitempty"`
-	Code          NullString `json:"code,omitempty"`
-	Descrip       NullString `json:"descrip,omitempty"`
-	Io            NullInt32  `json:"io,omitempty"`
-	OrderTypeId   NullString `json:"ordertypeid,omitempty"`
-	Features      NullString `json:"features,omitempty"`
-	/*UpdateCosts   NullInt32  `json:"updatecosts,omitempty"`
-	Checkin       NullInt32  `json:"checkin,omitempty"`
-	Priority      NullInt32  `json:"priority,omitempty"`
-	Breakdown     NullInt32  `json:"breakdown,omitempty"`*/
-	Ruf1         NullString `json:"ruf1,omitempty"`
-	Ruf2         NullString `json:"ruf2,omitempty"`
-	Ruf3         NullString `json:"ruf3,omitempty"`
-	Iv           NullString `json:"iv,omitempty"`
-	Salt         NullString `json:"salt,omitempty"`
-	Checksum     NullString `json:"checksum,omitempty"`
-	FCreated     NullTime   `json:"fcreated,omitempty"`
-	FUpdated     NullTime   `json:"fupdated,omitempty"`
-	UCreated     NullString `json:"ucreated,omitempty"`
-	UUpdated     NullString `json:"uupdated,omitempty"`
-	Activo       int32      `json:"activo,omitempty"`
-	Estadoreg    int32      `json:"estadoreg,omitempty"`
-	TotalRecords int64      `json:"total_records,omitempty"`
+	BizPersonaId  NullInt64  `json:"bizpersonaid,omitempty"`
+	OrderId       NullInt64  `json:"orderid,omitempty"`
+	Fecha         NullTime   `json:"fecha,omitempty"`
+	StatusId      NullString `json:"statusid,omitempty"`
+	StatusDetail  NullString `json:"statusdetail,omitempty"`
+	Ruf1          NullString `json:"ruf1,omitempty"`
+	Ruf2          NullString `json:"ruf2,omitempty"`
+	Ruf3          NullString `json:"ruf3,omitempty"`
+	Iv            NullString `json:"iv,omitempty"`
+	Salt          NullString `json:"salt,omitempty"`
+	Checksum      NullString `json:"checksum,omitempty"`
+	FCreated      NullTime   `json:"fcreated,omitempty"`
+	FUpdated      NullTime   `json:"fupdated,omitempty"`
+	UCreated      NullString `json:"ucreated,omitempty"`
+	UUpdated      NullString `json:"uupdated,omitempty"`
+	Activo        int32      `json:"activo,omitempty"`
+	Estadoreg     int32      `json:"estadoreg,omitempty"`
+	TotalRecords  int64      `json:"total_records,omitempty"`
 }
 
-func (e StoreParamOrderTypeE) MarshalJSON() ([]byte, error) {
+func (e StoreOrdersDyeStatusE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreParamOrderTypeE = `select uniqueid, sede, flag1, flag2, parentid, code, descrip, io, ordertypeid, features, activo, estadoreg, total_records from store_param_order_type_list( $1, $2)`
-const queryLoadStoreParamOrderTypeE = `select * from store_param_order_type_list( $1, $2)`
-const querySaveStoreParamOrderTypeE = `SELECT store_param_order_type_save($1, $2, $3)`
+const queryListStoreOrdersDyeStatusE = `select uniqueid, sede, flag1, flag2, fecha, statusid, statusdetail, ucreated, activo, estadoreg, total_records from store_orders_dye_status_list( $1, $2)`
+const queryLoadStoreOrdersDyeStatusE = `select * from store_orders_dye_status_list( $1, $2)`
+const querySaveStoreOrdersDyeStatusE = `SELECT store_orders_dye_status_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -59,11 +54,11 @@ const querySaveStoreParamOrderTypeE = `SELECT store_param_order_type_save($1, $2
 //---------------------------------------------------------------------
 
 // GetAll returns a slice of all users, sorted by last name
-func (u *StoreParamOrderTypeE) GetAll(token string, filter string) ([]*StoreParamOrderTypeE, error) {
+func (u *StoreOrdersDyeStatusE) GetAll(token string, filter string) ([]*StoreOrdersDyeStatusE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreParamOrderTypeE
+	query := queryListStoreOrdersDyeStatusE
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -90,22 +85,20 @@ func (u *StoreParamOrderTypeE) GetAll(token string, filter string) ([]*StorePara
 	}
 	defer rows.Close()
 
-	var lista []*StoreParamOrderTypeE
+	var lista []*StoreOrdersDyeStatusE
 
-	/// `select uniqueid, sede, flag1, flag2, parentid, code, descrip, storagemodeid, activo, estadoreg, total_records from store_param_storage_type_list( $1, $2)`
+	/// `select uniqueid, sede, flag1, flag2, fecha, statusid, statusdetail, ucreated, activo, estadoreg, total_records
 	for rows.Next() {
-		var rowdata StoreParamOrderTypeE
+		var rowdata StoreOrdersDyeStatusE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.ParentId,
-			&rowdata.Code,
-			&rowdata.Descrip,
-			&rowdata.Io,
-			&rowdata.OrderTypeId,
-			&rowdata.Features,
+			&rowdata.Fecha,
+			&rowdata.StatusId,
+			&rowdata.StatusDetail,
+			&rowdata.UCreated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -122,13 +115,13 @@ func (u *StoreParamOrderTypeE) GetAll(token string, filter string) ([]*StorePara
 }
 
 // GetOne returns one user by id
-func (u *StoreParamOrderTypeE) GetByUniqueid(token string, jsonText string) (*StoreParamOrderTypeE, error) {
+func (u *StoreOrdersDyeStatusE) GetByUniqueid(token string, jsonText string) (*StoreOrdersDyeStatusE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryLoadStoreParamOrderTypeE
+	query := queryLoadStoreOrdersDyeStatusE
 
-	var rowdata StoreParamOrderTypeE
+	var rowdata StoreOrdersDyeStatusE
 	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
@@ -142,12 +135,11 @@ func (u *StoreParamOrderTypeE) GetByUniqueid(token string, jsonText string) (*St
 		&rowdata.Flag2,
 		&rowdata.PersonaId,
 		&rowdata.TokendataId,
-		&rowdata.ParentId,
-		&rowdata.Code,
-		&rowdata.Descrip,
-		&rowdata.OrderTypeId,
-		&rowdata.Io,
-		&rowdata.Features,
+		&rowdata.BizPersonaId,
+		&rowdata.OrderId,
+		&rowdata.Fecha,
+		&rowdata.StatusId,
+		&rowdata.StatusDetail,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,
@@ -172,7 +164,7 @@ func (u *StoreParamOrderTypeE) GetByUniqueid(token string, jsonText string) (*St
 
 // Update updates one user in the database, using the information
 // stored in the receiver u
-func (u *StoreParamOrderTypeE) Update(token string, data string, metricas string) (map[string]any, error) {
+func (u *StoreOrdersDyeStatusE) Update(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -193,7 +185,7 @@ func (u *StoreParamOrderTypeE) Update(token string, data string, metricas string
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := querySaveStoreParamOrderTypeE
+	query := querySaveStoreOrdersDyeStatusE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -222,7 +214,7 @@ func (u *StoreParamOrderTypeE) Update(token string, data string, metricas string
 }
 
 // Delete deletes one user from the database, by User.ID
-func (u *StoreParamOrderTypeE) Delete(token string, data string, metricas string) (map[string]any, error) {
+func (u *StoreOrdersDyeStatusE) Delete(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -243,7 +235,7 @@ func (u *StoreParamOrderTypeE) Delete(token string, data string, metricas string
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := querySaveStoreParamOrderTypeE
+	query := querySaveStoreOrdersDyeStatusE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -272,7 +264,7 @@ func (u *StoreParamOrderTypeE) Delete(token string, data string, metricas string
 }
 
 // DeleteByID deletes one user from the database, by ID
-func (u *StoreParamOrderTypeE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
+func (u *StoreOrdersDyeStatusE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -281,7 +273,7 @@ func (u *StoreParamOrderTypeE) DeleteByID(token string, id int, metricas string)
 							  }`,
 		id, 300)
 
-	query := querySaveStoreParamOrderTypeE
+	query := querySaveStoreOrdersDyeStatusE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err

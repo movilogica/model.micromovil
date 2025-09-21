@@ -26,6 +26,22 @@ func (e StoreRecountSummaryE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
+func (e StoreRecountSummaryE) InitValues() {
+	e.Sede = 0
+	e.PersonaId.Value(0)
+	e.TokendataId.Value("")
+	e.WarehouseId.Value(0)
+	e.RecountId.Value(0)
+	e.GroupText.Value("")
+	e.PersonText.Value("")
+	e.StyleCode.Value("")
+	e.Qpersons.Value(0)
+	e.Qitems.Value(0)
+	e.Qboxes.Value(0)
+	e.Qstyles.Value(0)
+	e.Percent.Value(0)
+}
+
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
 //=====               ==========            ======

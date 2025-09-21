@@ -7,8 +7,8 @@ import (
 	"log"
 )
 
-// Comercios personal
-type DataComercioPersonalE struct {
+// Ordenes de Warehouse - Actions
+type StoreOrdersActionsE struct {
 	Uniqueid       int64       `json:"uniqueid,omitempty"`
 	Owner          NullInt32   `json:"owner,omitempty"`
 	Dispositivoid  NullInt32   `json:"dispositivoid,omitempty"`
@@ -16,33 +16,47 @@ type DataComercioPersonalE struct {
 	Sede           int32       `json:"sede"`
 	Flag1          string      `json:"flag1,omitempty"`
 	Flag2          string      `json:"flag2,omitempty"`
-	ComercioId     NullInt64   `json:"comercioid,omitempty"`
 	PersonaId      NullInt64   `json:"personaid,omitempty"`
-	TokenDataId    NullString  `json:"tokendataid,omitempty"`
-	Secuencial     NullInt32   `json:"secuencial"`
-	Orden          NullInt32   `json:"orden"`
-	ChannelId      NullString  `json:"channel_id,omitempty"`
-	Descrip        NullString  `json:"descrip,omitempty"`
-	PersonalId     NullInt64   `json:"personalid,omitempty"`
-	PersonalText   NullString  `json:"personaltext,omitempty"`
-	Flastaccess    NullTime    `json:"flastaccess,omitempty"`
-	RoleTypeId     NullString  `json:"role_type_id,omitempty"`
-	Issued         NullTime    `json:"issued,omitempty"`
-	Expired        NullTime    `json:"expired,omitempty"`
-	Leaved         NullTime    `json:"leaved,omitempty"`
-	Validated      NullInt32   `json:"validated,omitempty"`
-	Fvalidated     NullTime    `json:"fvalidated,omitempty"`
-	ValidatedBy    NullString  `json:"validatedby,omitempty"`
-	MaximumAmount  NullFloat64 `json:"maximum_amount,omitempty"`
-	DivisaId       NullInt64   `json:"divisaid,omitempty"`
-	DivisaText     NullString  `json:"divisatext,omitempty"`
-	DivisaSimbolo  NullString  `json:"divisasimbolo,omitempty"`
-	DivisaDecimal  NullInt32   `json:"divisadecimal,omitempty"`
-	Frecuencia     NullInt32   `json:"frecuencia,omitempty"`
-	Vigente        NullInt32   `json:"vigente,omitempty"`
-	StatusPersonal NullInt32   `json:"status_personal,omitempty"`
-	StatusDetail   NullString  `json:"status_detail,omitempty"`
-	StatusDateAt   NullTime    `json:"status_date,omitempty"`
+	TokendataId    NullString  `json:"tokendataid,omitempty"`
+	OrderId        NullInt64   `json:"orderid,omitempty"`
+	OrderitemId    NullInt64   `json:"orderitemid,omitempty"`
+	Nroperacion    NullString  `json:"nroperacion,omitempty"`
+	Fecha          NullTime    `json:"fecha,omitempty"`
+	ActionText     NullString  `json:"actiontext,omitempty"`
+	Secuencial     NullInt32   `json:"secuencial,omitempty"`
+	WarehouseId    NullInt64   `json:"warehouseid,omitempty"`
+	LocationId     NullInt64   `json:"locationid,omitempty"`
+	LocationSeqId  NullString  `json:"locationseqid,omitempty"`
+	HistoricoId    NullInt64   `json:"historicoid,omitempty"`
+	ProductId      NullInt64   `json:"productid,omitempty"`
+	ProductCode    NullString  `json:"productcode,omitempty"`
+	ProductText    NullString  `json:"producttext,omitempty"`
+	Lotid          NullString  `json:"lotid,omitempty"`
+	LotExpired     NullTime    `json:"lotexpired,omitempty"`
+	SkuNumber      NullString  `json:"skunumber,omitempty"`
+	SerialNumber   NullString  `json:"serialnumber,omitempty"`
+	Containerid    NullString  `json:"containerid,omitempty"`
+	BinNumber      NullString  `json:"binnumber,omitempty"`
+	Softidentifier NullString  `json:"softidentifier,omitempty"`
+	Barcodebox     NullString  `json:"barcodebox,omitempty"`
+	Barcodeitem    NullString  `json:"barcodeitem,omitempty"`
+	UnitPrice      NullFloat64 `json:"unitprice,omitempty"`
+	UDisplay       NullString  `json:"udisplay,omitempty"`
+	Uom            NullString  `json:"uom,omitempty"`
+	Quom           NullFloat64 `json:"quom,omitempty"`
+	Quantity       NullFloat64 `json:"quantity,omitempty"`
+	Xs             NullInt64   `json:"xs,omitempty"`
+	S              NullInt64   `json:"s,omitempty"`
+	M              NullInt64   `json:"m,omitempty"`
+	L              NullInt64   `json:"l,omitempty"`
+	Xl             NullInt64   `json:"xl,omitempty"`
+	Xxl            NullInt64   `json:"xxl,omitempty"`
+	Xxxl           NullInt64   `json:"xxxl,omitempty"`
+	Os             NullInt64   `json:"os,omitempty"`
+	QTotal         NullFloat64 `json:"qtotal,omitempty"`
+	QWeight        NullFloat64 `json:"qweight,omitempty"`
+	Totalunits     NullFloat64 `json:"totalunits,omitempty"`
+	Totalprice     NullFloat64 `json:"totalprice,omitempty"`
 	Notes          NullString  `json:"notes,omitempty"`
 	Ruf1           NullString  `json:"ruf1,omitempty"`
 	Ruf2           NullString  `json:"ruf2,omitempty"`
@@ -59,13 +73,13 @@ type DataComercioPersonalE struct {
 	TotalRecords   int64       `json:"total_records,omitempty"`
 }
 
-func (e DataComercioPersonalE) MarshalJSON() ([]byte, error) {
+func (e StoreOrdersActionsE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListDataComerPersonalE = `select uniqueid, sede, flag1, flag2, orden, descrip, personalid, personaltext, flastaccess, role_type_id, expired, status_detail, activo, estadoreg, total_records from data_comercios_personal_list( $1, $2)`
-const queryLoadDataComerPersonalE = `select * from data_comercios_personal_list( $1, $2)`
-const querySaveDataComerPersonalE = `SELECT data_comercios_personal_save($1, $2, $3)`
+const queryListStoreOrdersActionsE = `select uniqueid, sede, flag1, flag2, fecha, actiontext, warehouseid, locationseqid, historicoid, secuencial, productid, productcode, producttext, lotid, lotexpired, skunumber, binnumber, serialnumber, unitprice, udisplay, uom, quom, quantity, qtotal, qweight, totalunits, totalprice, activo, estadoreg, total_records from store_orders_actions_list( $1, $2)`
+const queryLoadStoreOrdersActionsE = `select * from store_orders_actions_list( $1, $2)`
+const querySaveStoreOrdersActionsE = `SELECT store_orders_actions_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -75,11 +89,11 @@ const querySaveDataComerPersonalE = `SELECT data_comercios_personal_save($1, $2,
 //---------------------------------------------------------------------
 
 // GetAll returns a slice of all users, sorted by last name
-func (u *DataComercioPersonalE) GetAll(token string, filter string) ([]*DataComercioPersonalE, error) {
+func (u *StoreOrdersActionsE) GetAll(token string, filter string) ([]*StoreOrdersActionsE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListDataComerPersonalE
+	query := queryListStoreOrdersActionsE
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -106,24 +120,42 @@ func (u *DataComercioPersonalE) GetAll(token string, filter string) ([]*DataCome
 	}
 	defer rows.Close()
 
-	var lista []*DataComercioPersonalE
+	var lista []*StoreOrdersActionsE
 
-	/// select uniqueid, sede, flag1, flag2, orden, descrip, personalid, personaltext, role_type_id, expired, status_detail, activo, estadoreg, total_records
+	/// `select uniqueid, sede, flag1, flag2, fecha, actiontext, warehouseid, locationseqid,
+	///         secuencial, productid, productcode, producttext, lotid, lotexpired, skunumber,
+	///         binnumber, serialnumber, unitprice, udisplay, uom, quom, quantity, qtotal, qweight,
+	///         totalunits, totalprice, activo, estadoreg, total_records
 	for rows.Next() {
-		var rowdata DataComercioPersonalE
+		var rowdata StoreOrdersActionsE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.Orden,
-			&rowdata.Descrip,
-			&rowdata.PersonalId,
-			&rowdata.PersonalText,
-			&rowdata.Flastaccess,
-			&rowdata.RoleTypeId,
-			&rowdata.Expired,
-			&rowdata.StatusDetail,
+			&rowdata.Fecha,
+			&rowdata.ActionText,
+			&rowdata.WarehouseId,
+			&rowdata.LocationSeqId,
+			&rowdata.HistoricoId,
+			&rowdata.Secuencial,
+			&rowdata.ProductId,
+			&rowdata.ProductCode,
+			&rowdata.ProductText,
+			&rowdata.Lotid,
+			&rowdata.LotExpired,
+			&rowdata.SkuNumber,
+			&rowdata.BinNumber,
+			&rowdata.SerialNumber,
+			&rowdata.UnitPrice,
+			&rowdata.UDisplay,
+			&rowdata.Uom,
+			&rowdata.Quom,
+			&rowdata.Quantity,
+			&rowdata.QTotal,
+			&rowdata.QWeight,
+			&rowdata.Totalunits,
+			&rowdata.Totalprice,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -135,19 +167,20 @@ func (u *DataComercioPersonalE) GetAll(token string, filter string) ([]*DataCome
 
 		lista = append(lista, &rowdata)
 	}
+	log.Printf("Resultado = %d records\r\n", len(lista))
 
 	return lista, nil
 }
 
 // GetOne returns one user by id
-func (u *DataComercioPersonalE) GetByUniqueid(token string, uniqueid int) (*DataComercioPersonalE, error) {
+func (u *StoreOrdersActionsE) GetByUniqueid(token string, jsonText string) (*StoreOrdersActionsE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryLoadDataComerPersonalE
+	query := queryLoadStoreOrdersActionsE
 
-	var rowdata DataComercioPersonalE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
+	var rowdata StoreOrdersActionsE
+	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
 	err := row.Scan(
@@ -158,33 +191,47 @@ func (u *DataComercioPersonalE) GetByUniqueid(token string, uniqueid int) (*Data
 		&rowdata.Sede,
 		&rowdata.Flag1,
 		&rowdata.Flag2,
-		&rowdata.ComercioId,
 		&rowdata.PersonaId,
-		&rowdata.TokenDataId,
+		&rowdata.TokendataId,
+		&rowdata.OrderId,
+		&rowdata.OrderitemId,
+		&rowdata.Nroperacion,
+		&rowdata.Fecha,
+		&rowdata.ActionText,
 		&rowdata.Secuencial,
-		&rowdata.Orden,
-		&rowdata.ChannelId,
-		&rowdata.Descrip,
-		&rowdata.PersonalId,
-		&rowdata.PersonalText,
-		&rowdata.Flastaccess,
-		&rowdata.RoleTypeId,
-		&rowdata.Issued,
-		&rowdata.Expired,
-		&rowdata.Leaved,
-		&rowdata.Validated,
-		&rowdata.Fvalidated,
-		&rowdata.ValidatedBy,
-		&rowdata.MaximumAmount,
-		&rowdata.DivisaId,
-		&rowdata.DivisaText,
-		&rowdata.DivisaSimbolo,
-		&rowdata.DivisaDecimal,
-		&rowdata.Frecuencia,
-		&rowdata.Vigente,
-		&rowdata.StatusPersonal,
-		&rowdata.StatusDetail,
-		&rowdata.StatusDateAt,
+		&rowdata.WarehouseId,
+		&rowdata.LocationId,
+		&rowdata.LocationSeqId,
+		&rowdata.HistoricoId,
+		&rowdata.ProductId,
+		&rowdata.ProductCode,
+		&rowdata.ProductText,
+		&rowdata.Lotid,
+		&rowdata.LotExpired,
+		&rowdata.SkuNumber,
+		&rowdata.SerialNumber,
+		&rowdata.Containerid,
+		&rowdata.BinNumber,
+		&rowdata.Softidentifier,
+		&rowdata.Barcodebox,
+		&rowdata.Barcodeitem,
+		&rowdata.UnitPrice,
+		&rowdata.UDisplay,
+		&rowdata.Uom,
+		&rowdata.Quom,
+		&rowdata.Quantity,
+		&rowdata.QTotal,
+		&rowdata.QWeight,
+		&rowdata.Xs,
+		&rowdata.S,
+		&rowdata.M,
+		&rowdata.L,
+		&rowdata.Xl,
+		&rowdata.Xxl,
+		&rowdata.Xxxl,
+		&rowdata.Os,
+		&rowdata.Totalunits,
+		&rowdata.Totalprice,
 		&rowdata.Notes,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
@@ -194,6 +241,8 @@ func (u *DataComercioPersonalE) GetByUniqueid(token string, uniqueid int) (*Data
 		&rowdata.Checksum,
 		&rowdata.FCreated,
 		&rowdata.FUpdated,
+		&rowdata.UCreated,
+		&rowdata.UUpdated,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,
 		&rowdata.TotalRecords,
@@ -208,7 +257,7 @@ func (u *DataComercioPersonalE) GetByUniqueid(token string, uniqueid int) (*Data
 
 // Update updates one user in the database, using the information
 // stored in the receiver u
-func (u *DataComercioPersonalE) Update(token string, data string, metricas string) (map[string]any, error) {
+func (u *StoreOrdersActionsE) Update(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -229,7 +278,7 @@ func (u *DataComercioPersonalE) Update(token string, data string, metricas strin
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := querySaveDataComerPersonalE
+	query := querySaveStoreOrdersActionsE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -258,7 +307,7 @@ func (u *DataComercioPersonalE) Update(token string, data string, metricas strin
 }
 
 // Delete deletes one user from the database, by User.ID
-func (u *DataComercioPersonalE) Delete(token string, data string, metricas string) (map[string]any, error) {
+func (u *StoreOrdersActionsE) Delete(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -279,7 +328,7 @@ func (u *DataComercioPersonalE) Delete(token string, data string, metricas strin
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := querySaveDataComerPersonalE
+	query := querySaveStoreOrdersActionsE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -308,7 +357,7 @@ func (u *DataComercioPersonalE) Delete(token string, data string, metricas strin
 }
 
 // DeleteByID deletes one user from the database, by ID
-func (u *DataComercioPersonalE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
+func (u *StoreOrdersActionsE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -317,7 +366,7 @@ func (u *DataComercioPersonalE) DeleteByID(token string, id int, metricas string
 							  }`,
 		id, 300)
 
-	query := querySaveDataComerPersonalE
+	query := querySaveStoreOrdersActionsE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err

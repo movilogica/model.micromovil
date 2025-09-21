@@ -81,6 +81,7 @@ type DataComercioMinimalE struct {
 	TokenDataId    NullString  `json:"tokendataid,omitempty"`
 	Orden          NullInt32   `json:"orden"`
 	TradeName      NullString  `json:"tradename,omitempty"`
+	ShortName      NullString  `json:"shortname,omitempty"`
 	Domicilio      NullString  `json:"domicilio,omitempty"`
 	City           NullString  `json:"cityaddress,omitempty"`
 	Zipcode        NullString  `json:"zipcode,omitempty"`
@@ -92,6 +93,7 @@ type DataComercioMinimalE struct {
 	ParkingSpots   NullString  `json:"parkingspots,omitempty"`
 	TemsUseTicket  NullString  `json:"termsuseticket,omitempty"`
 	LocationPhoto  NullString  `json:"locationphoto,omitempty"`
+	RolNegocio     NullString  `json:"rolnegocio,omitempty"`
 	FterminatedAt  NullTime    `json:"fterminated,omitempty"`
 	Activo         int32       `json:"activo,omitempty"`
 	Estadoreg      int32       `json:"estadoreg,omitempty"`
@@ -262,6 +264,7 @@ func (u *DataComercioE) GetAllWithParams(token string, filter string) ([]*DataCo
 			&rowdata.TokenDataId,
 			&rowdata.Orden,
 			&rowdata.TradeName,
+			&rowdata.ShortName,
 			&rowdata.Domicilio,
 			&rowdata.City,
 			&rowdata.Zipcode,
@@ -273,6 +276,7 @@ func (u *DataComercioE) GetAllWithParams(token string, filter string) ([]*DataCo
 			&rowdata.ParkingSpots,
 			&rowdata.TemsUseTicket,
 			&rowdata.LocationPhoto,
+			&rowdata.RolNegocio,
 			&rowdata.FterminatedAt,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
@@ -365,17 +369,26 @@ func (u *DataComercioE) GetByUniqueid(token string, uniqueid int) (*DataComercio
 }
 
 // GetOne returns one user by id
-func (u *DataComercioE) GetByUniqueidWithAllParams(token string, uniqueid int) (*DataComercioMinimalE, error) {
+func (u *DataComercioE) GetByUniqueidWithAllParams(token string, filter string) (*DataComercioMinimalE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
 	query := `select * from data_comercios_minimal_list($1, $2)`
 
+	var mapFilter map[string]interface{}
+	json.Unmarshal([]byte(filter), &mapFilter)
+	if mapFilter == nil {
+		mapFilter = make(map[string]interface{})
+	}
 	var rowdata DataComercioMinimalE
-	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
-	row := db.QueryRowContext(ctx, query, token, jsonText)
+	jsonFilter, err := json.Marshal(mapFilter)
+	if err != nil {
+		log.Println("Error convirtiendo el Filter")
+	}
+	log.Println("Where = " + string(jsonFilter))
+	row := db.QueryRowContext(ctx, query, token, string(jsonFilter))
 
-	err := row.Scan(
+	err = row.Scan(
 		&rowdata.Uniqueid,
 		&rowdata.Sede,
 		&rowdata.Flag1,
@@ -384,6 +397,7 @@ func (u *DataComercioE) GetByUniqueidWithAllParams(token string, uniqueid int) (
 		&rowdata.TokenDataId,
 		&rowdata.Orden,
 		&rowdata.TradeName,
+		&rowdata.ShortName,
 		&rowdata.Domicilio,
 		&rowdata.City,
 		&rowdata.Zipcode,
@@ -395,6 +409,7 @@ func (u *DataComercioE) GetByUniqueidWithAllParams(token string, uniqueid int) (
 		&rowdata.ParkingSpots,
 		&rowdata.TemsUseTicket,
 		&rowdata.LocationPhoto,
+		&rowdata.RolNegocio,
 		&rowdata.FterminatedAt,
 		&rowdata.Activo,
 		&rowdata.Estadoreg,

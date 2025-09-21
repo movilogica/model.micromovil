@@ -24,6 +24,7 @@ type BizPersonasE struct {
 	Midlename       NullString  `json:"midlename,omitempty"`
 	Apaterno        NullString  `json:"apaterno,omitempty"`
 	Amaterno        NullString  `json:"amaterno,omitempty"`
+	Contacto        NullString  `json:"contacto,omitempty"`
 	Movil           NullString  `json:"movil,omitempty"`
 	Email           NullString  `json:"email,omitempty"`
 	Phone           NullString  `json:"phone,omitempty"`
@@ -96,7 +97,7 @@ func (e CustomerInfoE) MarshalJSON() ([]byte, error) {
 }
 
 const queryLoadBizPer = `select * from biz_personas_list( $1, $2)`
-const queryListBizPer = `select uniqueid, sede, flag1, flag2, personaid, nroperacion, maskoperacion, nickname, movil, email, phone, roletypeid, privado, subscribed, flastorder, status_persona, balance, activo, estadoreg, total_records from biz_personas_list( $1, $2)`
+const queryListBizPer = `select uniqueid, sede, flag1, flag2, personaid, nroperacion, maskoperacion, nickname, contacto, movil, email, phone, roletypeid, privado, subscribed, flastorder, status_persona, balance, activo, estadoreg, total_records from biz_personas_list( $1, $2)`
 const queryOkBizPer = `SELECT * FROM biz_personas_ok ($1, $2)`
 const queryStatusBizPer = `SELECT * FROM biz_personas_status ($1, $2)`
 const querySaveBizPer = `SELECT biz_personas_save($1, $2, $3)`
@@ -155,6 +156,7 @@ func (u *BizPersonasE) GetAll(token string, filter string) ([]*BizPersonasE, err
 			&rowdata.Nroperacion,
 			&rowdata.Maskoperacion,
 			&rowdata.Nickname,
+			&rowdata.Contacto,
 			&rowdata.Movil,
 			&rowdata.Email,
 			&rowdata.Phone,
@@ -205,6 +207,7 @@ func (u *BizPersonasE) GetByUniqueid(token string, jsonText string) (*BizPersona
 		&rowdata.Midlename,
 		&rowdata.Apaterno,
 		&rowdata.Amaterno,
+		&rowdata.Contacto,
 		&rowdata.Movil,
 		&rowdata.Email,
 		&rowdata.Phone,

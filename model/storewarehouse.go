@@ -20,6 +20,7 @@ type StoreWarehouseE struct {
 	TokendataId   NullString                  `json:"tokendataid,omitempty"`
 	Code          NullString                  `json:"code,omitempty"`
 	Descrip       NullString                  `json:"descrip,omitempty"`
+	Ctrlstockmin  NullInt32                   `json:"ctrlstockmin,omitempty"`
 	Secuencial    NullInt32                   `json:"secuencial,omitempty"`
 	Ruf1          NullString                  `json:"ruf1,omitempty"`
 	Ruf2          NullString                  `json:"ruf2,omitempty"`
@@ -43,7 +44,7 @@ func (e StoreWarehouseE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreWarehouseE = `select uniqueid, sede, flag1, flag2, secuencial, code, descrip, activo, estadoreg, total_records from store_warehouse_list( $1, $2)`
+const queryListStoreWarehouseE = `select uniqueid, sede, flag1, flag2, secuencial, code, descrip, ctrlstockmin, activo, estadoreg, total_records from store_warehouse_list( $1, $2)`
 const queryLoadStoreWarehouseE = `select * from store_warehouse_list( $1, $2)`
 const querySaveStoreWarehouseE = `SELECT store_warehouse_save($1, $2, $3)`
 
@@ -99,6 +100,7 @@ func (u *StoreWarehouseE) GetAll(token string, filter string) ([]*StoreWarehouse
 			&rowdata.Secuencial,
 			&rowdata.Code,
 			&rowdata.Descrip,
+			&rowdata.Ctrlstockmin,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -138,6 +140,7 @@ func (u *StoreWarehouseE) GetByUniqueid(token string, jsonText string) (*StoreWa
 		&rowdata.Secuencial,
 		&rowdata.Code,
 		&rowdata.Descrip,
+		&rowdata.Ctrlstockmin,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
 		&rowdata.Ruf3,

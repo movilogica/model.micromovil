@@ -9,46 +9,52 @@ import (
 
 // Inventory Kardex
 type StoreInventoryKardexE struct {
-	Uniqueid      int64       `json:"uniqueid,omitempty"`
-	Owner         NullInt32   `json:"owner,omitempty"`
-	Dispositivoid NullInt32   `json:"dispositivoid,omitempty"`
-	Id            int32       `json:"id,omitempty"`
-	Sede          int32       `json:"sede"`
-	Flag1         string      `json:"flag1,omitempty"`
-	Flag2         string      `json:"flag2,omitempty"`
-	PersonaId     NullInt64   `json:"personaid,omitempty"`
-	TokendataId   NullString  `json:"tokendataid,omitempty"`
-	WarehouseId   NullInt64   `json:"warehouseid,omitempty"`
-	Fecha         NullTime    `json:"fecha,omitempty"`
-	ProductId     NullInt64   `json:"productid,omitempty"`
-	Io            NullString  `json:"io,omitempty"`
-	TipoMov       NullString  `json:"tipomov,omitempty"`
-	ReasonEnumId  NullString  `json:"reasonenumid,omitempty"`
-	UDisplay      NullString  `json:"udisplay,omitempty"`
-	Quantity      NullFloat64 `json:"quantity,omitempty"`
-	Uom           NullString  `json:"uom,omitempty"`
-	Entrada       NullFloat64 `json:"entrada,omitempty"`
-	Salida        NullFloat64 `json:"salida,omitempty"`
-	Balance       NullFloat64 `json:"balance,omitempty"`
-	ReceiptId     NullInt64   `json:"receiptid,omitempty"`
-	ReceiptText   NullString  `json:"receipttext,omitempty"`
-	OrderId       NullInt64   `json:"orderid,omitempty"`
-	ShiptmentId   NullInt64   `json:"shiptmentid,omitempty"`
-	DocumentText  NullString  `json:"documenttext,omitempty"`
-	Notas         NullString  `json:"notas,omitempty"`
-	Ruf1          NullString  `json:"ruf1,omitempty"`
-	Ruf2          NullString  `json:"ruf2,omitempty"`
-	Ruf3          NullString  `json:"ruf3,omitempty"`
-	Iv            NullString  `json:"iv,omitempty"`
-	Salt          NullString  `json:"salt,omitempty"`
-	Checksum      NullString  `json:"checksum,omitempty"`
-	FCreated      NullTime    `json:"fcreated,omitempty"`
-	FUpdated      NullTime    `json:"fupdated,omitempty"`
-	UCreated      NullString  `json:"ucreated,omitempty"`
-	UUpdated      NullString  `json:"uupdated,omitempty"`
-	Activo        int32       `json:"activo,omitempty"`
-	Estadoreg     int32       `json:"estadoreg,omitempty"`
-	TotalRecords  int64       `json:"total_records,omitempty"`
+	Uniqueid        int64       `json:"uniqueid,omitempty"`
+	Owner           NullInt32   `json:"owner,omitempty"`
+	Dispositivoid   NullInt32   `json:"dispositivoid,omitempty"`
+	Id              int32       `json:"id,omitempty"`
+	Sede            int32       `json:"sede"`
+	Flag1           string      `json:"flag1,omitempty"`
+	Flag2           string      `json:"flag2,omitempty"`
+	PersonaId       NullInt64   `json:"personaid,omitempty"`
+	TokendataId     NullString  `json:"tokendataid,omitempty"`
+	WarehouseId     NullInt64   `json:"warehouseid,omitempty"`
+	Nroperacion     NullString  `json:"nroperacion,omitempty"`
+	NroperacionMask NullString  `json:"nroperacionmask,omitempty"`
+	Fecha           NullTime    `json:"fecha,omitempty"`
+	ProductId       NullInt64   `json:"productid,omitempty"`
+	Io              NullString  `json:"io,omitempty"`
+	TipoTransactid  NullInt64   `json:"tipotransactid,omitempty"`
+	TipoMov         NullString  `json:"tipomov,omitempty"`
+	ReasonEnumId    NullString  `json:"reasonenumid,omitempty"`
+	UDisplay        NullString  `json:"udisplay,omitempty"`
+	Quantity        NullFloat64 `json:"quantity,omitempty"`
+	Uom             NullString  `json:"uom,omitempty"`
+	Quom            NullFloat64 `json:"quom,omitempty"`
+	Qtotal          NullFloat64 `json:"qtotal,omitempty"`
+	Qweight         NullFloat64 `json:"qweight,omitempty"`
+	Entrada         NullFloat64 `json:"entrada,omitempty"`
+	Salida          NullFloat64 `json:"salida,omitempty"`
+	Balance         NullFloat64 `json:"balance,omitempty"`
+	ReceiptId       NullInt64   `json:"receiptid,omitempty"`
+	ReceiptText     NullString  `json:"receipttext,omitempty"`
+	OrderId         NullInt64   `json:"orderid,omitempty"`
+	ShiptmentId     NullInt64   `json:"shiptmentid,omitempty"`
+	DocumentText    NullString  `json:"documenttext,omitempty"`
+	Notas           NullString  `json:"notas,omitempty"`
+	Ruf1            NullString  `json:"ruf1,omitempty"`
+	Ruf2            NullString  `json:"ruf2,omitempty"`
+	Ruf3            NullString  `json:"ruf3,omitempty"`
+	Iv              NullString  `json:"iv,omitempty"`
+	Salt            NullString  `json:"salt,omitempty"`
+	Checksum        NullString  `json:"checksum,omitempty"`
+	FCreated        NullTime    `json:"fcreated,omitempty"`
+	FUpdated        NullTime    `json:"fupdated,omitempty"`
+	UCreated        NullString  `json:"ucreated,omitempty"`
+	UUpdated        NullString  `json:"uupdated,omitempty"`
+	Activo          int32       `json:"activo,omitempty"`
+	Estadoreg       int32       `json:"estadoreg,omitempty"`
+	TotalRecords    int64       `json:"total_records,omitempty"`
 }
 
 func (e StoreInventoryKardexE) MarshalJSON() ([]byte, error) {
@@ -59,7 +65,7 @@ func (e StoreInventoryKardexE) CreatedFormat() string {
 	return e.FCreated.Time.Format("Jan 2006")
 }
 
-const queryListStoreInventoryKardexE = `select uniqueid, sede, flag1, flag2, fecha, productid, io, tipomov, udisplay, quantity, uom, entrada, salida, balance, fcreated, activo, estadoreg, total_records from store_inventory_kardex_list( $1, $2)`
+const queryListStoreInventoryKardexE = `select uniqueid, sede, flag1, flag2, nroperacionmask, fecha, productid, io, tipotransactid, tipomov, udisplay, quantity, uom, quom, qtotal, entrada, salida, balance, documenttext,orderid, fcreated, activo, estadoreg, total_records from store_inventory_kardex_list( $1, $2)`
 const queryLoadStoreInventoryKardexE = `select * from store_inventory_kardex_list( $1, $2)`
 const querySaveStoreInventoryKardexE = `SELECT store_inventory_kardex_save($1, $2, $3)`
 
@@ -114,16 +120,22 @@ func (u *StoreInventoryKardexE) GetAll(token string, filter string) ([]*StoreInv
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
+			&rowdata.NroperacionMask,
 			&rowdata.Fecha,
 			&rowdata.ProductId,
 			&rowdata.Io,
+			&rowdata.TipoTransactid,
 			&rowdata.TipoMov,
-			&rowdata.UDisplay,
+			&rowdata.UDisplay, /// udisplay, quantity, uom, quom, qtotal, entrada
 			&rowdata.Quantity,
 			&rowdata.Uom,
+			&rowdata.Quom,
+			&rowdata.Qtotal,
 			&rowdata.Entrada,
 			&rowdata.Salida,
 			&rowdata.Balance,
+			&rowdata.DocumentText,
+			&rowdata.OrderId,
 			&rowdata.FCreated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
@@ -162,14 +174,20 @@ func (u *StoreInventoryKardexE) GetByUniqueid(token string, jsonText string) (*S
 		&rowdata.PersonaId,
 		&rowdata.TokendataId,
 		&rowdata.WarehouseId,
+		&rowdata.Nroperacion,
+		&rowdata.NroperacionMask,
 		&rowdata.Fecha,
 		&rowdata.ProductId,
 		&rowdata.Io,
+		&rowdata.TipoTransactid,
 		&rowdata.TipoMov,
 		&rowdata.ReasonEnumId,
 		&rowdata.UDisplay,
 		&rowdata.Quantity,
 		&rowdata.Uom,
+		&rowdata.Quom,
+		&rowdata.Qtotal,
+		&rowdata.Qweight,
 		&rowdata.Entrada,
 		&rowdata.Salida,
 		&rowdata.Balance,

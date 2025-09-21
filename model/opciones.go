@@ -120,7 +120,7 @@ func (u *OpcionesE) GetByUniqueid(token string, uniqueid int) (*OpcionesE, error
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectCredencial
+	query := querySelectOpciones
 
 	var rowdata OpcionesE
 	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)

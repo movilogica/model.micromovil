@@ -7,8 +7,8 @@ import (
 	"log"
 )
 
-// Ordenes de Warehouse - items
-type StoreOrdersItemsE struct {
+// Ordenes Dye House - items
+type StoreOrdersDyeItemsE struct {
 	Uniqueid            int64       `json:"uniqueid,omitempty"`
 	Owner               NullInt32   `json:"owner,omitempty"`
 	Dispositivoid       NullInt32   `json:"dispositivoid,omitempty"`
@@ -20,35 +20,43 @@ type StoreOrdersItemsE struct {
 	TokendataId         NullString  `json:"tokendataid,omitempty"`
 	BizPersonaId        NullInt64   `json:"bizpersonaid,omitempty"`
 	OrderId             NullInt64   `json:"orderid,omitempty"`
-	StatusId            NullString  `json:"statusid,omitempty"`
+	Nroperacion         NullString  `json:"nroperacion,omitempty"`
+	Secuencial          NullInt32   `json:"secuencial,omitempty"`
 	Fecha               NullTime    `json:"fecha,omitempty"`
+	FDyeHouse           NullTime    `json:"fdyehouse,omitempty"`
+	FEstimated          NullTime    `json:"festimated,omitempty"`
 	FProcessed          NullTime    `json:"fprocessed,omitempty"`
 	FCancelled          NullTime    `json:"fcancelled,omitempty"`
-	Numero              NullString  `json:"numero,omitempty"`
-	Nroperacion         NullString  `json:"nroperacion,omitempty"`
+	StatusId            NullString  `json:"statusid,omitempty"`
+	DyeOrder            NullString  `json:"dyeorder,omitempty"`
+	CutTextil           NullString  `json:"cuttextil,omitempty"`
 	ProductId           NullInt64   `json:"productid,omitempty"`
 	ProductCode         NullString  `json:"productcode,omitempty"`
 	ProductText         NullString  `json:"producttext,omitempty"`
 	DivisionCode        NullString  `json:"divisioncode,omitempty"`
-	Secuencial          NullInt32   `json:"secuencial,omitempty"`
+	ColorCode           NullString  `json:"colorcode,omitempty"`
+	BackColor           NullString  `json:"backcolor,omitempty"`
+	ForeColor           NullString  `json:"forecolor,omitempty"`
+	Yield               NullString  `json:"yield,omitempty"`
+	FinalWidth          NullFloat64 `json:"finalwidth,omitempty"`
 	OverrideglAccountId NullString  `json:"overrideglaccountid,omitempty"`
 	SupplierProductId   NullString  `json:"supplierproductid,omitempty"`
-	ProdCatalogId       NullInt32   `json:"prodcatalogid,omitempty"`
-	ProdCatalogText     NullString  `json:"prodcatalogtext,omitempty"`
 	ProductTypeId       NullString  `json:"producttypeid,omitempty"`
 	TipoProductoId      NullString  `json:"tipoproductoid,omitempty"`
 	TipoProductoText    NullString  `json:"tipoproductotext,omitempty"`
-	Features            NullString  `json:"features,omitempty"`
 	Lotid               NullString  `json:"lotid,omitempty"`
 	LotExpired          NullTime    `json:"lotexpired,omitempty"`
-	SkuNumber           NullString  `json:"skunumber,omitempty"`
-	BinNumber           NullString  `json:"binnumber,omitempty"`
-	SerialNumber        NullString  `json:"serialnumber,omitempty"`
+	Inventario          NullString  `json:"inventario,omitempty"`
+	Features            NullString  `json:"features,omitempty"`
 	UnitPrice           NullFloat64 `json:"unitprice,omitempty"`
 	UDisplay            NullString  `json:"udisplay,omitempty"`
 	Uom                 NullString  `json:"uom,omitempty"`
 	Quom                NullFloat64 `json:"quom,omitempty"`
 	Quantity            NullFloat64 `json:"quantity,omitempty"`
+	QTotal              NullFloat64 `json:"qtotal,omitempty"`
+	QGrossWeight        NullFloat64 `json:"qgrossweight,omitempty"`
+	QNetWeight          NullFloat64 `json:"qnetweight,omitempty"`
+	UomWeight           NullString  `json:"uomweight,omitempty"`
 	Xs                  NullInt64   `json:"xs,omitempty"`
 	S                   NullInt64   `json:"s,omitempty"`
 	M                   NullInt64   `json:"m,omitempty"`
@@ -57,9 +65,9 @@ type StoreOrdersItemsE struct {
 	Xxl                 NullInt64   `json:"xxl,omitempty"`
 	Xxxl                NullInt64   `json:"xxxl,omitempty"`
 	Os                  NullInt64   `json:"os,omitempty"`
-	QTotal              NullFloat64 `json:"qtotal,omitempty"`
-	QWeight             NullFloat64 `json:"qweight,omitempty"`
-	UomWeight           NullString  `json:"uomweight,omitempty"`
+	DocumentText        NullString  `json:"documenttext,omitempty"`
+	Roadmap             NullString  `json:"roadmap,omitempty"`
+	Froadmap            NullTime    `json:"froadmap,omitempty"`
 	Received            NullFloat64 `json:"received,omitempty"`
 	Cancelled           NullFloat64 `json:"cancelled,omitempty"`
 	Subtotal            NullFloat64 `json:"subtotal,omitempty"`
@@ -79,17 +87,17 @@ type StoreOrdersItemsE struct {
 	TotalRecords        int64       `json:"total_records,omitempty"`
 }
 
-func (e StoreOrdersItemsE) MarshalJSON() ([]byte, error) {
+func (e StoreOrdersDyeItemsE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
 // Para la edicion se obtienen solo campos de la misma tabla.
-const queryListEditOrdersItemsE = `select uniqueid, sede, flag1, flag2, orderid, secuencial, productid, productcode, producttext, divisioncode, features, lotid, lotexpired, skunumber,binnumber, serialnumber, unitprice, udisplay, uom, quom, quantity, qtotal, qweight, uomweight, received, cancelled, subtotal, comentarios, activo, estadoreg, total_records from store_orders_items_list( $1, $2)`
+const queryListEditOrdersDyeItemsE = `select uniqueid, sede, flag1, flag2, orderid, secuencial, productid, productcode, producttext, divisioncode, colorcode, backcolor, forecolor, yield, finalwidth, inventario, features, lotid, lotexpired, unitprice, udisplay, uom, quom, quantity, qtotal, qgrossweight, qnetweight, uomweight, documenttext, roadmap, froadmap, received, cancelled, subtotal, comentarios, activo, estadoreg, total_records from store_orders_dye_items_list( $1, $2)`
 
 // La lista de items puede incluir columnas relacionadas de otras tablas
-const queryListStoreOrdersItemsE = `select uniqueid, sede, flag1, flag2, orderid, secuencial, fprocessed, fcancelled, statusid, numero, productid, productcode, producttext, divisioncode, features, lotid, lotexpired, skunumber,binnumber, serialnumber, unitprice, udisplay, uom, quom, quantity, qtotal, qweight, uomweight, received, cancelled, subtotal, comentarios, activo, estadoreg, total_records from store_orders_items_list( $1, $2)`
-const queryLoadStoreOrdersItemsE = `select * from store_orders_items_list( $1, $2)`
-const querySaveStoreOrdersItemsE = `SELECT store_orders_items_save($1, $2, $3)`
+const queryListStoreOrdersDyeItemsE = `select uniqueid, sede, flag1, flag2, orderid, secuencial, fecha, fdyehouse, festimated, fprocessed, fcancelled, statusid, dyeorder, cuttextil, productid, productcode, producttext, divisioncode, colorcode, backcolor, forecolor, yield, finalwidth, inventario, features, lotid, lotexpired, unitprice, udisplay, uom, quom, quantity, qtotal, qgrossweight, qnetweight, uomweight, documenttext, roadmap, froadmap, received, cancelled, subtotal, comentarios, activo, estadoreg, total_records from store_orders_dye_items_list( $1, $2)`
+const queryLoadStoreOrdersDyeItemsE = `select * from store_orders_dye_items_list( $1, $2)`
+const querySaveStoreOrdersDyeItemsE = `SELECT store_orders_dye_items_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -99,11 +107,11 @@ const querySaveStoreOrdersItemsE = `SELECT store_orders_items_save($1, $2, $3)`
 //---------------------------------------------------------------------
 
 // GetAll returns a slice of all users, sorted by last name
-func (u *StoreOrdersItemsE) GetAll(token string, filter string) ([]*StoreOrdersItemsE, error) {
+func (u *StoreOrdersDyeItemsE) GetAll(token string, filter string) ([]*StoreOrdersDyeItemsE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListStoreOrdersItemsE
+	query := queryListStoreOrdersDyeItemsE
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -130,12 +138,13 @@ func (u *StoreOrdersItemsE) GetAll(token string, filter string) ([]*StoreOrdersI
 	}
 	defer rows.Close()
 
-	var lista []*StoreOrdersItemsE
+	var lista []*StoreOrdersDyeItemsE
 
-	/// `select uniqueid, sede, flag1, flag2, secuencial, productid, producttext, unitprice, udisplay, uom, quom,
-	///         quantity, qtotal, received, cancelled, subtotal, activo, estadoreg, total_records
+	/// `select uniqueid, sede, flag1, flag2, orderid, secuencial, fecha, fdyehouse, festimated, fprocessed, fcancelled,
+	//          statusid, dyeorder, cuttextil, productid, productcode, producttext, divisioncode, colortext, yield, finalwidth,
+	//          features, lotid, lotexpired, unitprice, udisplay, uom, quom, quantity, qtotal, qgrossweight, qnetweight, uomweight, roadmap, froadmap, received, cancelled, subtotal, comentarios, activo, estadoreg, total_records
 	for rows.Next() {
-		var rowdata StoreOrdersItemsE
+		var rowdata StoreOrdersDyeItemsE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
 			&rowdata.Sede,
@@ -143,28 +152,39 @@ func (u *StoreOrdersItemsE) GetAll(token string, filter string) ([]*StoreOrdersI
 			&rowdata.Flag2,
 			&rowdata.OrderId,
 			&rowdata.Secuencial,
+			&rowdata.Fecha,
+			&rowdata.FDyeHouse,
+			&rowdata.FEstimated,
 			&rowdata.FProcessed,
 			&rowdata.FCancelled,
 			&rowdata.StatusId,
-			&rowdata.Numero,
+			&rowdata.DyeOrder,
+			&rowdata.CutTextil,
 			&rowdata.ProductId,
 			&rowdata.ProductCode,
 			&rowdata.ProductText,
 			&rowdata.DivisionCode,
+			&rowdata.ColorCode,
+			&rowdata.BackColor,
+			&rowdata.ForeColor,
+			&rowdata.Yield,
+			&rowdata.FinalWidth,
+			&rowdata.Inventario,
 			&rowdata.Features,
 			&rowdata.Lotid,
 			&rowdata.LotExpired,
-			&rowdata.SkuNumber,
-			&rowdata.BinNumber,
-			&rowdata.SerialNumber,
 			&rowdata.UnitPrice,
 			&rowdata.UDisplay,
 			&rowdata.Uom,
 			&rowdata.Quom,
 			&rowdata.Quantity,
 			&rowdata.QTotal,
-			&rowdata.QWeight,
+			&rowdata.QGrossWeight,
+			&rowdata.QNetWeight,
 			&rowdata.UomWeight,
+			&rowdata.DocumentText,
+			&rowdata.Roadmap,
+			&rowdata.Froadmap,
 			&rowdata.Received,
 			&rowdata.Cancelled,
 			&rowdata.Subtotal,
@@ -185,11 +205,11 @@ func (u *StoreOrdersItemsE) GetAll(token string, filter string) ([]*StoreOrdersI
 	return lista, nil
 }
 
-func (u *StoreOrdersItemsE) GetItems(token string, filter string) ([]*StoreOrdersItemsE, error) {
+func (u *StoreOrdersDyeItemsE) GetItems(token string, filter string) ([]*StoreOrdersDyeItemsE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryListEditOrdersItemsE
+	query := queryListEditOrdersDyeItemsE
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -216,10 +236,9 @@ func (u *StoreOrdersItemsE) GetItems(token string, filter string) ([]*StoreOrder
 	}
 	defer rows.Close()
 
-	var lista []*StoreOrdersItemsE
-
+	var lista []*StoreOrdersDyeItemsE
 	for rows.Next() {
-		var rowdata StoreOrdersItemsE
+		var rowdata StoreOrdersDyeItemsE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
 			&rowdata.Sede,
@@ -231,20 +250,27 @@ func (u *StoreOrdersItemsE) GetItems(token string, filter string) ([]*StoreOrder
 			&rowdata.ProductCode,
 			&rowdata.ProductText,
 			&rowdata.DivisionCode,
+			&rowdata.ColorCode,
+			&rowdata.BackColor,
+			&rowdata.ForeColor,
+			&rowdata.Yield,
+			&rowdata.FinalWidth,
+			&rowdata.Inventario,
 			&rowdata.Features,
 			&rowdata.Lotid,
 			&rowdata.LotExpired,
-			&rowdata.SkuNumber,
-			&rowdata.BinNumber,
-			&rowdata.SerialNumber,
 			&rowdata.UnitPrice,
 			&rowdata.UDisplay,
 			&rowdata.Uom,
 			&rowdata.Quom,
 			&rowdata.Quantity,
 			&rowdata.QTotal,
-			&rowdata.QWeight,
+			&rowdata.QGrossWeight,
+			&rowdata.QNetWeight,
 			&rowdata.UomWeight,
+			&rowdata.DocumentText,
+			&rowdata.Roadmap,
+			&rowdata.Froadmap,
 			&rowdata.Received,
 			&rowdata.Cancelled,
 			&rowdata.Subtotal,
@@ -266,13 +292,13 @@ func (u *StoreOrdersItemsE) GetItems(token string, filter string) ([]*StoreOrder
 }
 
 // GetOne returns one user by id
-func (u *StoreOrdersItemsE) GetByUniqueid(token string, jsonText string) (*StoreOrdersItemsE, error) {
+func (u *StoreOrdersDyeItemsE) GetByUniqueid(token string, jsonText string) (*StoreOrdersDyeItemsE, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := queryLoadStoreOrdersItemsE
+	query := queryLoadStoreOrdersDyeItemsE
 
-	var rowdata StoreOrdersItemsE
+	var rowdata StoreOrdersDyeItemsE
 	log.Printf("[%s] Where = %s\n", query, string(jsonText))
 	row := db.QueryRowContext(ctx, query, token, jsonText)
 
@@ -288,35 +314,43 @@ func (u *StoreOrdersItemsE) GetByUniqueid(token string, jsonText string) (*Store
 		&rowdata.TokendataId,
 		&rowdata.BizPersonaId,
 		&rowdata.OrderId,
-		&rowdata.StatusId,
-		&rowdata.Fecha,
-		&rowdata.FProcessed,
-		&rowdata.FCancelled,
-		&rowdata.Numero,
 		&rowdata.Nroperacion,
 		&rowdata.Secuencial,
+		&rowdata.Fecha,
+		&rowdata.FDyeHouse,
+		&rowdata.FEstimated,
+		&rowdata.FProcessed,
+		&rowdata.FCancelled,
+		&rowdata.StatusId,
+		&rowdata.DyeOrder,
+		&rowdata.CutTextil,
 		&rowdata.ProductId,
 		&rowdata.ProductCode,
 		&rowdata.ProductText,
 		&rowdata.DivisionCode,
+		&rowdata.ColorCode,
+		&rowdata.BackColor,
+		&rowdata.ForeColor,
+		&rowdata.Yield,
+		&rowdata.FinalWidth,
 		&rowdata.OverrideglAccountId,
 		&rowdata.SupplierProductId,
-		&rowdata.ProdCatalogId,
-		&rowdata.ProdCatalogText,
 		&rowdata.ProductTypeId,
 		&rowdata.TipoProductoId,
 		&rowdata.TipoProductoText,
-		&rowdata.Features,
 		&rowdata.Lotid,
 		&rowdata.LotExpired,
-		&rowdata.SkuNumber,
-		&rowdata.BinNumber,
-		&rowdata.SerialNumber,
+		&rowdata.Inventario,
+		&rowdata.Features,
 		&rowdata.UnitPrice,
 		&rowdata.UDisplay,
 		&rowdata.Uom,
 		&rowdata.Quom,
 		&rowdata.Quantity,
+		&rowdata.QTotal,
+		&rowdata.QGrossWeight,
+		&rowdata.QNetWeight,
+		&rowdata.UomWeight,
 		&rowdata.Xs,
 		&rowdata.S,
 		&rowdata.M,
@@ -325,9 +359,9 @@ func (u *StoreOrdersItemsE) GetByUniqueid(token string, jsonText string) (*Store
 		&rowdata.Xxl,
 		&rowdata.Xxxl,
 		&rowdata.Os,
-		&rowdata.QTotal,
-		&rowdata.QWeight,
-		&rowdata.UomWeight,
+		&rowdata.DocumentText,
+		&rowdata.Roadmap,
+		&rowdata.Froadmap,
 		&rowdata.Received,
 		&rowdata.Cancelled,
 		&rowdata.Subtotal,
@@ -356,7 +390,7 @@ func (u *StoreOrdersItemsE) GetByUniqueid(token string, jsonText string) (*Store
 
 // Update updates one user in the database, using the information
 // stored in the receiver u
-func (u *StoreOrdersItemsE) Update(token string, data string, metricas string) (map[string]any, error) {
+func (u *StoreOrdersDyeItemsE) Update(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -377,7 +411,7 @@ func (u *StoreOrdersItemsE) Update(token string, data string, metricas string) (
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := querySaveStoreOrdersItemsE
+	query := querySaveStoreOrdersDyeItemsE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -406,7 +440,7 @@ func (u *StoreOrdersItemsE) Update(token string, data string, metricas string) (
 }
 
 // Delete deletes one user from the database, by User.ID
-func (u *StoreOrdersItemsE) Delete(token string, data string, metricas string) (map[string]any, error) {
+func (u *StoreOrdersDyeItemsE) Delete(token string, data string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -427,7 +461,7 @@ func (u *StoreOrdersItemsE) Delete(token string, data string, metricas string) (
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := querySaveStoreOrdersItemsE
+	query := querySaveStoreOrdersDyeItemsE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -456,7 +490,7 @@ func (u *StoreOrdersItemsE) Delete(token string, data string, metricas string) (
 }
 
 // DeleteByID deletes one user from the database, by ID
-func (u *StoreOrdersItemsE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
+func (u *StoreOrdersDyeItemsE) DeleteByID(token string, id int, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -465,7 +499,7 @@ func (u *StoreOrdersItemsE) DeleteByID(token string, id int, metricas string) (m
 							  }`,
 		id, 300)
 
-	query := querySaveStoreOrdersItemsE
+	query := querySaveStoreOrdersDyeItemsE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -493,7 +527,7 @@ func (u *StoreOrdersItemsE) DeleteByID(token string, id int, metricas string) (m
 	return retorno, nil
 }
 
-func (u *StoreOrdersItemsE) UMedidaText() string {
+func (u *StoreOrdersDyeItemsE) UMedidaText() string {
 	umedidatext := ""
 	/// 20Kgm/Rollo
 	if u.Uom != u.UDisplay {

@@ -20,6 +20,7 @@ type CredencialE struct {
 	Sede              int32      `json:"sede"`
 	Flag1             string     `json:"flag1,omitempty"`
 	Flag2             string     `json:"flag2,omitempty"`
+	PersonaId         NullInt64  `json:"personaid,omitempty"`
 	Nivel             NullInt32  `json:"nivel,omitempty"`
 	Tipo              NullString `json:"tipo,omitempty"`
 	Username          NullString `json:"username,omitempty"`
@@ -28,6 +29,7 @@ type CredencialE struct {
 	Imei              NullString `json:"imei,omitempty"`
 	Social            NullString `json:"social,omitempty"`
 	Googleidtoken     NullString `json:"googleidtoken,omitempty"`
+	TokenFcm          NullString `json:"tokenfcm,omitempty"`
 	Password          NullString `json:"password,omitempty"`
 	ModoAutenticacion NullInt32  `json:"modoautenticacion,omitempty"`
 	ModoAcceso        NullInt32  `json:"modoacceso,omitempty"`
@@ -47,6 +49,7 @@ type CredencialE struct {
 	Avatar            NullString `json:"avatar,omitempty"`
 	TokenTerminal     NullString `json:"tokenterminal,omitempty"`
 	Manual            NullInt32  `json:"manual,omitempty"`
+	RoleDefault       NullString `json:"roledefault,omitempty"`
 	HasRole           NullInt32  `json:"hasrole,omitempty"`
 	Ruf1              NullString `json:"ruf1,omitempty"`
 	Ruf2              NullString `json:"ruf2,omitempty"`
@@ -67,7 +70,9 @@ func (e CredencialE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const querySelectCredencial = `select * from security_credenciales_list( $1, $2)`
+const queryListCredencialE = `select uniqueid, sede, flag1, flag2, personaid, username, imei, email, movil, googleidtoken, avatar, roledefault, hasrole, activo, estadoreg, total_records from security_credenciales_list( $1, $2)`
+const queryLoadCredencialE = `select * from security_credenciales_list( $1, $2)`
+const querySaveCredencialE = `SELECT security_credenciales_save($1, $2, $3)`
 
 //---------------------------------------------------------------------
 //MySQL               PostgreSQL            Oracle
@@ -81,7 +86,7 @@ func (u *CredencialE) GetAll(token string, filter string) ([]*CredencialE, error
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectCredencial
+	query := queryListCredencialE
 
 	// Se deseenvuelve el JSON del Filter para adicionar filtros
 	var mapFilter map[string]interface{}
@@ -110,52 +115,23 @@ func (u *CredencialE) GetAll(token string, filter string) ([]*CredencialE, error
 
 	var lista []*CredencialE
 
+	///`select uniqueid, sede, flag1, flag2, personaid, username, imei, email, movil, googleidtoken, avatar, activo, estadoreg, total_records from security_credenciales_list( $1, $2)`
 	for rows.Next() {
 		var rowdata CredencialE
 		err := rows.Scan(
 			&rowdata.Uniqueid,
-			&rowdata.Owner,
-			&rowdata.Dispositivoid,
-			&rowdata.Id,
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
-			&rowdata.Nivel,
-			&rowdata.Tipo,
+			&rowdata.PersonaId,
 			&rowdata.Username,
+			&rowdata.Imei,
 			&rowdata.Email,
 			&rowdata.Movil,
-			&rowdata.Imei,
-			&rowdata.Social,
 			&rowdata.Googleidtoken,
-			&rowdata.Password,
-			&rowdata.ModoAutenticacion,
-			&rowdata.ModoAcceso,
-			&rowdata.Changepwd,
-			&rowdata.NextChangepwdAt,
-			&rowdata.LastAccessAt,
-			&rowdata.SedeActual,
-			&rowdata.Welcome,
-			&rowdata.WelcomeAt,
-			&rowdata.Notifier,
-			&rowdata.NotifierAt,
-			&rowdata.Mailing,
-			&rowdata.MailingAt,
-			&rowdata.Pdf,
-			&rowdata.PdfAt,
-			&rowdata.Idioma,
 			&rowdata.Avatar,
-			&rowdata.TokenTerminal,
-			&rowdata.Manual,
+			&rowdata.RoleDefault,
 			&rowdata.HasRole,
-			&rowdata.Ruf1,
-			&rowdata.Ruf2,
-			&rowdata.Ruf3,
-			&rowdata.Iv,
-			&rowdata.Salt,
-			&rowdata.Checksum,
-			&rowdata.FCreated,
-			&rowdata.FUpdated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -221,7 +197,7 @@ func (u *CredencialE) GetByUniqueid(token string, uniqueid int) (*CredencialE, e
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectCredencial
+	query := queryLoadCredencialE
 
 	var rowdata CredencialE
 	jsonText := fmt.Sprintf(`{"uniqueid":%d}`, uniqueid)
@@ -235,6 +211,7 @@ func (u *CredencialE) GetByUniqueid(token string, uniqueid int) (*CredencialE, e
 		&rowdata.Sede,
 		&rowdata.Flag1,
 		&rowdata.Flag2,
+		&rowdata.PersonaId,
 		&rowdata.Nivel,
 		&rowdata.Tipo,
 		&rowdata.Username,
@@ -243,6 +220,7 @@ func (u *CredencialE) GetByUniqueid(token string, uniqueid int) (*CredencialE, e
 		&rowdata.Imei,
 		&rowdata.Social,
 		&rowdata.Googleidtoken,
+		&rowdata.TokenFcm,
 		&rowdata.Password,
 		&rowdata.ModoAutenticacion,
 		&rowdata.ModoAcceso,
@@ -262,6 +240,7 @@ func (u *CredencialE) GetByUniqueid(token string, uniqueid int) (*CredencialE, e
 		&rowdata.Avatar,
 		&rowdata.TokenTerminal,
 		&rowdata.Manual,
+		&rowdata.RoleDefault,
 		&rowdata.HasRole,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
@@ -306,7 +285,7 @@ func (u *CredencialE) Update(token string, data string, metricas string) (map[st
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := `SELECT security_credenciales_save($1, $2, $3)`
+	query := querySaveCredencialE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -356,7 +335,7 @@ func (u *CredencialE) Delete(token string, data string, metricas string) (map[st
 	}
 	log.Println("Data = " + string(jsonData))
 
-	query := `SELECT security_credenciales_save($1, $2, $3)`
+	query := querySaveCredencialE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -394,7 +373,7 @@ func (u *CredencialE) DeleteByID(token string, id int, metricas string) (map[str
 							  }`,
 		id, 300)
 
-	query := `SELECT security_credenciales_save($1, $2, $3)`
+	query := querySaveCredencialE
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
@@ -473,7 +452,7 @@ func (u *CredencialE) GetUserByEmailOrPhone(token string, jsonData string) (*Cre
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := querySelectCredencial
+	query := queryLoadCredencialE
 
 	var rowdata CredencialE
 	///jsonText := fmt.Sprintf(`{"email":%s}`, email)
@@ -487,6 +466,7 @@ func (u *CredencialE) GetUserByEmailOrPhone(token string, jsonData string) (*Cre
 		&rowdata.Sede,
 		&rowdata.Flag1,
 		&rowdata.Flag2,
+		&rowdata.PersonaId,
 		&rowdata.Nivel,
 		&rowdata.Tipo,
 		&rowdata.Username,
@@ -495,6 +475,7 @@ func (u *CredencialE) GetUserByEmailOrPhone(token string, jsonData string) (*Cre
 		&rowdata.Imei,
 		&rowdata.Social,
 		&rowdata.Googleidtoken,
+		&rowdata.TokenFcm,
 		&rowdata.Password,
 		&rowdata.ModoAutenticacion,
 		&rowdata.ModoAcceso,
@@ -514,6 +495,7 @@ func (u *CredencialE) GetUserByEmailOrPhone(token string, jsonData string) (*Cre
 		&rowdata.Avatar,
 		&rowdata.TokenTerminal,
 		&rowdata.Manual,
+		&rowdata.RoleDefault,
 		&rowdata.HasRole,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
@@ -528,7 +510,7 @@ func (u *CredencialE) GetUserByEmailOrPhone(token string, jsonData string) (*Cre
 		&rowdata.TotalRecords,
 	)
 
-	if err != nil {
+	if err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
 
@@ -539,7 +521,7 @@ func (u *CredencialE) Save(token string, jsonData string, metricas string) (int6
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := "select * from security_credenciales_save($1, $2, $3)"
+	query := querySaveCredencialE
 
 	///jsonText := fmt.Sprintf(`{"email":"%s"}`, email)
 	row := db.QueryRowContext(ctx, query, token, jsonData, metricas)
@@ -554,9 +536,6 @@ func (u *CredencialE) Save(token string, jsonData string, metricas string) (int6
 	return uniqueid.Int64, nil
 }
 
-/*****
- * Este procedimiento requiere la generacion de multiples tablas transaccionales.-
- *********/
 func (u *CredencialE) RegisterAccount(token string, data string, auth string, metricas string) (map[string]any, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
@@ -585,6 +564,29 @@ func (u *CredencialE) RegisterAccount(token string, data string, auth string, me
 	log.Printf("RegisterAccount [token]=%s\n", tokensession)
 
 	return retorno, nil
+}
+
+/*****
+ * Actualizacion de acceso
+ *********/
+func (u *CredencialE) UpdateLastAccess(uniqueid int64) error {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	log.Printf("UpdateLastAccess [uniqueid]=%d\n", uniqueid)
+
+	query := `UPDATE security_credenciales SET flastaccess = (NOW() AT TIME ZONE 'EST') WHERE uniqueid = $1`
+	stmt, err := db.Prepare(query)
+	if err != nil {
+		return err
+	}
+
+	_, err = stmt.ExecContext(ctx, uniqueid)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (u *CredencialE) ToText() string {

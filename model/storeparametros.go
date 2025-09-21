@@ -42,16 +42,50 @@ func (e StoreParametrosE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreParametros = `select uniqueid, sede, flag1, flag2, secuencial, code, descrip, fcreated, activo, estadoreg, total_records from store_parametros_list( $1, $2)`
+const queryListStoreParametros = `select uniqueid, sede, flag1, flag2, secuencial, code, descrip, ruf1, ruf2, fcreated, activo, estadoreg, total_records from store_parametros_list( $1, $2)`
 const queryLoadStoreParametros = `select * from store_parametros_list( $1, $2)`
 const querySaveStoreParametros = `SELECT store_parametros_save($1, $2, $3)`
 
-//---------------------------------------------------------------------
-//MySQL               PostgreSQL            Oracle
-//=====               ==========            ======
-//WHERE col = ?       WHERE col = $1        WHERE col = :col
-//VALUES(?, ?, ?)     VALUES($1, $2, $3)    VALUES(:val1, :val2, :val3)
-//---------------------------------------------------------------------
+// ---------------------------------------------------------------------
+// MySQL               PostgreSQL            Oracle
+// =====               ==========            ======
+// WHERE col = ?       WHERE col = $1        WHERE col = :col
+// VALUES(?, ?, ?)     VALUES($1, $2, $3)    VALUES(:val1, :val2, :val3)
+// ---------------------------------------------------------------------
+func (u *StoreParametrosE) GetKeyValues(token string, filter string) []KeyPair {
+	rows, _ := u.GetAll(token, filter)
+	resultado := []KeyPair{}
+	for _, v := range rows {
+		keypair := KeyPair{Key: v.Code.String, Value: v.Descrip.String}
+		resultado = append(resultado, keypair)
+	}
+	return resultado
+}
+
+func (u *StoreParametrosE) GetMultiValues(token string, filter string, codes []string) []KeyPair {
+	rows, _ := u.GetAll(token, filter)
+	resultado := []KeyPair{}
+	for _, v := range rows {
+		if !existsInArray(codes, v.Code.String) {
+			continue
+		}
+		keypair := KeyPair{Key: v.Code.String, Value: v.Descrip.String}
+		resultado = append(resultado, keypair)
+	}
+	return resultado
+}
+
+func existsInArray(a []string, key string) bool {
+	if a == nil {
+		return false
+	}
+	for _, value := range a {
+		if value == key {
+			return true
+		}
+	}
+	return false
+}
 
 // GetAll returns a slice of all users, sorted by last name
 func (u *StoreParametrosE) GetAll(token string, filter string) ([]*StoreParametrosE, error) {
@@ -97,6 +131,8 @@ func (u *StoreParametrosE) GetAll(token string, filter string) ([]*StoreParametr
 			&rowdata.Secuencial,
 			&rowdata.Code,
 			&rowdata.Descrip,
+			&rowdata.Ruf1,
+			&rowdata.Ruf2,
 			&rowdata.FCreated,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,

@@ -19,6 +19,7 @@ type StoreProductE struct {
 	PersonaId        NullInt64                  `json:"personaid,omitempty"`
 	TokendataId      NullString                 `json:"tokendataid,omitempty"`
 	ParentId         NullInt64                  `json:"parentid,omitempty"`
+	ParentText       NullString                 `json:"parenttext,omitempty"`
 	Code             NullString                 `json:"code,omitempty"`
 	BarCode          NullString                 `json:"barcode,omitempty"`
 	ProductName      NullString                 `json:"productname,omitempty"`
@@ -51,6 +52,8 @@ type StoreProductE struct {
 	Price            NullFloat64                `json:"price,omitempty"`
 	Purchase         NullFloat64                `json:"purchase,omitempty"`
 	StockMinimo      NullInt32                  `json:"stockminimo,omitempty"`
+	StockTotal       NullFloat64                `json:"stocktotal,omitempty"`
+	FLastMov         NullTime                   `json:"flastmov,omitempty"`
 	UrlSmallImage    NullString                 `json:"urlsmallimage,omitempty"`
 	UrlMediumImage   NullString                 `json:"urlmediumimage,omitempty"`
 	UrlLargeImage    NullString                 `json:"urllargeimage,omitempty"`
@@ -87,7 +90,7 @@ func (e StoreProductE) CreatedFormat() string {
 	return e.FCreated.Time.Format("Jan 2006")
 }
 
-const queryListStoreProductE = `select uniqueid, sede, flag1, flag2, parentid, code, barcode, productname, producttypeid, tipoproductotext, brandcode, stylecode, colorcode, divisioncode, udisplay, uomtypeid, uomdefault, quomdefault, price, purchase, activo, estadoreg, total_records from store_products_list( $1, $2)`
+const queryListStoreProductE = `select uniqueid, sede, flag1, flag2, parentid, code, barcode, productname, producttypeid, tipoproductotext, brandcode, stylecode, colorcode, divisioncode, udisplay, uomtypeid, uomdefault, quomdefault, price, purchase, inventario, medidas, stocktotal, activo, estadoreg, total_records from store_products_list( $1, $2)`
 const queryLoadStoreProductE = `select * from store_products_list( $1, $2)`
 const querySaveStoreProductE = `SELECT store_products_save($1, $2, $3)`
 
@@ -155,6 +158,9 @@ func (u *StoreProductE) GetAll(token string, filter string) ([]*StoreProductE, e
 			&rowdata.QuomDefault,
 			&rowdata.Price,
 			&rowdata.Purchase,
+			&rowdata.Inventario,
+			&rowdata.Medidas,
+			&rowdata.StockTotal,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -192,6 +198,7 @@ func (u *StoreProductE) GetByUniqueid(token string, jsonText string) (*StoreProd
 		&rowdata.PersonaId,
 		&rowdata.TokendataId,
 		&rowdata.ParentId,
+		&rowdata.ParentText,
 		&rowdata.Code,
 		&rowdata.BarCode,
 		&rowdata.ProductName,
@@ -224,6 +231,8 @@ func (u *StoreProductE) GetByUniqueid(token string, jsonText string) (*StoreProd
 		&rowdata.Price,
 		&rowdata.Purchase,
 		&rowdata.StockMinimo,
+		&rowdata.StockTotal,
+		&rowdata.FLastMov,
 		&rowdata.UrlSmallImage,
 		&rowdata.UrlMediumImage,
 		&rowdata.UrlLargeImage,

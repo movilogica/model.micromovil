@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"strconv"
 )
 
 // Almacenes Locaciones
@@ -33,6 +34,8 @@ type StoreWarehouseLocationsE struct {
 	LevelId            NullString `json:"levelid,omitempty"`
 	PositionId         NullString `json:"positionid,omitempty"`
 	Permanent          NullInt32  `json:"permanent,omitempty"`
+	ProductId          NullInt64  `json:"productid,omitempty"`
+	ProductText        NullString `json:"producttext,omitempty"`
 	Notes              NullString `json:"notes,omitempty"`
 	Ruf1               NullString `json:"ruf1,omitempty"`
 	Ruf2               NullString `json:"ruf2,omitempty"`
@@ -53,7 +56,7 @@ func (e StoreWarehouseLocationsE) MarshalJSON() ([]byte, error) {
 	return MarshalJSON_Not_Nulls(e)
 }
 
-const queryListStoreWarehouseLocationsE = `select uniqueid, sede, flag1, flag2, locationseqid, locationtypeenumid, locationstatusid, stageid, storagetypetext, permanent, activo, estadoreg, total_records from store_warehouse_locations_list( $1, $2)`
+const queryListStoreWarehouseLocationsE = `select uniqueid, sede, flag1, flag2, warehouseid, locationseqid, locationtypeenumid, locationstatusid, stageid, storagetypetext, permanent, productid, producttext, activo, estadoreg, total_records from store_warehouse_locations_list( $1, $2)`
 const queryLoadStoreWarehouseLocationsE = `select * from store_warehouse_locations_list( $1, $2)`
 const querySaveStoreWarehouseLocationsE = `SELECT store_warehouse_locations_save($1, $2, $3)`
 const procedureStoreWarehouseLocationsE = `CALL warehouse_ubicaciones($1, $2, $3, $4)`
@@ -108,12 +111,15 @@ func (u *StoreWarehouseLocationsE) GetAll(token string, filter string) ([]*Store
 			&rowdata.Sede,
 			&rowdata.Flag1,
 			&rowdata.Flag2,
+			&rowdata.WarehouseId,
 			&rowdata.LocationSeqId,
 			&rowdata.LocationTypeEnumId,
 			&rowdata.LocationStatusId,
 			&rowdata.StageId,
 			&rowdata.StorageTypeText,
 			&rowdata.Permanent,
+			&rowdata.ProductId,
+			&rowdata.ProductText,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
 			&rowdata.TotalRecords,
@@ -163,6 +169,8 @@ func (u *StoreWarehouseLocationsE) GetByUniqueid(token string, jsonText string) 
 		&rowdata.LevelId,
 		&rowdata.PositionId,
 		&rowdata.Permanent,
+		&rowdata.ProductId,
+		&rowdata.ProductText,
 		&rowdata.Notes,
 		&rowdata.Ruf1,
 		&rowdata.Ruf2,
@@ -196,13 +204,14 @@ func (u *StoreWarehouseLocationsE) Update(token string, data string, metricas st
 
 	// Se deseenvuelve el JSON del Data para adicionar filtros
 	var mapData map[string]interface{}
-	json.Unmarshal([]byte(data), &mapData)
-	if mapData == nil {
-		mapData = make(map[string]interface{})
+	err := json.Unmarshal([]byte(data), &mapData)
+	if err != nil {
+		log.Println("Error convirtiendo datos - ", err)
+		return nil, err
 	}
 	// --- Validacion de informacion
-	i_uniqueid, _ := mapData["uniqueid"]
-	v_uniqueid, _ := i_uniqueid.(float64)
+	i_uniqueid := mapData["uniqueid"]
+	v_uniqueid, _ := strconv.ParseInt(fmt.Sprintf("%v", i_uniqueid), 10, 64)
 	// Se empaqueta el JSON del Data
 	jsonData, err := json.Marshal(mapData)
 	if err != nil {

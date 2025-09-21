@@ -41,6 +41,7 @@ type StoreRecountItemE struct {
 	Uom           NullString  `json:"uom,omitempty"`
 	Quom          NullInt64   `json:"quom,omitempty"`
 	Quantity      NullFloat64 `json:"quantity,omitempty"`
+	Qtotal        NullFloat64 `json:"qtotal,omitempty"`
 	Xs            NullInt64   `json:"xs,omitempty"`
 	S             NullInt64   `json:"s,omitempty"`
 	M             NullInt64   `json:"m,omitempty"`
@@ -77,7 +78,7 @@ func (e StoreRecountItemE) CreatedFormat() string {
 	return e.FCreated.Time.Format("Jan 2006")
 }
 
-const queryListStoreRecountItemE = `select uniqueid, sede, flag1, flag2, groupid, grouptext, personatext, barcodebox, barcodeitem, stylecode, colorcode, divisioncode, areaid, aisleid, sectionid, levelid, positionid,udisplay, uom, quom, quantity, total activo, estadoreg, total_records from store_recount_items_list( $1, $2)`
+const queryListStoreRecountItemE = `select uniqueid, sede, flag1, flag2, groupid, grouptext, personatext, barcodebox, barcodeitem, stylecode, colorcode, divisioncode, areaid, aisleid, sectionid, levelid, positionid,udisplay, uom, quom, quantity, qtotal, total, activo, estadoreg, total_records from store_recount_items_list( $1, $2)`
 const queryLoadStoreRecountItemE = `select * from store_recount_items_list( $1, $2)`
 const querySaveStoreRecountItemE = `SELECT store_recount_items_save($1, $2, $3)`
 
@@ -148,6 +149,7 @@ func (u *StoreRecountItemE) GetAll(token string, filter string) ([]*StoreRecount
 			&rowdata.Uom,
 			&rowdata.Quom,
 			&rowdata.Quantity,
+			&rowdata.Qtotal,
 			&rowdata.Total,
 			&rowdata.Activo,
 			&rowdata.Estadoreg,
@@ -208,6 +210,7 @@ func (u *StoreRecountItemE) GetByUniqueid(token string, jsonText string) (*Store
 		&rowdata.Uom,
 		&rowdata.Quom,
 		&rowdata.Quantity,
+		&rowdata.Qtotal,
 		&rowdata.Xs,
 		&rowdata.S,
 		&rowdata.M,
